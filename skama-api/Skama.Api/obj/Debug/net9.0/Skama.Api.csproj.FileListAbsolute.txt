@@ -1,0 +1,9 @@
+C:\repos\desarrollo-de-aplicaciones\skama-api\Skama.Api\obj\Debug\net9.0\Skama.Api.csproj.AssemblyReference.cache
+C:\repos\desarrollo-de-aplicaciones\skama-api\Skama.Api\obj\Debug\net9.0\rpswa.dswa.cache.json
+C:\repos\desarrollo-de-aplicaciones\skama-api\Skama.Api\obj\Debug\net9.0\Skama.Api.GeneratedMSBuildEditorConfig.editorconfig
+C:\repos\desarrollo-de-aplicaciones\skama-api\Skama.Api\obj\Debug\net9.0\Skama.Api.AssemblyInfoInputs.cache
+C:\repos\desarrollo-de-aplicaciones\skama-api\Skama.Api\obj\Debug\net9.0\Skama.Api.AssemblyInfo.cs
+C:\repos\desarrollo-de-aplicaciones\skama-api\Skama.Api\obj\Debug\net9.0\Skama.Api.csproj.CoreCompileInputs.cache
+C:\repos\desarrollo-de-aplicaciones\skama-api\Skama.Api\obj\Debug\net9.0\Skama.Api.MvcApplicationPartsAssemblyInfo.cs
+C:\repos\desarrollo-de-aplicaciones\skama-api\Skama.Api\obj\Debug\net9.0\Skama.Api.MvcApplicationPartsAssemblyInfo.cache
+C:\repos\desarrollo-de-aplicaciones\skama-api\Skama.Api\obj\Debug\net9.0\Skama.Api.sourcelink.json

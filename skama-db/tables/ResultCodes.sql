@@ -1,0 +1,7 @@
+CREATE TABLE ResultCodes
+(
+    Id INT PRIMARY KEY,
+    Code NVARCHAR(100) NOT NULL,
+    Description NVARCHAR(255) NOT NULL
+);
+GO
