@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Skama.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+46c5205941aa3ceb9bbf825126e58baa4a5922db")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1f139f9f300178a5085f6defdd4705de40510520")]
 [assembly: System.Reflection.AssemblyProductAttribute("Skama.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Skama.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
