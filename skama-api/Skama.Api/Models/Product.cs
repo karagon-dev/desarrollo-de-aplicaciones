@@ -1,6 +1,6 @@
 ﻿namespace Skama.Api.Models
 {
-    public class Product : ModelBase
+    public class Product : AuditableModelBase
     {
         public Guid CategoryId { get; set; }
         public string Name { get; set; } = string.Empty;

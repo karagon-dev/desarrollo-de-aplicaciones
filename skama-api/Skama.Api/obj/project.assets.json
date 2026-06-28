@@ -1784,17 +1784,17 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\user\\.nuget\\packages\\": {},
+    "C:\\Users\\user\\AppData\\Local\\Temp\\cursor-sandbox-cache\\4c2f0ae54b3a0b64c5b48c2e07ef72c3\\nuget": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\repos\\desarrollo-de-aplicaciones\\skama-api\\Skama.Api\\Skama.Api.csproj",
+      "projectUniqueName": "c:\\repos\\desarrollo-de-aplicaciones\\skama-api\\Skama.Api\\Skama.Api.csproj",
       "projectName": "Skama.Api",
-      "projectPath": "C:\\repos\\desarrollo-de-aplicaciones\\skama-api\\Skama.Api\\Skama.Api.csproj",
-      "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
-      "outputPath": "C:\\repos\\desarrollo-de-aplicaciones\\skama-api\\Skama.Api\\obj\\",
+      "projectPath": "c:\\repos\\desarrollo-de-aplicaciones\\skama-api\\Skama.Api\\Skama.Api.csproj",
+      "packagesPath": "C:\\Users\\user\\AppData\\Local\\Temp\\cursor-sandbox-cache\\4c2f0ae54b3a0b64c5b48c2e07ef72c3\\nuget",
+      "outputPath": "c:\\repos\\desarrollo-de-aplicaciones\\skama-api\\Skama.Api\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
