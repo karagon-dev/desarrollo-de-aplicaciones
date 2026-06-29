@@ -6,6 +6,7 @@ namespace Skama.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+ [Produces("application/json")]
 public class ClientsController : ControllerBase
 {
     private readonly IClientService _clientService;
@@ -16,7 +17,9 @@ public class ClientsController : ControllerBase
     }
 
     [HttpGet("{userId:guid}/profile")]
-    public async Task<IActionResult> GetProfile(Guid userId)
+    [ProducesResponseType(typeof(CustomerProfileDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<CustomerProfileDto>> GetProfile(Guid userId)
     {
         var profile = await _clientService.GetProfileAsync(userId);
 
@@ -27,7 +30,10 @@ public class ClientsController : ControllerBase
     }
 
     [HttpPut("{userId:guid}/profile")]
-    public async Task<IActionResult> UpsertProfile(Guid userId, [FromBody] UpsertCustomerProfileRequest request)
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status409Conflict)]
+    public async Task<ActionResult<object>> UpsertProfile(Guid userId, [FromBody] UpsertCustomerProfileRequest request)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
@@ -35,7 +41,12 @@ public class ClientsController : ControllerBase
         var (profileId, success, error) = await _clientService.UpsertProfileAsync(userId, request);
 
         if (!success)
-            return Conflict(new { message = error });
+            return Conflict(new ProblemDetails
+            {
+                Title = "Profile upsert conflict",
+                Detail = error,
+                Status = StatusCodes.Status409Conflict
+            });
 
         return Ok(new { profileId });
     }
