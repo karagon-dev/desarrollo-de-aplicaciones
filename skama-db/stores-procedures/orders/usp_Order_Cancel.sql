@@ -8,9 +8,9 @@ BEGIN
 
     DECLARE @CurrentStatus NVARCHAR(30);
 
-    SELECT @CurrentStatus = Status
-    FROM dbo.Orders
-    WHERE Id = @OrderId;
+    SELECT @CurrentStatus = TC_Status
+    FROM dbo.Order
+    WHERE TID_Id = @OrderId;
 
     IF @CurrentStatus IS NULL
     BEGIN
@@ -26,17 +26,17 @@ BEGIN
 
     UPDATE P
     SET
-        P.StockQuantity = P.StockQuantity + OI.Quantity,
-        P.UpdatedAt = SYSDATETIME()
-    FROM dbo.Products P
-    INNER JOIN dbo.OrderItems OI ON OI.ProductId = P.Id
-    WHERE OI.OrderId = @OrderId;
+        P.TN_StockQuantity = P.TN_StockQuantity + OI.TN_Quantity,
+        P.TD_UpdatedAt = SYSDATETIME()
+    FROM dbo.Product P
+    INNER JOIN dbo.OrderItem OI ON OI.TID_ProductId = P.TID_Id
+    WHERE OI.TID_OrderId = @OrderId;
 
-    UPDATE dbo.Orders
+    UPDATE dbo.Order
     SET
-        Status = 'CANCELLED',
-        UpdatedAt = SYSDATETIME()
-    WHERE Id = @OrderId;
+        TC_Status = 'CANCELLED',
+        TD_UpdatedAt = SYSDATETIME()
+    WHERE TID_Id = @OrderId;
 
     SET @RowsAffected = @@ROWCOUNT;
     SET @ResultCode = 0;

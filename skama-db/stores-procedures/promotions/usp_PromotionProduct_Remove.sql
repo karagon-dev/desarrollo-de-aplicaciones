@@ -6,9 +6,9 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    DELETE FROM dbo.PromotionProducts
-    WHERE PromotionId = @PromotionId
-      AND ProductId = @ProductId;
+    DELETE FROM dbo.PromotionProduct
+    WHERE TID_PromotionId = @PromotionId
+      AND TID_ProductId = @ProductId;
 
     SET @RowsAffected = @@ROWCOUNT;
 END;

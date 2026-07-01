@@ -6,12 +6,12 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    UPDATE dbo.Users
+    UPDATE dbo.User
     SET
-        PasswordHash = @PasswordHash,
-        UpdatedAt = SYSDATETIME()
-    WHERE Id = @UserId
-      AND IsActive = 1;
+        TC_PasswordHash = @PasswordHash,
+        TD_UpdatedAt = SYSDATETIME()
+    WHERE TID_Id = @UserId
+      AND TB_IsActive = 1;
 
     SET @RowsAffected = @@ROWCOUNT;
 END;

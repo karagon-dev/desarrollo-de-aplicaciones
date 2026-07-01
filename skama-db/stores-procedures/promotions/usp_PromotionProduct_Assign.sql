@@ -8,8 +8,8 @@ BEGIN
     SET NOCOUNT ON;
 
     IF EXISTS (
-        SELECT 1 FROM dbo.PromotionProducts
-        WHERE PromotionId = @PromotionId AND ProductId = @ProductId
+        SELECT 1 FROM dbo.PromotionProduct
+        WHERE TID_PromotionId = @PromotionId AND TID_ProductId = @ProductId
     )
     BEGIN
         SET @ResultCode = 3;
@@ -18,11 +18,11 @@ BEGIN
 
     SET @NewId = NEWID();
 
-    INSERT INTO dbo.PromotionProducts
+    INSERT INTO dbo.PromotionProduct
     (
-        Id,
-        PromotionId,
-        ProductId
+        TID_Id,
+        TID_PromotionId,
+        TID_ProductId
     )
     VALUES
     (

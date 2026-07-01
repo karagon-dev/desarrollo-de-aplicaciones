@@ -5,13 +5,13 @@ BEGIN
     SET NOCOUNT ON;
 
     SELECT
-        Id,
-        ProductId,
-        ImageUrl,
-        AltText,
-        IsMain,
-        SortOrder
-    FROM dbo.ProductImages
-    WHERE Id = @Id;
+        TID_Id AS Id,
+        TID_ProductId AS ProductId,
+        TC_ImageUrl AS ImageUrl,
+        TC_AltText AS AltText,
+        TB_IsMain AS IsMain,
+        TN_SortOrder AS SortOrder
+    FROM dbo.ProductImage
+    WHERE TID_Id = @Id;
 END;
 GO

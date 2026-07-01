@@ -6,11 +6,11 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    UPDATE dbo.Users
+    UPDATE dbo.User
     SET
-        IsActive = @IsActive,
-        UpdatedAt = SYSDATETIME()
-    WHERE Id = @Id;
+        TB_IsActive = @IsActive,
+        TD_UpdatedAt = SYSDATETIME()
+    WHERE TID_Id = @Id;
 
     SET @RowsAffected = @@ROWCOUNT;
 END;

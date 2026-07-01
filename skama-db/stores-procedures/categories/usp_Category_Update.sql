@@ -8,13 +8,13 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    UPDATE dbo.Categories
+    UPDATE dbo.Category
     SET
-        Name = @Name,
-        Description = @Description,
-        IsActive = @IsActive,
-        UpdatedAt = GETDATE()
-    WHERE Id = @Id;
+        TC_Name = @Name,
+        TC_Description = @Description,
+        TB_IsActive = @IsActive,
+        TD_UpdatedAt = GETDATE()
+    WHERE TID_Id = @Id;
 
     SET @RowsAffected = @@ROWCOUNT;
 END;

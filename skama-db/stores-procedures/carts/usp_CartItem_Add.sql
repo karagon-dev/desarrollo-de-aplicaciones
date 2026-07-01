@@ -22,9 +22,9 @@ BEGIN
     IF NOT EXISTS
     (
         SELECT 1
-        FROM dbo.Carts
-        WHERE Id = @CartId
-          AND Status = 'ACTIVE'
+        FROM dbo.Cart
+        WHERE TID_Id = @CartId
+          AND TC_Status = 'ACTIVE'
     )
     BEGIN
         SET @ResultCode = 31; -- CART_NOT_ACTIVE
@@ -32,11 +32,11 @@ BEGIN
     END;
 
     SELECT
-        @UnitPrice = Price,
-        @StockQuantity = StockQuantity
-    FROM dbo.Products
-    WHERE Id = @ProductId
-      AND IsActive = 1;
+        @UnitPrice = TN_Price,
+        @StockQuantity = TN_StockQuantity
+    FROM dbo.Product
+    WHERE TID_Id = @ProductId
+      AND TB_IsActive = 1;
 
     IF @UnitPrice IS NULL
     BEGIN
@@ -45,10 +45,10 @@ BEGIN
     END;
 
     SELECT
-        @ExistingQuantity = Quantity
-    FROM dbo.CartItems
-    WHERE CartId = @CartId
-      AND ProductId = @ProductId;
+        @ExistingQuantity = TN_Quantity
+    FROM dbo.CartItem
+    WHERE TID_CartId = @CartId
+      AND TID_ProductId = @ProductId;
 
     SET @RequestedTotalQuantity = @ExistingQuantity + @Quantity;
 
@@ -60,30 +60,30 @@ BEGIN
 
     IF @ExistingQuantity > 0
     BEGIN
-        UPDATE dbo.CartItems
+        UPDATE dbo.CartItem
         SET
-            Quantity = @RequestedTotalQuantity,
-            UnitPrice = @UnitPrice
-        WHERE CartId = @CartId
-          AND ProductId = @ProductId;
+            TN_Quantity = @RequestedTotalQuantity,
+            TN_UnitPrice = @UnitPrice
+        WHERE TID_CartId = @CartId
+          AND TID_ProductId = @ProductId;
 
         SELECT
-            @CartItemId = Id
-        FROM dbo.CartItems
-        WHERE CartId = @CartId
-          AND ProductId = @ProductId;
+            @CartItemId = TID_Id
+        FROM dbo.CartItem
+        WHERE TID_CartId = @CartId
+          AND TID_ProductId = @ProductId;
     END
     ELSE
     BEGIN
         SET @CartItemId = NEWID();
 
-        INSERT INTO dbo.CartItems
+        INSERT INTO dbo.CartItem
         (
-            Id,
-            CartId,
-            ProductId,
-            Quantity,
-            UnitPrice
+            TID_Id,
+            TID_CartId,
+            TID_ProductId,
+            TN_Quantity,
+            TN_UnitPrice
         )
         VALUES
         (
@@ -95,9 +95,9 @@ BEGIN
         );
     END;
 
-    UPDATE dbo.Carts
-    SET UpdatedAt = SYSDATETIME()
-    WHERE Id = @CartId;
+    UPDATE dbo.Cart
+    SET TD_UpdatedAt = SYSDATETIME()
+    WHERE TID_Id = @CartId;
 
     SET @ResultCode = 0; -- SUCCESS
 END;

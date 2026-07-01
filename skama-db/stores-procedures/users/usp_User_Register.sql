@@ -8,23 +8,23 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    IF EXISTS (SELECT 1 FROM dbo.Users WHERE Email = @Email)
+    IF EXISTS (SELECT 1 FROM dbo.User WHERE TC_Email = @Email)
     BEGIN
-        SET @ResultCode = 1; -- Email already exists
+        SET @ResultCode = 1; -- TC_Email already exists
         RETURN;
     END;
 
     SET @NewId = NEWID();
 
-    INSERT INTO dbo.Users
+    INSERT INTO dbo.User
     (
-        Id,
-        RoleId,
-        Email,
-        PasswordHash,
-        IsActive,
-        CreatedAt,
-        UpdatedAt
+        TID_Id,
+        TN_RoleId,
+        TC_Email,
+        TC_PasswordHash,
+        TB_IsActive,
+        TD_CreatedAt,
+        TD_UpdatedAt
     )
     VALUES
     (

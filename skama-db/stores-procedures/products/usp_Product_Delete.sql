@@ -5,11 +5,11 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    UPDATE dbo.Products
+    UPDATE dbo.Product
     SET
-        IsActive = 0,
-        UpdatedAt = GETDATE()
-    WHERE Id = @Id;
+        TB_IsActive = 0,
+        TD_UpdatedAt = GETDATE()
+    WHERE TID_Id = @Id;
 
     SET @RowsAffected = @@ROWCOUNT;
 END;

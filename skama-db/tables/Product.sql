@@ -1,0 +1,17 @@
+CREATE TABLE Product (
+    TID_Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
+    TID_CategoryId UNIQUEIDENTIFIER NOT NULL,
+    TC_Name NVARCHAR(150) NOT NULL,
+    TC_Description NVARCHAR(MAX) NULL,
+    TN_Price DECIMAL(10,2) NOT NULL,
+    TN_StockQuantity INT NOT NULL DEFAULT 0,
+    TN_MinimumStock INT NOT NULL DEFAULT 0,
+    TB_IsActive BIT NOT NULL DEFAULT 1,
+    TD_CreatedAt DATETIME2 NOT NULL DEFAULT SYSDATETIME(),
+    TD_UpdatedAt DATETIME2 NULL,
+
+    CONSTRAINT FK_Products_Categories FOREIGN KEY (TID_CategoryId) REFERENCES Category(TID_Id),
+    CONSTRAINT CK_Products_Price CHECK (TN_Price >= 0),
+    CONSTRAINT CK_Products_Stock CHECK (TN_StockQuantity >= 0),
+    CONSTRAINT CK_Products_MinimumStock CHECK (TN_MinimumStock >= 0)
+);

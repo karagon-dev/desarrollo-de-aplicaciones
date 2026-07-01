@@ -7,28 +7,28 @@ BEGIN
     SET NOCOUNT ON;
 
     SELECT
-        P.Id,
-        P.CategoryId,
-        C.Name AS CategoryName,
-        P.Name,
-        P.Description,
-        P.Price,
-        P.StockQuantity,
-        P.MinimumStock,
-        P.IsActive,
-        P.CreatedAt,
-        P.UpdatedAt
-    FROM dbo.Products P
-    INNER JOIN dbo.Categories C ON C.Id = P.CategoryId
+        P.TID_Id AS Id,
+        P.TID_CategoryId AS CategoryId,
+        C.TC_Name AS CategoryName,
+        P.TC_Name AS Name,
+        P.TC_Description AS Description,
+        P.TN_Price AS Price,
+        P.TN_StockQuantity AS StockQuantity,
+        P.TN_MinimumStock AS MinimumStock,
+        P.TB_IsActive AS IsActive,
+        P.TD_CreatedAt AS CreatedAt,
+        P.TD_UpdatedAt AS UpdatedAt
+    FROM dbo.Product P
+    INNER JOIN dbo.Category C ON C.TID_Id = P.TID_CategoryId
     WHERE
-        (@IncludeInactive = 1 OR P.IsActive = 1)
-        AND (@CategoryId IS NULL OR P.CategoryId = @CategoryId)
+        (@IncludeInactive = 1 OR P.TB_IsActive = 1)
+        AND (@CategoryId IS NULL OR P.TID_CategoryId = @CategoryId)
         AND (
             @Search IS NULL
-            OR P.Name LIKE '%' + @Search + '%'
-            OR P.Description LIKE '%' + @Search + '%'
-            OR C.Name LIKE '%' + @Search + '%'
+            OR P.TC_Name LIKE '%' + @Search + '%'
+            OR P.TC_Description LIKE '%' + @Search + '%'
+            OR C.TC_Name LIKE '%' + @Search + '%'
         )
-    ORDER BY P.Name;
+    ORDER BY P.TC_Name;
 END;
 GO

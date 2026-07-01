@@ -8,8 +8,8 @@ BEGIN
     SET NOCOUNT ON;
 
     IF EXISTS (
-        SELECT 1 FROM dbo.WishlistItems
-        WHERE UserId = @UserId AND ProductId = @ProductId
+        SELECT 1 FROM dbo.WishlistItem
+        WHERE TID_UserId = @UserId AND TID_ProductId = @ProductId
     )
     BEGIN
         SET @ResultCode = 3;
@@ -18,11 +18,11 @@ BEGIN
 
     SET @NewId = NEWID();
 
-    INSERT INTO dbo.WishlistItems
+    INSERT INTO dbo.WishlistItem
     (
-        Id,
-        UserId,
-        ProductId
+        TID_Id,
+        TID_UserId,
+        TID_ProductId
     )
     VALUES
     (

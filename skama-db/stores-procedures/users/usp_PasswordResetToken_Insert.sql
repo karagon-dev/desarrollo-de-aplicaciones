@@ -9,12 +9,12 @@ BEGIN
 
     SET @NewId = NEWID();
 
-    INSERT INTO dbo.PasswordResetTokens
+    INSERT INTO dbo.PasswordResetToken
     (
-        Id,
-        UserId,
-        TokenHash,
-        ExpiresAt
+        TID_Id,
+        TID_UserId,
+        TC_TokenHash,
+        TD_ExpiresAt
     )
     VALUES
     (

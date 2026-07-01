@@ -7,17 +7,17 @@ BEGIN
 
     DECLARE @ProductId UNIQUEIDENTIFIER;
 
-    SELECT @ProductId = ProductId
-    FROM dbo.ProductImages
-    WHERE Id = @Id;
+    SELECT @ProductId = TID_ProductId
+    FROM dbo.ProductImage
+    WHERE TID_Id = @Id;
 
-    UPDATE dbo.ProductImages
-    SET IsMain = 0
-    WHERE ProductId = @ProductId;
+    UPDATE dbo.ProductImage
+    SET TB_IsMain = 0
+    WHERE TID_ProductId = @ProductId;
 
-    UPDATE dbo.ProductImages
-    SET IsMain = 1
-    WHERE Id = @Id;
+    UPDATE dbo.ProductImage
+    SET TB_IsMain = 1
+    WHERE TID_Id = @Id;
 
     SET @RowsAffected = @@ROWCOUNT;
 END;

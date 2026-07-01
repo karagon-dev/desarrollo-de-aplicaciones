@@ -18,16 +18,16 @@ BEGIN
         RETURN;
     END;
 
-    UPDATE dbo.Promotions
+    UPDATE dbo.Promotion
     SET
-        Name = @Name,
-        Description = @Description,
-        DiscountPercentage = @DiscountPercentage,
-        StartDate = @StartDate,
-        EndDate = @EndDate,
-        IsActive = @IsActive,
-        UpdatedAt = SYSDATETIME()
-    WHERE Id = @Id;
+        TC_Name = @Name,
+        TC_Description = @Description,
+        TN_DiscountPercentage = @DiscountPercentage,
+        TD_StartDate = @StartDate,
+        TD_EndDate = @EndDate,
+        TB_IsActive = @IsActive,
+        TD_UpdatedAt = SYSDATETIME()
+    WHERE TID_Id = @Id;
 
     SET @RowsAffected = @@ROWCOUNT;
 
