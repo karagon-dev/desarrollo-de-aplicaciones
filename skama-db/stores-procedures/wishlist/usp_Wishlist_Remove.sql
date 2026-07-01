@@ -6,9 +6,9 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    DELETE FROM dbo.WishlistItems
-    WHERE UserId = @UserId
-      AND ProductId = @ProductId;
+    DELETE FROM dbo.WishlistItem
+    WHERE TID_UserId = @UserId
+      AND TID_ProductId = @ProductId;
 
     SET @RowsAffected = @@ROWCOUNT;
 END;

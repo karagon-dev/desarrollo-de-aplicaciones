@@ -5,9 +5,9 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    UPDATE dbo.EmailNotifications
-    SET Status = 'FAILED'
-    WHERE Id = @Id;
+    UPDATE dbo.EmailNotification
+    SET TC_Status = 'FAILED'
+    WHERE TID_Id = @Id;
 
     SET @RowsAffected = @@ROWCOUNT;
 END;

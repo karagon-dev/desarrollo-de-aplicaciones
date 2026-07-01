@@ -1,4 +1,4 @@
-INSERT INTO ResultCodes (Id, Code, Description)
+INSERT INTO ResultCode (TID_Id, TC_Code, TC_Description)
 VALUES
 (0, 'SUCCESS', 'Operation completed successfully'),
 

@@ -5,8 +5,8 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    DELETE FROM dbo.ProductImages
-    WHERE Id = @Id;
+    DELETE FROM dbo.ProductImage
+    WHERE TID_Id = @Id;
 
     SET @RowsAffected = @@ROWCOUNT;
 END;

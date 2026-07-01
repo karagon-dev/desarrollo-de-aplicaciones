@@ -18,15 +18,15 @@ BEGIN
 
     SET @NewId = NEWID();
 
-    INSERT INTO dbo.Promotions
+    INSERT INTO dbo.Promotion
     (
-        Id,
-        Name,
-        Description,
-        DiscountPercentage,
-        StartDate,
-        EndDate,
-        IsActive
+        TID_Id,
+        TC_Name,
+        TC_Description,
+        TN_DiscountPercentage,
+        TD_StartDate,
+        TD_EndDate,
+        TB_IsActive
     )
     VALUES
     (

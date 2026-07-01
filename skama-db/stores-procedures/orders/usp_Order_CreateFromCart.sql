@@ -15,10 +15,10 @@ BEGIN
     BEGIN TRY
         BEGIN TRANSACTION;
 
-        SELECT @UserId = UserId
-        FROM dbo.Carts
-        WHERE Id = @CartId
-          AND Status = 'ACTIVE';
+        SELECT @UserId = TID_UserId
+        FROM dbo.Cart
+        WHERE TID_Id = @CartId
+          AND TC_Status = 'ACTIVE';
 
         IF @UserId IS NULL
         BEGIN
@@ -27,7 +27,7 @@ BEGIN
             RETURN;
         END;
 
-        IF NOT EXISTS (SELECT 1 FROM dbo.CartItems WHERE CartId = @CartId)
+        IF NOT EXISTS (SELECT 1 FROM dbo.CartItem WHERE TID_CartId = @CartId)
         BEGIN
             SET @ResultCode = 2;
             ROLLBACK TRANSACTION;
@@ -37,10 +37,10 @@ BEGIN
         IF EXISTS
         (
             SELECT 1
-            FROM dbo.CartItems CI
-            INNER JOIN dbo.Products P ON P.Id = CI.ProductId
-            WHERE CI.CartId = @CartId
-              AND (P.IsActive = 0 OR CI.Quantity > P.StockQuantity)
+            FROM dbo.CartItem CI
+            INNER JOIN dbo.Product P ON P.TID_Id = CI.TID_ProductId
+            WHERE CI.TID_CartId = @CartId
+              AND (P.TB_IsActive = 0 OR CI.TN_Quantity > P.TN_StockQuantity)
         )
         BEGIN
             SET @ResultCode = 22;
@@ -48,24 +48,24 @@ BEGIN
             RETURN;
         END;
 
-        SELECT @Subtotal = SUM(Quantity * UnitPrice)
-        FROM dbo.CartItems
-        WHERE CartId = @CartId;
+        SELECT @Subtotal = SUM(TN_Quantity * TN_UnitPrice)
+        FROM dbo.CartItem
+        WHERE TID_CartId = @CartId;
 
         SET @OrderId = NEWID();
         SET @OrderNumber = 'ORD-' + CONVERT(NVARCHAR(8), GETDATE(), 112) + '-' + RIGHT(CONVERT(NVARCHAR(36), NEWID()), 6);
 
-        INSERT INTO dbo.Orders
+        INSERT INTO dbo.Order
         (
-            Id,
-            UserId,
-            OrderNumber,
-            Status,
-            PaymentMethod,
-            ShippingAddress,
-            Subtotal,
-            DiscountTotal,
-            Total
+            TID_Id,
+            TID_UserId,
+            TC_OrderNumber,
+            TC_Status,
+            TC_PaymentMethod,
+            TC_ShippingAddress,
+            TN_Subtotal,
+            TN_DiscountTotal,
+            TN_Total
         )
         VALUES
         (
@@ -80,43 +80,43 @@ BEGIN
             @Subtotal
         );
 
-        INSERT INTO dbo.OrderItems
+        INSERT INTO dbo.OrderItem
         (
-            Id,
-            OrderId,
-            ProductId,
-            ProductName,
-            Quantity,
-            UnitPrice,
-            DiscountAmount,
-            LineTotal
+            TID_Id,
+            TID_OrderId,
+            TID_ProductId,
+            TC_ProductName,
+            TN_Quantity,
+            TN_UnitPrice,
+            TN_DiscountAmount,
+            TN_LineTotal
         )
         SELECT
             NEWID(),
             @OrderId,
-            CI.ProductId,
-            P.Name,
-            CI.Quantity,
-            CI.UnitPrice,
+            CI.TID_ProductId AS ProductId,
+            P.TC_Name AS Name,
+            CI.TN_Quantity AS Quantity,
+            CI.TN_UnitPrice AS UnitPrice,
             0,
-            CI.Quantity * CI.UnitPrice
-        FROM dbo.CartItems CI
-        INNER JOIN dbo.Products P ON P.Id = CI.ProductId
-        WHERE CI.CartId = @CartId;
+            CI.TN_Quantity * CI.TN_UnitPrice
+        FROM dbo.CartItem CI
+        INNER JOIN dbo.Product P ON P.TID_Id = CI.TID_ProductId
+        WHERE CI.TID_CartId = @CartId;
 
         UPDATE P
         SET
-            P.StockQuantity = P.StockQuantity - CI.Quantity,
-            P.UpdatedAt = SYSDATETIME()
-        FROM dbo.Products P
-        INNER JOIN dbo.CartItems CI ON CI.ProductId = P.Id
-        WHERE CI.CartId = @CartId;
+            P.TN_StockQuantity = P.TN_StockQuantity - CI.TN_Quantity,
+            P.TD_UpdatedAt = SYSDATETIME()
+        FROM dbo.Product P
+        INNER JOIN dbo.CartItem CI ON CI.TID_ProductId = P.TID_Id
+        WHERE CI.TID_CartId = @CartId;
 
-        UPDATE dbo.Carts
+        UPDATE dbo.Cart
         SET
-            Status = 'CHECKED_OUT',
-            UpdatedAt = SYSDATETIME()
-        WHERE Id = @CartId;
+            TC_Status = 'CHECKED_OUT',
+            TD_UpdatedAt = SYSDATETIME()
+        WHERE TID_Id = @CartId;
 
         SET @ResultCode = 0;
 

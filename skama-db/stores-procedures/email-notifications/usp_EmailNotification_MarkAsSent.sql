@@ -5,11 +5,11 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    UPDATE dbo.EmailNotifications
+    UPDATE dbo.EmailNotification
     SET
-        Status = 'SENT',
-        SentAt = SYSDATETIME()
-    WHERE Id = @Id;
+        TC_Status = 'SENT',
+        TD_SentAt = SYSDATETIME()
+    WHERE TID_Id = @Id;
 
     SET @RowsAffected = @@ROWCOUNT;
 END;

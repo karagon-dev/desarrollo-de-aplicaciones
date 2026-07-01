@@ -13,19 +13,19 @@ BEGIN
 
     IF @IsMain = 1
     BEGIN
-        UPDATE dbo.ProductImages
-        SET IsMain = 0
-        WHERE ProductId = @ProductId;
+        UPDATE dbo.ProductImage
+        SET TB_IsMain = 0
+        WHERE TID_ProductId = @ProductId;
     END;
 
-    INSERT INTO dbo.ProductImages
+    INSERT INTO dbo.ProductImage
     (
-        Id,
-        ProductId,
-        ImageUrl,
-        AltText,
-        IsMain,
-        SortOrder
+        TID_Id,
+        TID_ProductId,
+        TC_ImageUrl,
+        TC_AltText,
+        TB_IsMain,
+        TN_SortOrder
     )
     VALUES
     (

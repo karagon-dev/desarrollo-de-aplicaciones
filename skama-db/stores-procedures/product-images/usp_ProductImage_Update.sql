@@ -11,24 +11,24 @@ BEGIN
 
     DECLARE @ProductId UNIQUEIDENTIFIER;
 
-    SELECT @ProductId = ProductId
-    FROM dbo.ProductImages
-    WHERE Id = @Id;
+    SELECT @ProductId = TID_ProductId
+    FROM dbo.ProductImage
+    WHERE TID_Id = @Id;
 
     IF @IsMain = 1
     BEGIN
-        UPDATE dbo.ProductImages
-        SET IsMain = 0
-        WHERE ProductId = @ProductId;
+        UPDATE dbo.ProductImage
+        SET TB_IsMain = 0
+        WHERE TID_ProductId = @ProductId;
     END;
 
-    UPDATE dbo.ProductImages
+    UPDATE dbo.ProductImage
     SET
-        ImageUrl = @ImageUrl,
-        AltText = @AltText,
-        IsMain = @IsMain,
-        SortOrder = @SortOrder
-    WHERE Id = @Id;
+        TC_ImageUrl = @ImageUrl,
+        TC_AltText = @AltText,
+        TB_IsMain = @IsMain,
+        TN_SortOrder = @SortOrder
+    WHERE TID_Id = @Id;
 
     SET @RowsAffected = @@ROWCOUNT;
 END;

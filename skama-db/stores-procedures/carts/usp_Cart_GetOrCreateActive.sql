@@ -6,20 +6,20 @@ BEGIN
     SET NOCOUNT ON;
 
     SELECT TOP 1
-        @CartId = Id
-    FROM dbo.Carts
-    WHERE UserId = @UserId
-      AND Status = 'ACTIVE';
+        @CartId = TID_Id
+    FROM dbo.Cart
+    WHERE TID_UserId = @UserId
+      AND TC_Status = 'ACTIVE';
 
     IF @CartId IS NULL
     BEGIN
         SET @CartId = NEWID();
 
-        INSERT INTO dbo.Carts
+        INSERT INTO dbo.Cart
         (
-            Id,
-            UserId,
-            Status
+            TID_Id,
+            TID_UserId,
+            TC_Status
         )
         VALUES
         (

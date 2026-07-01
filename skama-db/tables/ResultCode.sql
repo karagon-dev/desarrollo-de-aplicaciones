@@ -1,0 +1,7 @@
+CREATE TABLE ResultCode
+(
+    TID_Id INT PRIMARY KEY,
+    TC_Code NVARCHAR(100) NOT NULL,
+    TC_Description NVARCHAR(255) NOT NULL
+);
+GO

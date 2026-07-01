@@ -12,17 +12,17 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    UPDATE dbo.Products
+    UPDATE dbo.Product
     SET
-        CategoryId = @CategoryId,
-        Name = @Name,
-        Description = @Description,
-        Price = @Price,
-        StockQuantity = @StockQuantity,
-        MinimumStock = @MinimumStock,
-        IsActive = @IsActive,
-        UpdatedAt = GETDATE()
-    WHERE Id = @Id;
+        TID_CategoryId = @CategoryId,
+        TC_Name = @Name,
+        TC_Description = @Description,
+        TN_Price = @Price,
+        TN_StockQuantity = @StockQuantity,
+        TN_MinimumStock = @MinimumStock,
+        TB_IsActive = @IsActive,
+        TD_UpdatedAt = GETDATE()
+    WHERE TID_Id = @Id;
 
     SET @RowsAffected = @@ROWCOUNT;
 END;

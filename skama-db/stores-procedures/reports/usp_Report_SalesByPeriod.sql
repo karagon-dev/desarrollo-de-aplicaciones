@@ -6,15 +6,15 @@ BEGIN
     SET NOCOUNT ON;
 
     SELECT
-        CAST(O.CreatedAt AS DATE) AS SaleDate,
-        COUNT(O.Id) AS OrderCount,
-        SUM(O.Subtotal) AS Subtotal,
-        SUM(O.DiscountTotal) AS DiscountTotal,
-        SUM(O.Total) AS Total
-    FROM dbo.Orders O
-    WHERE CAST(O.CreatedAt AS DATE) BETWEEN @StartDate AND @EndDate
-      AND O.Status IN ('PAID', 'SHIPPED', 'DELIVERED')
-    GROUP BY CAST(O.CreatedAt AS DATE)
+        CAST(O.TD_CreatedAt AS DATE) AS SaleDate,
+        COUNT(O.TID_Id) AS OrderCount,
+        SUM(O.TN_Subtotal) AS Subtotal,
+        SUM(O.TN_DiscountTotal) AS DiscountTotal,
+        SUM(O.TN_Total) AS Total
+    FROM dbo.Order O
+    WHERE CAST(O.TD_CreatedAt AS DATE) BETWEEN @StartDate AND @EndDate
+      AND O.TC_Status IN ('PAID', 'SHIPPED', 'DELIVERED')
+    GROUP BY CAST(O.TD_CreatedAt AS DATE)
     ORDER BY SaleDate;
 END;
 GO

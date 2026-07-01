@@ -5,13 +5,13 @@ BEGIN
     SET NOCOUNT ON;
 
     SELECT
-        Id,
-        Name,
-        Description,
-        IsActive,
-        CreatedAt,
-        UpdatedAt
-    FROM dbo.Categories
-    WHERE Id = @Id;
+        TID_Id AS Id,
+        TC_Name AS Name,
+        TC_Description AS Description,
+        TB_IsActive AS IsActive,
+        TD_CreatedAt AS CreatedAt,
+        TD_UpdatedAt AS UpdatedAt
+    FROM dbo.Category
+    WHERE TID_Id = @Id;
 END;
 GO

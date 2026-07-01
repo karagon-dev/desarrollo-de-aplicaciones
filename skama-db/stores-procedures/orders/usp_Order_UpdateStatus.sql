@@ -13,11 +13,11 @@ BEGIN
         RETURN;
     END;
 
-    UPDATE dbo.Orders
+    UPDATE dbo.Order
     SET
-        Status = @Status,
-        UpdatedAt = SYSDATETIME()
-    WHERE Id = @OrderId;
+        TC_Status = @Status,
+        TD_UpdatedAt = SYSDATETIME()
+    WHERE TID_Id = @OrderId;
 
     SET @RowsAffected = @@ROWCOUNT;
 
