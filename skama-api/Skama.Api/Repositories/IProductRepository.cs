@@ -1,8 +1,12 @@
-﻿using Skama.Api.Models;
+using Skama.Api.Models;
 
-namespace Skama.Api.Repositories.Interfaces;
+namespace Skama.Api.Repositories;
 
 public interface IProductRepository
 {
-    Task<Guid> AddAsync(Product product);
+    Task<IEnumerable<Product>> GetAllAsync(string? search, Guid? categoryId, bool includeInactive);
+    Task<Product?> GetByIdAsync(Guid id);
+    Task<Guid> InsertAsync(Product product);
+    Task<int> UpdateAsync(Product product);
+    Task<int> DeleteAsync(Guid id);
 }
