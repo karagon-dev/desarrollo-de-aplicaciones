@@ -1,0 +1,17 @@
+# Visual Studio / VS Code
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# .NET build artifacts
+**/bin/
+**/obj/
+
+# Node
+**/node_modules/
+
+# OS
+.DS_Store
+Thumbs.db
