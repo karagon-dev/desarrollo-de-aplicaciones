@@ -4,9 +4,8 @@ CREATE TABLE CartItem (
     TID_ProductId UNIQUEIDENTIFIER NOT NULL,
     TN_Quantity INT NOT NULL,
     TN_UnitPrice DECIMAL(10,2) NOT NULL,
-
     CONSTRAINT FK_CartItems_Carts FOREIGN KEY (TID_CartId) REFERENCES Cart(TID_Id),
-    CONSTRAINT FK_CartItems_Products FOREIGN KEY (TID_ProductId) REFERENCES Product(TID_Id),
+    CONSTRAINT FK_CartItems_Products FOREIGN KEY (TID_ProductId) REFERENCES [Product](TID_Id),
     CONSTRAINT CK_CartItems_Quantity CHECK (TN_Quantity > 0),
     CONSTRAINT CK_CartItems_UnitPrice CHECK (TN_UnitPrice >= 0),
     CONSTRAINT UQ_CartItems_Cart_Product UNIQUE (TID_CartId, TID_ProductId)

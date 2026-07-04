@@ -5,6 +5,5 @@ CREATE TABLE PasswordResetToken (
     TD_ExpiresAt DATETIME2 NOT NULL,
     TD_UsedAt DATETIME2 NULL,
     TD_CreatedAt DATETIME2 NOT NULL DEFAULT SYSDATETIME(),
-
-    CONSTRAINT FK_PasswordResetTokens_Users FOREIGN KEY (TID_UserId) REFERENCES User(TID_Id)
+    CONSTRAINT FK_PasswordResetTokens_Users FOREIGN KEY (TID_UserId) REFERENCES [User](TID_Id)
 );

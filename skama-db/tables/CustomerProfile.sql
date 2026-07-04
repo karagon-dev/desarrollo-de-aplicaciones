@@ -8,6 +8,5 @@ CREATE TABLE CustomerProfile (
     TC_Phone NVARCHAR(30) NULL,
     TD_CreatedAt DATETIME2 NOT NULL DEFAULT SYSDATETIME(),
     TD_UpdatedAt DATETIME2 NULL,
-
-    CONSTRAINT FK_CustomerProfiles_Users FOREIGN KEY (TID_UserId) REFERENCES User(TID_Id)
+    CONSTRAINT FK_CustomerProfiles_Users FOREIGN KEY (TID_UserId) REFERENCES [User](TID_Id)
 );

@@ -8,9 +8,8 @@ CREATE TABLE EmailNotification (
     TC_Status NVARCHAR(30) NOT NULL DEFAULT 'PENDING',
     TD_SentAt DATETIME2 NULL,
     TD_CreatedAt DATETIME2 NOT NULL DEFAULT SYSDATETIME(),
-
-    CONSTRAINT FK_EmailNotifications_Users FOREIGN KEY (TID_UserId) REFERENCES User(TID_Id),
-    CONSTRAINT FK_EmailNotifications_Orders FOREIGN KEY (TID_OrderId) REFERENCES Order(TID_Id),
+    CONSTRAINT FK_EmailNotifications_Users FOREIGN KEY (TID_UserId) REFERENCES [User](TID_Id),
+    CONSTRAINT FK_EmailNotifications_Orders FOREIGN KEY (TID_OrderId) REFERENCES [Order](TID_Id),
     CONSTRAINT CK_EmailNotifications_Type CHECK (TC_Type IN ('ORDER_CONFIRMATION', 'ORDER_STATUS_UPDATE', 'PASSWORD_RESET')),
     CONSTRAINT CK_EmailNotifications_Status CHECK (TC_Status IN ('PENDING', 'SENT', 'FAILED'))
 );
