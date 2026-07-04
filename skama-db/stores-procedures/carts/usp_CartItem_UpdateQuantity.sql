@@ -18,12 +18,12 @@ BEGIN
     END;
 
     SELECT
-        @CartId = CI.CartId,
-        @ProductId = CI.ProductId
-    FROM dbo.CartItems CI
-    INNER JOIN dbo.Carts C ON C.Id = CI.CartId
-    WHERE CI.Id = @CartItemId
-      AND C.Status = 'ACTIVE';
+        @CartId = CI.TID_CartId,
+        @ProductId = CI.TID_ProductId
+    FROM dbo.CartItem CI
+    INNER JOIN dbo.Cart C ON C.TID_Id = CI.TID_CartId
+    WHERE CI.TID_Id = @CartItemId
+      AND C.TC_Status = 'ACTIVE';
 
     IF @CartId IS NULL
     BEGIN
@@ -31,10 +31,10 @@ BEGIN
         RETURN;
     END;
 
-    SELECT @StockQuantity = StockQuantity
-    FROM dbo.Products
-    WHERE Id = @ProductId
-      AND IsActive = 1;
+    SELECT @StockQuantity = TN_StockQuantity
+    FROM dbo.Product
+    WHERE TID_Id = @ProductId
+      AND TB_IsActive = 1;
 
     IF @StockQuantity IS NULL
     BEGIN
@@ -48,15 +48,15 @@ BEGIN
         RETURN;
     END;
 
-    UPDATE dbo.CartItems
-    SET Quantity = @Quantity
-    WHERE Id = @CartItemId;
+    UPDATE dbo.CartItem
+    SET TN_Quantity = @Quantity
+    WHERE TID_Id = @CartItemId;
 
     SET @RowsAffected = @@ROWCOUNT;
 
-    UPDATE dbo.Carts
-    SET UpdatedAt = SYSDATETIME()
-    WHERE Id = @CartId;
+    UPDATE dbo.Cart
+    SET TD_UpdatedAt = SYSDATETIME()
+    WHERE TID_Id = @CartId;
 
     SET @ResultCode = 0;
 END;

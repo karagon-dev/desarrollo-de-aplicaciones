@@ -5,13 +5,13 @@ BEGIN
     SET NOCOUNT ON;
 
     SELECT TOP 1
-        Id,
-        UserId,
-        Status,
-        CreatedAt,
-        UpdatedAt
-    FROM dbo.Carts
-    WHERE UserId = @UserId
-      AND Status = 'ACTIVE';
+        TID_Id AS Id,
+        TID_UserId AS UserId,
+        TC_Status AS Status,
+        TD_CreatedAt AS CreatedAt,
+        TD_UpdatedAt AS UpdatedAt
+    FROM dbo.Cart
+    WHERE TID_UserId = @UserId
+      AND TC_Status = 'ACTIVE';
 END;
 GO

@@ -17,8 +17,8 @@ BEGIN
     END;
 
     IF EXISTS (
-        SELECT 1 FROM dbo.Reviews
-        WHERE UserId = @UserId AND ProductId = @ProductId
+        SELECT 1 FROM dbo.Review
+        WHERE TID_UserId = @UserId AND TID_ProductId = @ProductId
     )
     BEGIN
         SET @ResultCode = 3;
@@ -27,12 +27,12 @@ BEGIN
 
     IF NOT EXISTS (
         SELECT 1
-        FROM dbo.OrderItems OI
-        INNER JOIN dbo.Orders O ON O.Id = OI.OrderId
-        WHERE O.Id = @OrderId
-          AND O.UserId = @UserId
-          AND OI.ProductId = @ProductId
-          AND O.Status IN ('PAID', 'SHIPPED', 'DELIVERED')
+        FROM dbo.OrderItem OI
+        INNER JOIN dbo.Order O ON O.TID_Id = OI.TID_OrderId
+        WHERE O.TID_Id = @OrderId
+          AND O.TID_UserId = @UserId
+          AND OI.TID_ProductId = @ProductId
+          AND O.TC_Status IN ('PAID', 'SHIPPED', 'DELIVERED')
     )
     BEGIN
         SET @ResultCode = 2;
@@ -41,14 +41,14 @@ BEGIN
 
     SET @NewId = NEWID();
 
-    INSERT INTO dbo.Reviews
+    INSERT INTO dbo.Review
     (
-        Id,
-        UserId,
-        ProductId,
-        OrderId,
-        Rating,
-        Comment
+        TID_Id,
+        TID_UserId,
+        TID_ProductId,
+        TID_OrderId,
+        TN_Rating,
+        TC_Comment
     )
     VALUES
     (

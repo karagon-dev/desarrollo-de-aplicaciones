@@ -13,30 +13,30 @@ BEGIN
 
     IF EXISTS (
         SELECT 1
-        FROM dbo.CustomerProfiles
-        WHERE IdentificationNumber = @IdentificationNumber
-          AND UserId <> @UserId
+        FROM dbo.CustomerProfile
+        WHERE TC_IdentificationNumber = @IdentificationNumber
+          AND TID_UserId <> @UserId
     )
     BEGIN
         SET @ResultCode = 1; -- Identification already exists
         RETURN;
     END;
 
-    IF EXISTS (SELECT 1 FROM dbo.CustomerProfiles WHERE UserId = @UserId)
+    IF EXISTS (SELECT 1 FROM dbo.CustomerProfile WHERE TID_UserId = @UserId)
     BEGIN
-        UPDATE dbo.CustomerProfiles
+        UPDATE dbo.CustomerProfile
         SET
-            IdentificationNumber = @IdentificationNumber,
-            FirstName = @FirstName,
-            LastName = @LastName,
-            BirthDate = @BirthDate,
-            Phone = @Phone,
-            UpdatedAt = SYSDATETIME()
-        WHERE UserId = @UserId;
+            TC_IdentificationNumber = @IdentificationNumber,
+            TC_FirstName = @FirstName,
+            TC_LastName = @LastName,
+            TD_BirthDate = @BirthDate,
+            TC_Phone = @Phone,
+            TD_UpdatedAt = SYSDATETIME()
+        WHERE TID_UserId = @UserId;
 
-        SELECT @ProfileId = Id
-        FROM dbo.CustomerProfiles
-        WHERE UserId = @UserId;
+        SELECT @ProfileId = TID_Id
+        FROM dbo.CustomerProfile
+        WHERE TID_UserId = @UserId;
 
         SET @ResultCode = 0;
         RETURN;
@@ -44,17 +44,17 @@ BEGIN
 
     SET @ProfileId = NEWID();
 
-    INSERT INTO dbo.CustomerProfiles
+    INSERT INTO dbo.CustomerProfile
     (
-        Id,
-        UserId,
-        IdentificationNumber,
-        FirstName,
-        LastName,
-        BirthDate,
-        Phone,
-        CreatedAt,
-        UpdatedAt
+        TID_Id,
+        TID_UserId,
+        TC_IdentificationNumber,
+        TC_FirstName,
+        TC_LastName,
+        TD_BirthDate,
+        TC_Phone,
+        TD_CreatedAt,
+        TD_UpdatedAt
     )
     VALUES
     (

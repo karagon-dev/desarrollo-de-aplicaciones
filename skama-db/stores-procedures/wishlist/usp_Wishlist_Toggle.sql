@@ -7,22 +7,22 @@ BEGIN
     SET NOCOUNT ON;
 
     IF EXISTS (
-        SELECT 1 FROM dbo.WishlistItems
-        WHERE UserId = @UserId AND ProductId = @ProductId
+        SELECT 1 FROM dbo.WishlistItem
+        WHERE TID_UserId = @UserId AND TID_ProductId = @ProductId
     )
     BEGIN
-        DELETE FROM dbo.WishlistItems
-        WHERE UserId = @UserId AND ProductId = @ProductId;
+        DELETE FROM dbo.WishlistItem
+        WHERE TID_UserId = @UserId AND TID_ProductId = @ProductId;
 
         SET @IsFavorite = 0;
         RETURN;
     END;
 
-    INSERT INTO dbo.WishlistItems
+    INSERT INTO dbo.WishlistItem
     (
-        Id,
-        UserId,
-        ProductId
+        TID_Id,
+        TID_UserId,
+        TID_ProductId
     )
     VALUES
     (

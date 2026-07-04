@@ -8,11 +8,11 @@ BEGIN
 
     DECLARE @CartId UNIQUEIDENTIFIER;
 
-    SELECT @CartId = CI.CartId
-    FROM dbo.CartItems CI
-    INNER JOIN dbo.Carts C ON C.Id = CI.CartId
-    WHERE CI.Id = @CartItemId
-      AND C.Status = 'ACTIVE';
+    SELECT @CartId = CI.TID_CartId
+    FROM dbo.CartItem CI
+    INNER JOIN dbo.Cart C ON C.TID_Id = CI.TID_CartId
+    WHERE CI.TID_Id = @CartItemId
+      AND C.TC_Status = 'ACTIVE';
 
     IF @CartId IS NULL
     BEGIN
@@ -20,14 +20,14 @@ BEGIN
         RETURN;
     END;
 
-    DELETE FROM dbo.CartItems
-    WHERE Id = @CartItemId;
+    DELETE FROM dbo.CartItem
+    WHERE TID_Id = @CartItemId;
 
     SET @RowsAffected = @@ROWCOUNT;
 
-    UPDATE dbo.Carts
-    SET UpdatedAt = SYSDATETIME()
-    WHERE Id = @CartId;
+    UPDATE dbo.Cart
+    SET TD_UpdatedAt = SYSDATETIME()
+    WHERE TID_Id = @CartId;
 
     SET @ResultCode = 0;
 END;

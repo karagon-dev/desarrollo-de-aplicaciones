@@ -8,14 +8,14 @@ BEGIN
 
     SET @NewId = NEWID();
 
-    INSERT INTO dbo.Categories
+    INSERT INTO dbo.Category
     (
-        Id,
-        Name,
-        Description,
-        IsActive,
-        CreatedAt,
-        UpdatedAt
+        TID_Id,
+        TC_Name,
+        TC_Description,
+        TB_IsActive,
+        TD_CreatedAt,
+        TD_UpdatedAt
     )
     VALUES
     (

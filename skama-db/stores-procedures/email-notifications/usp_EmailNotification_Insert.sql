@@ -18,15 +18,15 @@ BEGIN
 
     SET @NewId = NEWID();
 
-    INSERT INTO dbo.EmailNotifications
+    INSERT INTO dbo.EmailNotification
     (
-        Id,
-        UserId,
-        OrderId,
-        Type,
-        RecipientEmail,
-        Subject,
-        Status
+        TID_Id,
+        TID_UserId,
+        TID_OrderId,
+        TC_Type,
+        TC_RecipientEmail,
+        TC_Subject,
+        TC_Status
     )
     VALUES
     (

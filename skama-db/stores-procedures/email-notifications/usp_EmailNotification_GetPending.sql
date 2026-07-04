@@ -4,17 +4,17 @@ BEGIN
     SET NOCOUNT ON;
 
     SELECT
-        Id,
-        UserId,
-        OrderId,
-        Type,
-        RecipientEmail,
-        Subject,
-        Status,
-        SentAt,
-        CreatedAt
-    FROM dbo.EmailNotifications
-    WHERE Status = 'PENDING'
-    ORDER BY CreatedAt ASC;
+        TID_Id AS Id,
+        TID_UserId AS UserId,
+        TID_OrderId AS OrderId,
+        TC_Type AS Type,
+        TC_RecipientEmail AS RecipientEmail,
+        TC_Subject AS Subject,
+        TC_Status AS Status,
+        TD_SentAt AS SentAt,
+        TD_CreatedAt AS CreatedAt
+    FROM dbo.EmailNotification
+    WHERE TC_Status = 'PENDING'
+    ORDER BY TD_CreatedAt ASC;
 END;
 GO

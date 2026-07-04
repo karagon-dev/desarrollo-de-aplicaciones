@@ -5,16 +5,16 @@ BEGIN
     SET NOCOUNT ON;
 
     SELECT
-        Id,
-        UserId,
-        IdentificationNumber,
-        FirstName,
-        LastName,
-        BirthDate,
-        Phone,
-        CreatedAt,
-        UpdatedAt
-    FROM dbo.CustomerProfiles
-    WHERE UserId = @UserId;
+        TID_Id AS Id,
+        TID_UserId AS UserId,
+        TC_IdentificationNumber AS IdentificationNumber,
+        TC_FirstName AS FirstName,
+        TC_LastName AS LastName,
+        TD_BirthDate AS BirthDate,
+        TC_Phone AS Phone,
+        TD_CreatedAt AS CreatedAt,
+        TD_UpdatedAt AS UpdatedAt
+    FROM dbo.CustomerProfile
+    WHERE TID_UserId = @UserId;
 END;
 GO

@@ -5,10 +5,10 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    UPDATE dbo.PasswordResetTokens
-    SET UsedAt = SYSDATETIME()
-    WHERE Id = @Id
-      AND UsedAt IS NULL;
+    UPDATE dbo.PasswordResetToken
+    SET TD_UsedAt = SYSDATETIME()
+    WHERE TID_Id = @Id
+      AND TD_UsedAt IS NULL;
 
     SET @RowsAffected = @@ROWCOUNT;
 END;

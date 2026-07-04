@@ -12,18 +12,18 @@ BEGIN
 
     SET @NewId = NEWID();
 
-    INSERT INTO dbo.Products
+    INSERT INTO dbo.Product
     (
-        Id,
-        CategoryId,
-        Name,
-        Description,
-        Price,
-        StockQuantity,
-        MinimumStock,
-        IsActive,
-        CreatedAt,
-        UpdatedAt
+        TID_Id,
+        TID_CategoryId,
+        TC_Name,
+        TC_Description,
+        TN_Price,
+        TN_StockQuantity,
+        TN_MinimumStock,
+        TB_IsActive,
+        TD_CreatedAt,
+        TD_UpdatedAt
     )
     VALUES
     (

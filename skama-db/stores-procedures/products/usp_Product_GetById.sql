@@ -5,19 +5,19 @@ BEGIN
     SET NOCOUNT ON;
 
     SELECT
-        P.Id,
-        P.CategoryId,
-        C.Name AS CategoryName,
-        P.Name,
-        P.Description,
-        P.Price,
-        P.StockQuantity,
-        P.MinimumStock,
-        P.IsActive,
-        P.CreatedAt,
-        P.UpdatedAt
-    FROM dbo.Products P
-    INNER JOIN dbo.Categories C ON C.Id = P.CategoryId
-    WHERE P.Id = @Id;
+        P.TID_Id AS Id,
+        P.TID_CategoryId AS CategoryId,
+        C.TC_Name AS CategoryName,
+        P.TC_Name AS Name,
+        P.TC_Description AS Description,
+        P.TN_Price AS Price,
+        P.TN_StockQuantity AS StockQuantity,
+        P.TN_MinimumStock AS MinimumStock,
+        P.TB_IsActive AS IsActive,
+        P.TD_CreatedAt AS CreatedAt,
+        P.TD_UpdatedAt AS UpdatedAt
+    FROM dbo.Product P
+    INNER JOIN dbo.Category C ON C.TID_Id = P.TID_CategoryId
+    WHERE P.TID_Id = @Id;
 END;
 GO

@@ -5,15 +5,15 @@ BEGIN
     SET NOCOUNT ON;
 
     SELECT
-        Id,
-        Name,
-        Description,
-        IsActive,
-        CreatedAt,
-        UpdatedAt
-    FROM dbo.Categories
+        TID_Id AS Id,
+        TC_Name AS Name,
+        TC_Description AS Description,
+        TB_IsActive AS IsActive,
+        TD_CreatedAt AS CreatedAt,
+        TD_UpdatedAt AS UpdatedAt
+    FROM dbo.Category
     WHERE @IncludeInactive = 1
-       OR IsActive = 1
-    ORDER BY Name;
+       OR TB_IsActive = 1
+    ORDER BY TC_Name;
 END;
 GO

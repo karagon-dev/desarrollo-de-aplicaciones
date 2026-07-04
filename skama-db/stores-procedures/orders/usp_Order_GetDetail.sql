@@ -5,31 +5,31 @@ BEGIN
     SET NOCOUNT ON;
 
     SELECT
-        Id,
-        UserId,
-        OrderNumber,
-        Status,
-        PaymentMethod,
-        ShippingAddress,
-        Subtotal,
-        DiscountTotal,
-        Total,
-        CreatedAt,
-        UpdatedAt
-    FROM dbo.Orders
-    WHERE Id = @OrderId;
+        TID_Id AS Id,
+        TID_UserId AS UserId,
+        TC_OrderNumber AS OrderNumber,
+        TC_Status AS Status,
+        TC_PaymentMethod AS PaymentMethod,
+        TC_ShippingAddress AS ShippingAddress,
+        TN_Subtotal AS Subtotal,
+        TN_DiscountTotal AS DiscountTotal,
+        TN_Total AS Total,
+        TD_CreatedAt AS CreatedAt,
+        TD_UpdatedAt AS UpdatedAt
+    FROM dbo.Order
+    WHERE TID_Id = @OrderId;
 
     SELECT
-        Id,
-        OrderId,
-        ProductId,
-        ProductName,
-        Quantity,
-        UnitPrice,
-        DiscountAmount,
-        LineTotal
-    FROM dbo.OrderItems
-    WHERE OrderId = @OrderId
-    ORDER BY ProductName;
+        TID_Id AS Id,
+        TID_OrderId AS OrderId,
+        TID_ProductId AS ProductId,
+        TC_ProductName AS ProductName,
+        TN_Quantity AS Quantity,
+        TN_UnitPrice AS UnitPrice,
+        TN_DiscountAmount AS DiscountAmount,
+        TN_LineTotal AS LineTotal
+    FROM dbo.OrderItem
+    WHERE TID_OrderId = @OrderId
+    ORDER BY TC_ProductName;
 END;
 GO
