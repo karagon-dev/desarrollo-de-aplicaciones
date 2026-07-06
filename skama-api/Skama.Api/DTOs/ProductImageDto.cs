@@ -1,11 +1,11 @@
-namespace Skama.Api.Models;
+namespace Skama.Api.DTOs;
 
-public class ProductImage
+public class ProductImageDto
 {
     public Guid Id { get; set; }
     public Guid ProductId { get; set; }
     public string ImageName { get; set; } = string.Empty;
-    public string? AltText { get; set; }
+    public string ImageUrl { get; set; } = string.Empty;
     public bool IsMain { get; set; }
-    public int SortOrder { get; set; }
+    public DateTime? CreatedAt { get; set; }
 }
