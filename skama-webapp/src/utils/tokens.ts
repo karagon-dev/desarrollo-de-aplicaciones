@@ -1,0 +1,37 @@
+export const tokens = {
+  color: {
+    primary: 'var(--color-primary)',
+    primaryHover: 'var(--color-primary-hover)',
+    primarySoft: 'var(--color-primary-soft)',
+    background: 'var(--background)',
+    surface: 'var(--surface)',
+    surfaceSecondary: 'var(--surface-secondary)',
+    border: 'var(--border)',
+    textPrimary: 'var(--text-primary)',
+    textSecondary: 'var(--text-secondary)',
+    muted: 'var(--muted)',
+    danger: 'var(--danger)',
+    warning: 'var(--warning)',
+    success: 'var(--success)',
+  },
+  spacing: {
+    xs: 'var(--spacing-xs)',
+    sm: 'var(--spacing-sm)',
+    md: 'var(--spacing-md)',
+    lg: 'var(--spacing-lg)',
+    xl: 'var(--spacing-xl)',
+    '2xl': 'var(--spacing-2xl)',
+    '3xl': 'var(--spacing-3xl)',
+  },
+  radius: {
+    sm: 'var(--radius-sm)',
+    md: 'var(--radius-md)',
+    lg: 'var(--radius-lg)',
+    full: 'var(--radius-full)',
+  },
+  shadow: {
+    sm: 'var(--shadow-sm)',
+    md: 'var(--shadow-md)',
+    lg: 'var(--shadow-lg)',
+  },
+} as const;
