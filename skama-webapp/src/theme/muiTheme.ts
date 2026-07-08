@@ -1,42 +1,44 @@
 import { createTheme, type Theme } from '@mui/material/styles';
 import type { ThemeMode } from './applyTokens';
-import { fontFamily } from '../tokens';
+import { darkColors, fontFamily, lightColors } from '../tokens';
 
 function cssVar(name: string): string {
   return `var(${name})`;
 }
 
 export function createSkamaTheme(mode: ThemeMode): Theme {
+  const colors = mode === 'light' ? lightColors : darkColors;
+
   return createTheme({
     palette: {
       mode,
       primary: {
-        main: cssVar('--color-primary'),
-        dark: cssVar('--color-primary-hover'),
-        light: cssVar('--color-primary-soft'),
-        contrastText: cssVar('--surface'),
+        main: colors.colorPrimary,
+        dark: colors.colorPrimaryHover,
+        light: colors.colorPrimarySoft,
+        contrastText: colors.surface,
       },
       secondary: {
-        main: cssVar('--text-secondary'),
+        main: colors.textSecondary,
       },
       background: {
-        default: cssVar('--background'),
-        paper: cssVar('--surface'),
+        default: colors.background,
+        paper: colors.surface,
       },
       text: {
-        primary: cssVar('--text-primary'),
-        secondary: cssVar('--text-secondary'),
-        disabled: cssVar('--muted'),
+        primary: colors.textPrimary,
+        secondary: colors.textSecondary,
+        disabled: colors.muted,
       },
-      divider: cssVar('--border'),
+      divider: colors.border,
       error: {
-        main: cssVar('--danger'),
+        main: colors.danger,
       },
       warning: {
-        main: cssVar('--warning'),
+        main: colors.warning,
       },
       success: {
-        main: cssVar('--success'),
+        main: colors.success,
       },
     },
     typography: {
