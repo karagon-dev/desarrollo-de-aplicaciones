@@ -1,73 +1,48 @@
-# React + TypeScript + Vite
+# SKAMA Webapp
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Frontend de SKAMA construido con React + TypeScript + Vite.
 
-Currently, two official plugins are available:
+## Requisitos
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Node.js 20+
+- API de SKAMA corriendo localmente (por ejemplo `https://localhost:7157`)
 
-## React Compiler
+## Configuracion local
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+1. Instalar dependencias:
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+2. Copiar `.env.example` a `.env` y ajustar si hace falta:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```env
+VITE_API_BASE_URL=
+VITE_API_PROXY_TARGET=https://localhost:7157
 ```
+
+### Como funciona la conexion al API
+
+- Si `VITE_API_BASE_URL` esta vacio, el frontend usa rutas relativas (`/api`, `/images`).
+- En desarrollo, Vite proxyea esas rutas a `VITE_API_PROXY_TARGET`.
+- Por defecto, el proxy apunta a `https://localhost:7157`.
+
+## Ejecutar
+
+```bash
+npm run dev
+```
+
+## Validacion
+
+```bash
+npm run lint
+npm run build
+```
+
+## CORS (API)
+
+Para despliegues sin proxy de Vite, agregar el origen del frontend en `skama-api`:
+
+- `Cors:AllowedOrigins` en `appsettings*.json`
