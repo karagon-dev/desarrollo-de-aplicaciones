@@ -16,13 +16,15 @@ export function useEligibleReviewOrders(userId?: string, productId?: string) {
       return;
     }
 
+    const currentUserId = userId;
+    const currentProductId = productId;
     let cancelled = false;
 
     async function loadEligibleOrders() {
       setLoading(true);
 
       try {
-        const { data: userOrders } = await orderService.getByUser(userId);
+        const { data: userOrders } = await orderService.getByUser(currentUserId);
         const details = await Promise.all(
           userOrders.map(async (order) => {
             try {
@@ -39,7 +41,7 @@ export function useEligibleReviewOrders(userId?: string, productId?: string) {
         }
 
         const eligible = details
-          .filter((detail) => detail?.items.some((item) => item.productId === productId))
+          .filter((detail) => detail?.items.some((item) => item.productId === currentProductId))
           .map((detail) => ({
             orderId: detail!.id,
             orderNumber: detail!.orderNumber,

@@ -1,9 +1,6 @@
-import Box from '@mui/material/Box';
 import type { ReactNode } from 'react';
 import { Navbar } from '../navigation/Navbar';
 import { Footer } from '../navigation/Footer';
-import { AppLayout } from './AppLayout';
-import { tokens } from '../../utils';
 
 export interface PublicLayoutProps {
   children: ReactNode;
@@ -11,19 +8,15 @@ export interface PublicLayoutProps {
 
 export function PublicLayout({ children }: PublicLayoutProps) {
   return (
-    <Box
-      sx={{
-        minHeight: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-        backgroundColor: tokens.color.background,
-      }}
-    >
+    <div className="sk-app-shell">
+      <a className="skip-link" href="#main-content">
+        Saltar al contenido
+      </a>
       <Navbar />
-      <Box component="main" sx={{ flex: 1 }}>
-        <AppLayout>{children}</AppLayout>
-      </Box>
+      <main id="main-content" tabIndex={-1}>
+        {children}
+      </main>
       <Footer />
-    </Box>
+    </div>
   );
 }

@@ -1,124 +1,177 @@
-import { useState } from 'react';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { useEffect, useMemo, useState } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import Box from '@mui/material/Box';
-import { PageShell } from '../../components/layouts/PageShell';
-import { Card } from '../../components/cards';
-import { EmptyState, Loading, ErrorState } from '../../components/feedback';
-import { Button } from '../../components/buttons';
-import { CartItemList } from '../../components/cart/CartItemList';
-import { Text } from '../../components/typography';
-import { useAuth, useCart } from '../../hooks';
-import { getApiErrorMessage, formatPrice, tokens } from '../../utils';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutlined';
+
+import { useCart } from '../../hooks';
 import { ROUTES } from '../../routes/routePaths';
+import {
+  backendCartToCheckoutItems,
+  formatPrice,
+  getApiErrorMessage,
+  getLocalCartTotals,
+  localCartToCheckoutItems,
+  LOCAL_CART_UPDATED_EVENT,
+  readLocalCart,
+  removeLocalCartItem,
+  updateLocalCartItemQuantity,
+} from '../../utils';
 
 export function CartPage() {
-  const navigate = useNavigate();
-  const { isAuthenticated } = useAuth();
-  const { cart, isLoading, error, refreshCart, updateItemQuantity, removeItem } = useCart();
+  const { cart, updateItemQuantity, removeItem } = useCart();
+  const [localItems, setLocalItems] = useState(() => readLocalCart());
   const [isUpdating, setIsUpdating] = useState(false);
 
-  if (!isAuthenticated) {
-    return (
-      <PageShell
-        title="Carrito"
-        subtitle="Revisa los productos antes de finalizar tu compra"
-        breadcrumbs={[
-          { label: 'Inicio', path: ROUTES.home },
-          { label: 'Carrito' },
-        ]}
-      >
-        <Card>
-          <EmptyState
-            title="Inicia sesión para ver tu carrito"
-            description="Accede a tu cuenta para agregar productos y completar tu compra."
-            actionLabel="Iniciar sesión"
-            onAction={() => navigate(ROUTES.login, { state: { from: ROUTES.cart } })}
-          />
-        </Card>
-      </PageShell>
-    );
-  }
+  useEffect(() => {
+    function syncLocalItems() {
+      setLocalItems(readLocalCart());
+    }
 
-  if (isLoading && !cart) {
-    return <Loading fullPage message="Cargando carrito..." />;
-  }
+    window.addEventListener(LOCAL_CART_UPDATED_EVENT, syncLocalItems);
+    window.addEventListener('storage', syncLocalItems);
+    return () => {
+      window.removeEventListener(LOCAL_CART_UPDATED_EVENT, syncLocalItems);
+      window.removeEventListener('storage', syncLocalItems);
+    };
+  }, []);
 
-  if (error && !cart) {
-    return <ErrorState description={error} onRetry={() => void refreshCart()} />;
-  }
+  const hasBackendCart = Boolean(cart?.items.length);
+  const checkoutItems = hasBackendCart
+    ? backendCartToCheckoutItems(cart)
+    : localCartToCheckoutItems(localItems);
+  const totals = useMemo(() => {
+    if (hasBackendCart) {
+      return {
+        itemCount: cart!.items.reduce((total, item) => total + item.quantity, 0),
+        subtotal: cart!.total,
+        total: cart!.total,
+      };
+    }
 
-  const isEmpty = !cart?.items.length;
+    return getLocalCartTotals(localItems);
+  }, [cart, hasBackendCart, localItems]);
 
-  async function handleUpdateQuantity(cartItemId: string, quantity: number) {
+  async function handleQuantityChange(id: string, productId: string, quantity: number) {
     setIsUpdating(true);
     try {
-      await updateItemQuantity(cartItemId, quantity);
-    } catch (err) {
-      toast.error(getApiErrorMessage(err, 'No se pudo actualizar la cantidad.'));
+      if (hasBackendCart) {
+        await updateItemQuantity(id, quantity);
+      } else {
+        setLocalItems(updateLocalCartItemQuantity(productId, quantity));
+      }
+    } catch (error) {
+      toast.error(getApiErrorMessage(error, 'No se pudo actualizar la cantidad.'));
     } finally {
       setIsUpdating(false);
     }
   }
 
-  async function handleRemove(cartItemId: string) {
+  async function handleRemove(id: string, productId: string) {
     setIsUpdating(true);
     try {
-      await removeItem(cartItemId);
-      toast.success('Producto eliminado del carrito.');
-    } catch (err) {
-      toast.error(getApiErrorMessage(err, 'No se pudo eliminar el producto.'));
+      if (hasBackendCart) {
+        await removeItem(id);
+      } else {
+        setLocalItems(removeLocalCartItem(productId));
+      }
+
+      toast.success('Producto eliminado del pedido.');
+    } catch (error) {
+      toast.error(getApiErrorMessage(error, 'No se pudo eliminar el producto.'));
     } finally {
       setIsUpdating(false);
     }
   }
 
   return (
-    <PageShell
-      title="Carrito"
-      subtitle="Revisa los productos antes de finalizar tu compra"
-      breadcrumbs={[
-        { label: 'Inicio', path: ROUTES.home },
-        { label: 'Carrito' },
-      ]}
-    >
-      <Card>
-        {isEmpty ? (
-          <EmptyState
-            title="Tu carrito está vacío"
-            description="Explora el catálogo y agrega piezas que te encanten."
-            actionLabel="Ver catálogo"
-            onAction={() => navigate(ROUTES.catalog)}
-          />
-        ) : (
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: tokens.spacing.lg }}>
-            <CartItemList
-              items={cart!.items}
-              isUpdating={isUpdating}
-              onUpdateQuantity={handleUpdateQuantity}
-              onRemove={handleRemove}
-            />
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: { xs: 'column', sm: 'row' },
-                alignItems: { xs: 'stretch', sm: 'center' },
-                justifyContent: 'space-between',
-                gap: tokens.spacing.md,
-                pt: tokens.spacing.md,
-                borderTop: `1px solid ${tokens.color.border}`,
-              }}
+    <div className="sk-page">
+      <header className="sk-page-header sk-container">
+        <p className="sk-kicker">Carrito</p>
+        <h1>Productos seleccionados</h1>
+        <p className="sk-lede">
+          Revisa cantidades antes de generar el mensaje de pedido por WhatsApp.
+        </p>
+      </header>
+
+      <section className="sk-cart-shell" aria-label="Detalle de carrito">
+        <div className="sk-cart-panel">
+          {checkoutItems.length === 0 ? (
+            <div className="sk-empty-state">
+              <h2>Tu carrito esta vacio.</h2>
+              <p>Explora colecciones y agrega las piezas que queres coordinar.</p>
+              <RouterLink className="sk-button sk-button--primary" to={ROUTES.catalog}>
+                Ver colecciones
+              </RouterLink>
+            </div>
+          ) : (
+            <div className="sk-order-items">
+              {checkoutItems.map((item) => (
+                <article className="sk-cart-line" key={item.id}>
+                  <img
+                    src={item.imageUrl || '/assets/images/hero/skama-hero-jewelry-detail.png'}
+                    alt={item.imageAlt || item.name}
+                    loading="lazy"
+                  />
+                  <div className="sk-cart-line__content">
+                    <h3>{item.name}</h3>
+                    <span>{formatPrice(item.unitPrice)} por unidad</span>
+                    <div className="sk-cart-line__controls">
+                      <label className="sk-field" htmlFor={`quantity-${item.id}`}>
+                        <span className="sk-field__label">Cantidad</span>
+                        <input
+                          className="sk-input"
+                          id={`quantity-${item.id}`}
+                          type="number"
+                          min={1}
+                          max={99}
+                          value={item.quantity}
+                          disabled={isUpdating}
+                          onChange={(event) =>
+                            void handleQuantityChange(item.id, item.productId, Number(event.target.value))
+                          }
+                        />
+                      </label>
+                    </div>
+                  </div>
+                  <div className="sk-cart-line__actions">
+                    <strong className="sk-price">{formatPrice(item.subtotal)}</strong>
+                    <button
+                      className="sk-icon-button"
+                      type="button"
+                      aria-label={`Eliminar ${item.name}`}
+                      disabled={isUpdating}
+                      onClick={() => void handleRemove(item.id, item.productId)}
+                    >
+                      <DeleteOutlineIcon fontSize="small" />
+                    </button>
+                  </div>
+                </article>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <aside className="sk-cart-panel" aria-label="Resumen de carrito">
+          <p className="sk-kicker">Resumen</p>
+          <h2>Total del pedido</h2>
+          <div className="sk-total-line">
+            <span>Productos</span>
+            <strong>{totals.itemCount}</strong>
+          </div>
+          <div className="sk-total-line">
+            <span>Total</span>
+            <strong className="sk-price">{formatPrice(totals.total)}</strong>
+          </div>
+          <div className="sk-actions">
+            <RouterLink
+              className="sk-button sk-button--primary sk-button--lg"
+              to={checkoutItems.length > 0 ? ROUTES.checkout : ROUTES.catalog}
             >
-              <Text variant="h3" sx={{ color: tokens.color.primary }}>
-                Total: {formatPrice(cart!.total)}
-              </Text>
-              <Button component={RouterLink} to={ROUTES.checkout}>
-                Ir al checkout
-              </Button>
-            </Box>
-          </Box>
-        )}
-      </Card>
-    </PageShell>
+              {checkoutItems.length > 0 ? 'Continuar al pedido' : 'Ver colecciones'}
+            </RouterLink>
+          </div>
+        </aside>
+      </section>
+    </div>
   );
 }
