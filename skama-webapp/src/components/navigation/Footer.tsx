@@ -1,90 +1,76 @@
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 import { Link as RouterLink } from 'react-router-dom';
-import { tokens } from '../../utils';
 import { ROUTES } from '../../routes/routePaths';
 
-const footerLinks = [
-  { label: 'Catálogo', path: ROUTES.catalog },
+const shopLinks = [
+  { label: 'Colecciones', path: ROUTES.catalog },
+  { label: 'Destacados', path: ROUTES.wishlist },
+  { label: 'Pedido', path: ROUTES.checkout },
+];
+
+const accountLinks = [
+  { label: 'Iniciar sesion', path: ROUTES.login },
+  { label: 'Crear cuenta', path: ROUTES.register },
   { label: 'Mi perfil', path: ROUTES.profile },
-  { label: 'Pedidos', path: ROUTES.orderHistory },
-  { label: 'Admin', path: ROUTES.admin.dashboard },
 ];
 
 export function Footer() {
   return (
-    <Box
-      component="footer"
-      sx={{
-        mt: 'auto',
-        borderTop: `1px solid ${tokens.color.border}`,
-        backgroundColor: tokens.color.surface,
-        py: tokens.spacing.xl,
-        px: tokens.spacing.lg,
-      }}
-    >
-      <Box
-        sx={{
-          maxWidth: 1200,
-          mx: 'auto',
-          display: 'flex',
-          flexDirection: { xs: 'column', md: 'row' },
-          alignItems: { xs: 'flex-start', md: 'center' },
-          justifyContent: 'space-between',
-          gap: tokens.spacing.lg,
-        }}
-      >
-        <Box>
-          <Typography
-            variant="h6"
-            sx={{
-              fontFamily: '"Playfair Display", Georgia, serif',
-              color: tokens.color.primary,
-              fontWeight: 700,
-              mb: tokens.spacing.xs,
-            }}
-          >
-            SKAMA Jewelry
-          </Typography>
-          <Typography variant="body2" sx={{ color: tokens.color.textSecondary, maxWidth: 320 }}>
-            Joyería con esmeralda colombiana. Elegancia, calidad y diseño atemporal.
-          </Typography>
-        </Box>
+    <footer className="sk-footer">
+      <div className="sk-footer__inner">
+        <div className="sk-footer__brand">
+          <RouterLink className="sk-navbar__logo" to={ROUTES.home}>
+            SKAMA
+          </RouterLink>
+          <p>
+            Joyeria costarricense inspirada en esmeraldas, flora y fauna nacional.
+            Piezas elegantes para una experiencia de compra privada y memorable.
+          </p>
+          <div className="sk-social-links" aria-label="Redes sociales">
+            <a href="https://www.instagram.com/" target="_blank" rel="noreferrer">
+              Instagram
+            </a>
+            <a href="https://www.facebook.com/" target="_blank" rel="noreferrer">
+              Facebook
+            </a>
+            <a href="https://www.tiktok.com/" target="_blank" rel="noreferrer">
+              TikTok
+            </a>
+          </div>
+        </div>
 
-        <Box
-          component="nav"
-          aria-label="Enlaces del pie de página"
-          sx={{ display: 'flex', flexWrap: 'wrap', gap: tokens.spacing.md }}
-        >
-          {footerLinks.map((link) => (
-            <Typography
-              key={link.path}
-              component={RouterLink}
-              to={link.path}
-              variant="body2"
-              sx={{
-                color: tokens.color.textSecondary,
-                textDecoration: 'none',
-                '&:hover': { color: tokens.color.primary },
-              }}
-            >
+        <nav className="sk-footer__group" aria-label="Compra">
+          <h2>Compra</h2>
+          {shopLinks.map((link) => (
+            <RouterLink key={link.path} to={link.path}>
               {link.label}
-            </Typography>
+            </RouterLink>
           ))}
-        </Box>
-      </Box>
+        </nav>
 
-      <Typography
-        variant="caption"
-        sx={{
-          display: 'block',
-          textAlign: 'center',
-          mt: tokens.spacing.lg,
-          color: tokens.color.muted,
-        }}
-      >
-        © {new Date().getFullYear()} SKAMA Jewelry. Todos los derechos reservados.
-      </Typography>
-    </Box>
+        <nav className="sk-footer__group" aria-label="Cuenta">
+          <h2>Cuenta</h2>
+          {accountLinks.map((link) => (
+            <RouterLink key={link.path} to={link.path}>
+              {link.label}
+            </RouterLink>
+          ))}
+        </nav>
+
+        <div className="sk-footer__newsletter">
+          <h2>Contacto</h2>
+          <p>Jaco, Santa Teresa, Tamarindo, Multiplaza Escazu, Oxigeno y City Mall.</p>
+          <div className="sk-payment-methods" aria-label="Metodos de pago">
+            <span>SINPE</span>
+            <span>Transferencia</span>
+            <span>Tarjeta</span>
+          </div>
+        </div>
+
+        <div className="sk-footer__bottom">
+          <span>© {new Date().getFullYear()} SKAMA Jewelry.</span>
+          <span>Experiencia web para catalogo, carrito y pedidos por WhatsApp.</span>
+        </div>
+      </div>
+    </footer>
   );
 }

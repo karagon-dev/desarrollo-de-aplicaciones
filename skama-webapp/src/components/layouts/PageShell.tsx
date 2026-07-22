@@ -21,7 +21,13 @@ export function PageShell({
   children,
 }: PageShellProps) {
   return (
-    <Box>
+    <Box
+      sx={{
+        width: 'min(100% - clamp(2rem, 5vw, 4rem), 1200px)',
+        mx: 'auto',
+        py: { xs: tokens.spacing.lg, md: tokens.spacing.xl },
+      }}
+    >
       {breadcrumbs && breadcrumbs.length > 0 && <Breadcrumb items={breadcrumbs} />}
       <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: tokens.spacing.md, mb: tokens.spacing.lg }}>
         <Box sx={{ flex: 1 }}>

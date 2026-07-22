@@ -1,14 +1,8 @@
 import { useState, type FormEvent } from 'react';
-import { useNavigate, useLocation, Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import Box from '@mui/material/Box';
-import { PageShell } from '../../components/layouts/PageShell';
-import { Card } from '../../components/cards';
-import { Input } from '../../components/inputs';
-import { Button } from '../../components/buttons';
-import { Text } from '../../components/typography';
+
 import { useAuth } from '../../hooks';
-import { tokens } from '../../utils';
 import { ROUTES } from '../../routes/routePaths';
 
 export function LoginPage() {
@@ -18,9 +12,7 @@ export function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [formError, setFormError] = useState<string | null>(null);
-
-  const from =
-    (location.state as { from?: string } | null)?.from ?? ROUTES.home;
+  const from = (location.state as { from?: string } | null)?.from ?? ROUTES.home;
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -28,67 +20,77 @@ export function LoginPage() {
 
     try {
       await login({ email, password });
-      toast.success('Sesión iniciada correctamente.');
+      toast.success('Sesion iniciada correctamente.');
       navigate(from, { replace: true });
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'No se pudo iniciar sesión.';
+      const message = error instanceof Error ? error.message : 'No se pudo iniciar sesion.';
       setFormError(message);
       toast.error(message);
     }
   }
 
   return (
-    <Box sx={{ maxWidth: 440, mx: 'auto' }}>
-      <PageShell
-        title="Iniciar sesión"
-        subtitle="Accede a tu cuenta SKAMA"
-        breadcrumbs={[
-          { label: 'Inicio', path: ROUTES.home },
-          { label: 'Iniciar sesión' },
-        ]}
-      />
-      <Card>
-        <Box
-          component="form"
-          onSubmit={handleSubmit}
-          sx={{ display: 'flex', flexDirection: 'column', gap: tokens.spacing.md }}
-        >
-          <Input
-            label="Correo electrónico"
-            type="email"
-            autoComplete="email"
-            required
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-          />
-          <Input
-            label="Contraseña"
-            type="password"
-            autoComplete="current-password"
-            required
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-          />
-          {formError && (
-            <Text variant="small" sx={{ color: tokens.color.danger }}>
-              {formError}
-            </Text>
-          )}
-          <Button type="submit" fullWidth disabled={isLoading}>
-            {isLoading ? 'Ingresando...' : 'Ingresar'}
-          </Button>
-          <Text variant="small" muted sx={{ textAlign: 'center' }}>
-            ¿No tienes cuenta?{' '}
-            <Box
-              component={RouterLink}
-              to={ROUTES.register}
-              sx={{ color: tokens.color.primary, textDecoration: 'none', fontWeight: 600 }}
-            >
-              Regístrate
-            </Box>
-          </Text>
-        </Box>
-      </Card>
-    </Box>
+    <section className="sk-auth-shell" aria-labelledby="login-title">
+      <div className="sk-auth-intro">
+        <p className="sk-kicker">Acceso privado</p>
+        <h1 id="login-title">Bienvenido de nuevo a la experiencia SKAMA.</h1>
+        <p className="sk-lede">
+          Inicia sesion para acceder a favoritos, pedidos y piezas exclusivas de edicion limitada.
+        </p>
+        <RouterLink className="sk-button sk-button--secondary sk-button--lg" to={ROUTES.home}>
+          Volver al inicio
+        </RouterLink>
+      </div>
+
+      <article className="sk-auth-panel">
+        <div>
+          <p className="sk-kicker">Cuenta SKAMA</p>
+          <h1>Iniciar sesion</h1>
+        </div>
+        <form className="sk-auth-form" onSubmit={handleSubmit}>
+          <label className="sk-field" htmlFor="login-email">
+            <span className="sk-field__label">Correo electronico</span>
+            <input
+              className="sk-input"
+              id="login-email"
+              type="email"
+              autoComplete="email"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              required
+            />
+          </label>
+          <label className="sk-field" htmlFor="login-password">
+            <span className="sk-field__label">Contrasena</span>
+            <input
+              className="sk-input"
+              id="login-password"
+              type="password"
+              autoComplete="current-password"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              required
+            />
+          </label>
+          <div className="sk-inline-row">
+            <label className="sk-choice" htmlFor="login-remember">
+              <input id="login-remember" type="checkbox" />
+              <span className="sk-choice__control" aria-hidden="true" />
+              <span className="sk-choice__label">Recordarme</span>
+            </label>
+            <RouterLink className="sk-link" to={ROUTES.forgotPassword}>
+              Olvide mi contrasena
+            </RouterLink>
+          </div>
+          {formError && <p className="sk-validation">{formError}</p>}
+          <button className="sk-button sk-button--primary sk-button--lg" type="submit" disabled={isLoading}>
+            {isLoading ? 'Ingresando...' : 'Iniciar sesion'}
+          </button>
+          <RouterLink className="sk-button sk-button--secondary sk-button--lg" to={ROUTES.register}>
+            Crear cuenta
+          </RouterLink>
+        </form>
+      </article>
+    </section>
   );
 }

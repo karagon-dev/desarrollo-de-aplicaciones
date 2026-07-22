@@ -1,457 +1,212 @@
-import { useState } from 'react';
-
+import { useEffect, useMemo, useState } from 'react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
-
-import AppBar from '@mui/material/AppBar';
-
-import Toolbar from '@mui/material/Toolbar';
-
-import Box from '@mui/material/Box';
-
-import IconButton from '@mui/material/IconButton';
-
-import Typography from '@mui/material/Typography';
-
-import Drawer from '@mui/material/Drawer';
-
-import List from '@mui/material/List';
-
-import ListItemButton from '@mui/material/ListItemButton';
-
-import ListItemText from '@mui/material/ListItemText';
-
-import MenuIcon from '@mui/icons-material/Menu';
-
-import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
-
+import CloseIcon from '@mui/icons-material/Close';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-
-import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
-
-import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
-
+import LoginOutlinedIcon from '@mui/icons-material/LoginOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
+import MenuIcon from '@mui/icons-material/Menu';
+import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
 
-import { Button } from '../buttons';
-
-import { Badge } from '../feedback';
-
-import { useAuth, useCart, useThemeMode } from '../../hooks';
-
-import { tokens } from '../../utils';
-
+import { useAuth, useCart, useThemeMode, useWishlist } from '../../hooks';
+import { getLocalCartTotals, LOCAL_CART_UPDATED_EVENT, readLocalCart } from '../../utils';
 import { ROUTES } from '../../routes/routePaths';
 
-
-
 const navLinks = [
-
-  { label: 'Inicio', path: ROUTES.home },
-
-  { label: 'Catálogo', path: ROUTES.catalog },
-
-  { label: 'Carrito', path: ROUTES.cart },
-
+  { label: 'Inicio', path: ROUTES.home, match: ['/'] },
+  { label: 'Colecciones', path: ROUTES.catalog, match: [ROUTES.catalog, ROUTES.legacyCatalog] },
+  { label: 'Destacados', path: ROUTES.wishlist, match: [ROUTES.wishlist] },
+  { label: 'Pedido', path: ROUTES.checkout, match: [ROUTES.checkout, ROUTES.cart] },
 ];
 
-
-
-export function Navbar() {
-
-  const [mobileOpen, setMobileOpen] = useState(false);
-
-  const location = useLocation();
-
-  const { mode, toggleMode } = useThemeMode();
-
-  const { isAuthenticated, isAdmin, user, logout } = useAuth();
-  const { itemCount } = useCart();
-
-
-
-  const drawer = (
-
-    <Box sx={{ width: 260, pt: tokens.spacing.md }} role="navigation" aria-label="Menú principal">
-
-      <List>
-
-        {navLinks.map((link) => (
-
-          <ListItemButton
-
-            key={link.path}
-
-            component={RouterLink}
-
-            to={link.path}
-
-            selected={location.pathname === link.path}
-
-            onClick={() => setMobileOpen(false)}
-
-          >
-
-            <ListItemText primary={link.label} />
-
-          </ListItemButton>
-
-        ))}
-
-        {isAuthenticated && (
-
-          <>
-
-            <ListItemButton component={RouterLink} to={ROUTES.wishlist} onClick={() => setMobileOpen(false)}>
-
-              <ListItemText primary="Favoritos" />
-
-            </ListItemButton>
-
-            <ListItemButton component={RouterLink} to={ROUTES.profile} onClick={() => setMobileOpen(false)}>
-
-              <ListItemText primary="Mi perfil" />
-
-            </ListItemButton>
-
-            <ListItemButton component={RouterLink} to={ROUTES.orderHistory} onClick={() => setMobileOpen(false)}>
-
-              <ListItemText primary="Mis pedidos" />
-
-            </ListItemButton>
-
-          </>
-
-        )}
-
-        {isAdmin && (
-
-          <ListItemButton component={RouterLink} to={ROUTES.admin.dashboard} onClick={() => setMobileOpen(false)}>
-
-            <ListItemText primary="Administración" />
-
-          </ListItemButton>
-
-        )}
-
-        {isAuthenticated ? (
-
-          <ListItemButton
-
-            onClick={() => {
-
-              logout();
-
-              setMobileOpen(false);
-
-            }}
-
-          >
-
-            <ListItemText primary="Cerrar sesión" />
-
-          </ListItemButton>
-
-        ) : (
-
-          <ListItemButton component={RouterLink} to={ROUTES.login} onClick={() => setMobileOpen(false)}>
-
-            <ListItemText primary="Ingresar" />
-
-          </ListItemButton>
-
-        )}
-
-      </List>
-
-    </Box>
-
-  );
-
-
-
-  return (
-
-    <>
-
-      <AppBar
-
-        position="sticky"
-
-        elevation={0}
-
-        sx={{
-
-          backgroundColor: tokens.color.surface,
-
-          borderBottom: `1px solid ${tokens.color.border}`,
-
-          color: tokens.color.textPrimary,
-
-        }}
-
-      >
-
-        <Toolbar sx={{ gap: tokens.spacing.md, minHeight: { xs: 56, md: 64 } }}>
-
-          <IconButton
-
-            edge="start"
-
-            aria-label="Abrir menú"
-
-            onClick={() => setMobileOpen(true)}
-
-            sx={{ display: { md: 'none' }, color: tokens.color.textPrimary }}
-
-          >
-
-            <MenuIcon />
-
-          </IconButton>
-
-
-
-          <Typography
-
-            component={RouterLink}
-
-            to={ROUTES.home}
-
-            variant="h6"
-
-            sx={{
-
-              flexGrow: { xs: 1, md: 0 },
-
-              mr: { md: tokens.spacing.xl },
-
-              fontFamily: '"Playfair Display", Georgia, serif',
-
-              fontWeight: 700,
-
-              color: tokens.color.primary,
-
-              textDecoration: 'none',
-
-              letterSpacing: '0.02em',
-
-            }}
-
-          >
-
-            SKAMA
-
-          </Typography>
-
-
-
-          <Box
-
-            component="nav"
-
-            aria-label="Navegación principal"
-
-            sx={{ display: { xs: 'none', md: 'flex' }, gap: tokens.spacing.sm, flex: 1 }}
-
-          >
-
-            {navLinks.map((link) => (
-
-              <Button
-
-                key={link.path}
-
-                component={RouterLink}
-
-                to={link.path}
-
-                variant={location.pathname === link.path ? 'primary' : 'ghost'}
-
-                size="sm"
-
-              >
-
-                {link.label}
-
-              </Button>
-
-            ))}
-
-            {isAdmin && (
-
-              <Button
-
-                component={RouterLink}
-
-                to={ROUTES.admin.dashboard}
-
-                variant={location.pathname.startsWith('/admin') ? 'primary' : 'ghost'}
-
-                size="sm"
-
-              >
-
-                Admin
-
-              </Button>
-
-            )}
-
-          </Box>
-
-
-
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: tokens.spacing.xs }}>
-
-            <IconButton
-
-              aria-label={mode === 'light' ? 'Activar modo oscuro' : 'Activar modo claro'}
-
-              onClick={toggleMode}
-
-              sx={{ color: tokens.color.textSecondary }}
-
-            >
-
-              {mode === 'light' ? <DarkModeOutlinedIcon /> : <LightModeOutlinedIcon />}
-
-            </IconButton>
-
-
-
-            {isAuthenticated && (
-
-              <IconButton
-
-                component={RouterLink}
-
-                to={ROUTES.wishlist}
-
-                aria-label="Favoritos"
-
-                sx={{ color: tokens.color.textSecondary }}
-
-              >
-
-                <FavoriteBorderIcon />
-
-              </IconButton>
-
-            )}
-
-
-
-            <IconButton
-
-              component={RouterLink}
-
-              to={ROUTES.cart}
-
-              aria-label="Carrito"
-
-              sx={{ color: tokens.color.textSecondary }}
-
-            >
-
-              <Badge badgeContent={itemCount} color="primary">
-
-                <ShoppingCartOutlinedIcon />
-
-              </Badge>
-
-            </IconButton>
-
-
-
-            {isAuthenticated ? (
-
-              <>
-
-                <Button
-
-                  component={RouterLink}
-
-                  to={ROUTES.profile}
-
-                  variant="outline"
-
-                  size="sm"
-
-                  sx={{ display: { xs: 'none', sm: 'inline-flex' }, ml: tokens.spacing.sm }}
-
-                >
-
-                  {user?.email.split('@')[0]}
-
-                </Button>
-
-                <IconButton
-
-                  aria-label="Cerrar sesión"
-
-                  onClick={logout}
-
-                  sx={{ color: tokens.color.textSecondary }}
-
-                >
-
-                  <LogoutOutlinedIcon />
-
-                </IconButton>
-
-              </>
-
-            ) : (
-
-              <Button
-
-                component={RouterLink}
-
-                to={ROUTES.login}
-
-                variant="outline"
-
-                size="sm"
-
-                sx={{ display: { xs: 'none', sm: 'inline-flex' }, ml: tokens.spacing.sm }}
-
-              >
-
-                Ingresar
-
-              </Button>
-
-            )}
-
-          </Box>
-
-        </Toolbar>
-
-      </AppBar>
-
-
-
-      <Drawer
-
-        anchor="left"
-
-        open={mobileOpen}
-
-        onClose={() => setMobileOpen(false)}
-
-        ModalProps={{ keepMounted: true }}
-
-        sx={{ display: { md: 'none' } }}
-
-      >
-
-        {drawer}
-
-      </Drawer>
-
-    </>
-
-  );
-
+function useLocalCartCount() {
+  const [count, setCount] = useState(() => getLocalCartTotals(readLocalCart()).itemCount);
+
+  useEffect(() => {
+    function syncCount() {
+      setCount(getLocalCartTotals(readLocalCart()).itemCount);
+    }
+
+    window.addEventListener(LOCAL_CART_UPDATED_EVENT, syncCount);
+    window.addEventListener('storage', syncCount);
+    return () => {
+      window.removeEventListener(LOCAL_CART_UPDATED_EVENT, syncCount);
+      window.removeEventListener('storage', syncCount);
+    };
+  }, []);
+
+  return count;
 }
 
+export function Navbar() {
+  const location = useLocation();
+  const { mode, toggleMode } = useThemeMode();
+  const { isAuthenticated, isAdmin, user, logout } = useAuth();
+  const { itemCount } = useCart();
+  const { items: wishlistItems } = useWishlist();
+  const localCartCount = useLocalCartCount();
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    function handleScroll() {
+      setIsScrolled(window.scrollY > 8);
+    }
+
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const cartCount = itemCount || localCartCount;
+  const accountLabel = useMemo(() => user?.email.split('@')[0] ?? 'Cuenta', [user?.email]);
+
+  function isActive(match: string[]) {
+    if (match.includes('/')) {
+      return location.pathname === '/';
+    }
+
+    return match.some((path) => location.pathname === path || location.pathname.startsWith(`${path}/`));
+  }
+
+  const mobileNav = (
+    <div className={`sk-drawer${mobileOpen ? ' is-open' : ''}`} aria-hidden={!mobileOpen}>
+      <div className="sk-drawer__panel">
+        <div className="sk-drawer__header">
+          <span className="sk-navbar__logo">SKAMA</span>
+          <button
+            className="sk-icon-button"
+            type="button"
+            aria-label="Cerrar menu"
+            onClick={() => setMobileOpen(false)}
+          >
+            <CloseIcon fontSize="small" />
+          </button>
+        </div>
+        <nav className="sk-drawer-nav" aria-label="Navegacion movil">
+          {navLinks.map((link) => (
+            <RouterLink
+              key={link.path}
+              to={link.path}
+              aria-current={isActive(link.match) ? 'page' : undefined}
+              onClick={() => setMobileOpen(false)}
+            >
+              {link.label}
+            </RouterLink>
+          ))}
+          {isAdmin && (
+            <RouterLink to={ROUTES.admin.dashboard} onClick={() => setMobileOpen(false)}>
+              Admin
+            </RouterLink>
+          )}
+          {isAuthenticated ? (
+            <button
+              className="sk-drawer-nav__button"
+              type="button"
+              onClick={() => {
+                logout();
+                setMobileOpen(false);
+              }}
+            >
+              Cerrar sesion
+            </button>
+          ) : (
+            <RouterLink to={ROUTES.login} onClick={() => setMobileOpen(false)}>
+              Ingresar
+            </RouterLink>
+          )}
+        </nav>
+      </div>
+    </div>
+  );
+
+  return (
+    <>
+      <header className={`sk-navbar${isScrolled ? ' is-scrolled' : ''}`} data-navbar>
+        <RouterLink className="sk-navbar__brand" to={ROUTES.home} aria-label="SKAMA Jewelry">
+          <img
+            className="sk-navbar__brand-logo sk-navbar__brand-logo--on-dark"
+            src="/assets/images/brand/skama-logo-on-dark.png"
+            alt=""
+          />
+          <img
+            className="sk-navbar__brand-logo sk-navbar__brand-logo--on-light"
+            src="/assets/images/brand/skama-logo-on-light.png"
+            alt=""
+          />
+        </RouterLink>
+
+        <nav className="sk-navbar__links" aria-label="Navegacion principal">
+          {navLinks.map((link) => (
+            <RouterLink
+              key={link.path}
+              to={link.path}
+              aria-current={isActive(link.match) ? 'page' : undefined}
+            >
+              {link.label}
+            </RouterLink>
+          ))}
+          {isAdmin && (
+            <RouterLink
+              to={ROUTES.admin.dashboard}
+              aria-current={location.pathname.startsWith('/admin') ? 'page' : undefined}
+            >
+              Admin
+            </RouterLink>
+          )}
+        </nav>
+
+        <div className="sk-navbar__actions">
+          <button
+            className="ui-switch sk-theme-switch"
+            type="button"
+            aria-label={mode === 'light' ? 'Activar modo oscuro' : 'Activar modo claro'}
+            aria-pressed={mode === 'dark'}
+            onClick={toggleMode}
+          >
+            <span className="slider" aria-hidden="true">
+              <span className="circle" />
+            </span>
+          </button>
+
+          <RouterLink className="sk-icon-button" to={ROUTES.wishlist} aria-label="Favoritos">
+            <FavoriteBorderIcon fontSize="small" />
+            {wishlistItems.length > 0 && <span className="sk-counter-badge">{wishlistItems.length}</span>}
+          </RouterLink>
+
+          <RouterLink className="sk-icon-button" to={ROUTES.cart} aria-label="Carrito">
+            <ShoppingBagOutlinedIcon fontSize="small" />
+            {cartCount > 0 && <span className="sk-counter-badge">{cartCount}</span>}
+          </RouterLink>
+
+          {isAuthenticated ? (
+            <>
+              <RouterLink className="sk-auth-button" to={ROUTES.profile}>
+                <LoginOutlinedIcon fontSize="small" />
+                <span>{accountLabel}</span>
+              </RouterLink>
+              <button className="sk-icon-button" type="button" aria-label="Cerrar sesion" onClick={logout}>
+                <LogoutOutlinedIcon fontSize="small" />
+              </button>
+            </>
+          ) : (
+            <RouterLink className="sk-auth-button" to={ROUTES.login}>
+              <LoginOutlinedIcon fontSize="small" />
+              <span>Ingresar</span>
+            </RouterLink>
+          )}
+
+          <button
+            className="sk-icon-button sk-navbar__menu"
+            type="button"
+            aria-label="Abrir menu"
+            aria-expanded={mobileOpen}
+            onClick={() => setMobileOpen(true)}
+          >
+            <MenuIcon fontSize="small" />
+          </button>
+        </div>
+      </header>
+      {mobileNav}
+    </>
+  );
+}
