@@ -35,7 +35,7 @@ export function useSalesReports(params: IDateRangeParams): IUseSalesReportsResul
     } catch (err) {
       setSalesByPeriod([]);
       setSalesByProduct([]);
-      setError(getApiErrorMessage(err, 'No se pudieron cargar los reportes.'));
+      setError(getApiErrorMessage(err, 'Could not load reports.'));
     } finally {
       setLoading(false);
     }

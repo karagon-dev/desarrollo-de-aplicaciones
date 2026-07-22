@@ -1,6 +1,6 @@
--- Usuarios de desarrollo (contraseña: MiClave123)
+-- Development users (password: MiClave123)
 -- ADMIN  -> admin@skama.com
--- CLIENTE -> cliente@ejemplo.com
+-- CUSTOMER -> customer@example.com
 
 DECLARE @AdminRoleId INT = (SELECT TID_Id FROM Role WHERE TC_Name = 'ADMIN');
 DECLARE @CustomerRoleId INT = (SELECT TID_Id FROM Role WHERE TC_Name = 'CUSTOMER');
@@ -19,13 +19,13 @@ BEGIN
     );
 END
 
-IF NOT EXISTS (SELECT 1 FROM [User] WHERE TC_Email = 'cliente@ejemplo.com')
+IF NOT EXISTS (SELECT 1 FROM [User] WHERE TC_Email = 'customer@example.com')
 BEGIN
     INSERT INTO [User] (TID_Id, TN_RoleId, TC_Email, TC_PasswordHash, TB_IsActive)
     VALUES (
         '3fa85f64-5717-4562-b3fc-2c963f66afa6',
         @CustomerRoleId,
-        'cliente@ejemplo.com',
+        'customer@example.com',
         @PasswordHash,
         1
     );

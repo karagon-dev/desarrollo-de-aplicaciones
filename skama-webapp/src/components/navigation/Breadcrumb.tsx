@@ -16,7 +16,7 @@ export interface BreadcrumbProps {
 export function Breadcrumb({ items }: BreadcrumbProps) {
   return (
     <MuiBreadcrumbs
-      aria-label="Ruta de navegación"
+      aria-label="Navigation path"
       separator={<NavigateNextIcon fontSize="small" />}
       sx={{ mb: tokens.spacing.lg }}
     >

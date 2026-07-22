@@ -9,8 +9,8 @@ BEGIN
         '3fa85f64-5717-4562-b3fc-2c963f66afa6',
         'b8c9d0e1-f2a3-4567-1234-678901234567',
         'ORDER_CONFIRMATION',
-        'cliente@ejemplo.com',
-        'Confirmación de pedido ORD-20260215-001',
+        'customer@example.com',
+        'Order confirmation ORD-20260215-001',
         'SENT',
         '2026-02-15T10:35:00',
         '2026-02-15T10:31:00'
@@ -28,8 +28,8 @@ BEGIN
         '3fa85f64-5717-4562-b3fc-2c963f66afa6',
         'b8c9d0e1-f2a3-4567-1234-678901234568',
         'ORDER_STATUS_UPDATE',
-        'cliente@ejemplo.com',
-        'Tu pedido ORD-20260301-001 ha sido enviado',
+        'customer@example.com',
+        'Tu order ORD-20260301-001 has been shipped',
         'FAILED',
         NULL,
         '2026-03-02T08:00:00'
@@ -47,8 +47,8 @@ BEGIN
         '3fa85f64-5717-4562-b3fc-2c963f66afa6',
         'b8c9d0e1-f2a3-4567-1234-678901234569',
         'ORDER_CONFIRMATION',
-        'cliente@ejemplo.com',
-        'Confirmación de pedido ORD-20260310-001',
+        'customer@example.com',
+        'Order confirmation ORD-20260310-001',
         'PENDING',
         NULL,
         '2026-03-10T09:05:00'
@@ -66,8 +66,8 @@ BEGIN
         '3fa85f64-5717-4562-b3fc-2c963f66afa6',
         NULL,
         'PASSWORD_RESET',
-        'cliente@ejemplo.com',
-        'Recuperación de contraseña SKAMA',
+        'customer@example.com',
+        'SKAMA password recovery',
         'PENDING',
         NULL,
         '2026-06-01T12:00:00'

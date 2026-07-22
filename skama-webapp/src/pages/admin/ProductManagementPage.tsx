@@ -43,21 +43,21 @@ export function ProductManagementPage() {
 
   const columns: TableColumn<IProductDto>[] = useMemo(
     () => [
-      { id: 'name', label: 'Producto', accessor: 'name' },
-      { id: 'category', label: 'Categoría', accessor: 'categoryName' },
+      { id: 'name', label: 'Product', accessor: 'name' },
+      { id: 'category', label: 'Category', accessor: 'categoryName' },
       {
         id: 'price',
-        label: 'Precio',
+        label: 'Price',
         align: 'right',
         render: (row) => formatPrice(row.price),
       },
       { id: 'stock', label: 'Stock', accessor: 'stockQuantity', align: 'center' },
       {
         id: 'status',
-        label: 'Estado',
+        label: 'Status',
         render: (row) => (
           <Chip
-            label={row.isActive ? 'Activo' : 'Inactivo'}
+            label={row.isActive ? 'Active' : 'Inactive'}
             chipVariant={row.isActive ? 'success' : 'default'}
             size="small"
           />
@@ -65,13 +65,13 @@ export function ProductManagementPage() {
       },
       {
         id: 'actions',
-        label: 'Acciones',
+        label: 'Actions',
         align: 'right',
         render: (row) => (
           <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 0.5 }}>
             <IconButton
               size="small"
-              aria-label={`Editar ${row.name}`}
+              aria-label={`Edit ${row.name}`}
               onClick={() => {
                 setEditingProduct(row);
                 setDialogOpen(true);
@@ -81,14 +81,14 @@ export function ProductManagementPage() {
             </IconButton>
             <IconButton
               size="small"
-              aria-label={`Imágenes de ${row.name}`}
+              aria-label={`Images for ${row.name}`}
               onClick={() => setImagesProduct(row)}
             >
               <ImageOutlinedIcon fontSize="small" />
             </IconButton>
             <IconButton
               size="small"
-              aria-label={`Eliminar ${row.name}`}
+              aria-label={`Delete ${row.name}`}
               onClick={() => setDeleteTarget(row)}
             >
               <DeleteOutlineOutlinedIcon fontSize="small" />
@@ -110,16 +110,16 @@ export function ProductManagementPage() {
     try {
       if (editingProduct) {
         await productService.update(editingProduct.id, data as IUpdateProductRequest);
-        toast.success('Producto actualizado.');
+        toast.success('Product actualizado.');
       } else {
         await productService.create(data as ICreateProductRequest);
-        toast.success('Producto creado.');
+        toast.success('Product creado.');
       }
       setDialogOpen(false);
       setEditingProduct(null);
       await refetch();
     } catch (err) {
-      toast.error(getApiErrorMessage(err, 'No se pudo guardar el producto.'));
+      toast.error(getApiErrorMessage(err, 'Could not save the product.'));
       throw err;
     } finally {
       setSaving(false);
@@ -134,11 +134,11 @@ export function ProductManagementPage() {
     setDeleting(true);
     try {
       await productService.delete(deleteTarget.id);
-      toast.success('Producto eliminado.');
+      toast.success('Product eliminado.');
       setDeleteTarget(null);
       await refetch();
     } catch (err) {
-      toast.error(getApiErrorMessage(err, 'No se pudo eliminar el producto.'));
+      toast.error(getApiErrorMessage(err, 'Could not delete product.'));
     } finally {
       setDeleting(false);
     }
@@ -146,26 +146,26 @@ export function ProductManagementPage() {
 
   return (
     <PageShell
-      title="Gestión de productos"
-      subtitle="Administra el catálogo de joyería"
+      title="Product management"
+      subtitle="Manage the jewelry catalog"
       breadcrumbs={[
         { label: 'Admin', path: ROUTES.admin.dashboard },
-        { label: 'Productos' },
+        { label: 'Products' },
       ]}
     >
       <Card>
         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mb: 2, alignItems: 'center' }}>
           <SearchBar
-            placeholder="Buscar productos..."
+            placeholder="Search products..."
             value={search}
             onChange={(event) => setSearch(event.target.value)}
             sx={{ maxWidth: 400, flex: 1 }}
           />
-          <Button onClick={openCreateDialog}>Nuevo producto</Button>
+          <Button onClick={openCreateDialog}>New product</Button>
         </Box>
 
         {loading ? (
-          <Loading message="Cargando productos..." />
+          <Loading message="Loading products..." />
         ) : error ? (
           <ErrorState description={error} onRetry={() => void refetch()} />
         ) : (
@@ -193,19 +193,19 @@ export function ProductManagementPage() {
       <Dialog
         open={Boolean(deleteTarget)}
         onClose={() => setDeleteTarget(null)}
-        title="Eliminar producto"
+        title="Delete product"
         actions={
           <>
             <Button variant="ghost" onClick={() => setDeleteTarget(null)} disabled={deleting}>
-              Cancelar
+              Cancel
             </Button>
             <Button variant="danger" onClick={() => void handleDelete()} disabled={deleting}>
-              {deleting ? 'Eliminando...' : 'Eliminar'}
+              {deleting ? 'Deleting...' : 'Delete'}
             </Button>
           </>
         }
       >
-        ¿Deseas eliminar <strong>{deleteTarget?.name}</strong>? Esta acción desactiva el producto.
+        Do you want to delete <strong>{deleteTarget?.name}</strong>? This action disables the product.
       </Dialog>
     </PageShell>
   );

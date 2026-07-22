@@ -1,24 +1,24 @@
 /*
-  SKAMA — Ejecutar todos los seeds de desarrollo en orden.
-  Uso con sqlcmd (ajusta servidor y base de datos):
+  SKAMA - Run all development seeds in order.
+  Use with sqlcmd (adjust server and database):
 
   PowerShell:
-    Set-Location c:\repos\desarrollo-de-aplicaciones\skama-db\seeds
+    Set-Location c:\repos\skama\skama-db\seeds
     sqlcmd -S localhost -d "skama-db" -E -b -i SeedAll.sql
 
   CMD:
-    cd /d c:\repos\desarrollo-de-aplicaciones\skama-db\seeds
+    cd /d c:\repos\skama\skama-db\seeds
     sqlcmd -S localhost -d "skama-db" -E -b -i SeedAll.sql
 
-  Requiere tablas ya creadas.
-  Nota SSMS: habilitar Query > SQLCMD Mode para que funcionen los :r.
+  Requires tables to be created first.
+  SSMS note: enable Query > SQLCMD Mode so :r commands work.
 */
 
 :ON ERROR EXIT
 
 IF DB_ID(N'skama-db') IS NULL
 BEGIN
-    RAISERROR('La base de datos [skama-db] no existe en la instancia actual.', 16, 1);
+    RAISERROR('Database [skama-db] does not exist in the current instance.', 16, 1);
     RETURN;
 END;
 GO
@@ -43,4 +43,4 @@ GO
 :r EmailNotification.sql
 :r PasswordResetToken.sql
 
-PRINT 'SKAMA seeds completados.';
+PRINT 'SKAMA seeds completed.';

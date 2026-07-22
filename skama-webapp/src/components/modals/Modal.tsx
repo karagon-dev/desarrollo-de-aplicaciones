@@ -41,7 +41,7 @@ export function Modal({ title, children, onClose, ...props }: ModalProps) {
             <Typography variant="h6" sx={{ color: tokens.color.textPrimary }}>
               {title}
             </Typography>
-            <IconButton aria-label="Cerrar" onClick={onClose} size="small">
+            <IconButton aria-label="Close" onClick={onClose} size="small">
               <CloseIcon fontSize="small" />
             </IconButton>
           </Box>

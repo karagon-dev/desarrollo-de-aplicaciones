@@ -1,7 +1,7 @@
 import axios from 'axios';
 import type { IProblemDetails } from '../types';
 
-export function getApiErrorMessage(error: unknown, fallback = 'Ocurrió un error inesperado.'): string {
+export function getApiErrorMessage(error: unknown, fallback = 'An unexpected error occurred.'): string {
   if (!axios.isAxiosError(error)) {
     return error instanceof Error ? error.message : fallback;
   }

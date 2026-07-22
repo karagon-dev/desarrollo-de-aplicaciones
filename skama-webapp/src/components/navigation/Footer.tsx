@@ -2,15 +2,15 @@ import { Link as RouterLink } from 'react-router-dom';
 import { ROUTES } from '../../routes/routePaths';
 
 const shopLinks = [
-  { label: 'Colecciones', path: ROUTES.catalog },
-  { label: 'Destacados', path: ROUTES.wishlist },
-  { label: 'Pedido', path: ROUTES.checkout },
+  { label: 'Collections', path: ROUTES.catalog },
+  { label: 'Favorites', path: ROUTES.wishlist },
+  { label: 'Order', path: ROUTES.checkout },
 ];
 
 const accountLinks = [
-  { label: 'Iniciar sesion', path: ROUTES.login },
-  { label: 'Crear cuenta', path: ROUTES.register },
-  { label: 'Mi perfil', path: ROUTES.profile },
+  { label: 'Sign in', path: ROUTES.login },
+  { label: 'Create account', path: ROUTES.register },
+  { label: 'My profile', path: ROUTES.profile },
 ];
 
 export function Footer() {
@@ -22,8 +22,8 @@ export function Footer() {
             SKAMA
           </RouterLink>
           <p>
-            Joyeria costarricense inspirada en esmeraldas, flora y fauna nacional.
-            Piezas elegantes para una experiencia de compra privada y memorable.
+            Costa Rican jewelry inspired by emeralds, flora, and native fauna.
+            Elegant pieces for a private and memorable shopping experience.
           </p>
           <div className="sk-social-links" aria-label="Redes sociales">
             <a href="https://www.instagram.com/" target="_blank" rel="noreferrer">
@@ -47,8 +47,8 @@ export function Footer() {
           ))}
         </nav>
 
-        <nav className="sk-footer__group" aria-label="Cuenta">
-          <h2>Cuenta</h2>
+        <nav className="sk-footer__group" aria-label="Account">
+          <h2>Account</h2>
           {accountLinks.map((link) => (
             <RouterLink key={link.path} to={link.path}>
               {link.label}
@@ -58,8 +58,8 @@ export function Footer() {
 
         <div className="sk-footer__newsletter">
           <h2>Contacto</h2>
-          <p>Jaco, Santa Teresa, Tamarindo, Multiplaza Escazu, Oxigeno y City Mall.</p>
-          <div className="sk-payment-methods" aria-label="Metodos de pago">
+          <p>Jaco, Santa Teresa, Tamarindo, Multiplaza Escazu, Oxigeno, and City Mall.</p>
+          <div className="sk-payment-methods" aria-label="Payment methods">
             <span>SINPE</span>
             <span>Transferencia</span>
             <span>Tarjeta</span>
@@ -68,7 +68,7 @@ export function Footer() {
 
         <div className="sk-footer__bottom">
           <span>© {new Date().getFullYear()} SKAMA Jewelry.</span>
-          <span>Experiencia web para catalogo, carrito y pedidos por WhatsApp.</span>
+          <span>Web experience for catalog, cart, and WhatsApp orders.</span>
         </div>
       </div>
     </footer>

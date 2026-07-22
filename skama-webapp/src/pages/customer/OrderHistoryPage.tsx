@@ -19,15 +19,15 @@ export function OrderHistoryPage() {
 
   const columns: TableColumn<IOrderDto>[] = useMemo(
     () => [
-      { id: 'orderNumber', label: 'Pedido', accessor: 'orderNumber' },
+      { id: 'orderNumber', label: 'Order', accessor: 'orderNumber' },
       {
         id: 'createdAt',
-        label: 'Fecha',
+        label: 'Date',
         render: (row) => new Date(row.createdAt).toLocaleDateString('es-CO'),
       },
       {
         id: 'status',
-        label: 'Estado',
+        label: 'Status',
         render: (row) => <Chip label={row.status} chipVariant="primary" size="small" />,
       },
       {
@@ -47,7 +47,7 @@ export function OrderHistoryPage() {
             variant="outline"
             size="sm"
           >
-            Ver detalle
+            View details
           </Button>
         ),
       },
@@ -68,7 +68,7 @@ export function OrderHistoryPage() {
       setOrders(data);
     } catch (err) {
       setOrders([]);
-      setError(getApiErrorMessage(err, 'No se pudieron cargar los pedidos.'));
+      setError(getApiErrorMessage(err, 'No se pudieron cargar los orders.'));
     } finally {
       setLoading(false);
     }
@@ -79,7 +79,7 @@ export function OrderHistoryPage() {
   }, [loadOrders]);
 
   if (loading) {
-    return <Loading fullPage message="Cargando pedidos..." />;
+    return <Loading fullPage message="Loading orders..." />;
   }
 
   if (error) {
@@ -88,18 +88,18 @@ export function OrderHistoryPage() {
 
   return (
     <PageShell
-      title="Historial de pedidos"
-      subtitle="Consulta el estado de tus compras"
+      title="History de orders"
+      subtitle="Check the status of your purchases"
       breadcrumbs={[
-        { label: 'Inicio', path: ROUTES.home },
-        { label: 'Pedidos' },
+        { label: 'Home', path: ROUTES.home },
+        { label: 'Orders' },
       ]}
     >
       <Card padding={false}>
         {orders.length === 0 ? (
           <EmptyState
-            title="Sin pedidos"
-            description="Cuando completes una compra, aparecerá aquí."
+            title="Sin orders"
+            description="When you complete a purchase, it will appear here."
           />
         ) : (
           <Table columns={columns} rows={orders} getRowId={(row) => row.id} />

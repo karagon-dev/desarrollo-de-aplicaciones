@@ -12,7 +12,7 @@ export const ROUTES = {
   profile: '/profile',
   orderHistory: '/orders',
   orderDetail: (id: string) => `/orders/${id}`,
-  wishlist: '/destacados',
+  wishlist: '/favorites',
   admin: {
     root: '/admin',
     dashboard: '/admin',

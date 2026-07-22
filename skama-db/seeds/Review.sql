@@ -15,7 +15,7 @@ BEGIN
         'c3d4e5f6-a7b8-9012-cdef-123456789012',
         'b8c9d0e1-f2a3-4567-1234-678901234567',
         5,
-        'Excelente calidad y acabado. La esmeralda luce espectacular.',
+        'Excellent quality and finish. The emerald looks spectacular.',
         '2026-02-20T15:00:00'
     );
 END
@@ -37,7 +37,7 @@ BEGIN
         'c3d4e5f6-a7b8-9012-cdef-123456789017',
         'b8c9d0e1-f2a3-4567-1234-67890123456b',
         4,
-        'Muy bonito diseño vintage. La entrega fue rápida.',
+        'Very nice vintage design. Delivery was fast.',
         '2026-04-05T10:30:00'
     );
 END

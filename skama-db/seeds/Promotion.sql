@@ -1,4 +1,4 @@
-IF NOT EXISTS (SELECT 1 FROM Promotion WHERE TC_Name = 'Descuento Primavera')
+IF NOT EXISTS (SELECT 1 FROM Promotion WHERE TC_Name = 'Spring Discount')
 BEGIN
     INSERT INTO Promotion (
         TID_Id,
@@ -11,8 +11,8 @@ BEGIN
     )
     VALUES (
         'e1f2a3b4-c5d6-7890-4567-901234567890',
-        'Descuento Primavera',
-        '15% de descuento en anillos y collares seleccionados',
+        'Spring Discount',
+        '15% discount on selected rings and necklaces',
         15.00,
         '2026-01-01',
         '2026-12-31',
@@ -20,7 +20,7 @@ BEGIN
     );
 END
 
-IF NOT EXISTS (SELECT 1 FROM Promotion WHERE TC_Name = 'Bienvenida SKAMA')
+IF NOT EXISTS (SELECT 1 FROM Promotion WHERE TC_Name = 'Welcome to SKAMA')
 BEGIN
     INSERT INTO Promotion (
         TID_Id,
@@ -33,8 +33,8 @@ BEGIN
     )
     VALUES (
         'e1f2a3b4-c5d6-7890-4567-901234567891',
-        'Bienvenida SKAMA',
-        '10% en tu primera compra de joyería con esmeralda',
+        'Welcome to SKAMA',
+        '10% on your first emerald jewelry purchase',
         10.00,
         '2026-01-01',
         '2026-12-31',

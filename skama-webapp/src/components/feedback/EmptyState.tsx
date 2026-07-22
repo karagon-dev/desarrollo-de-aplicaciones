@@ -12,8 +12,8 @@ export interface EmptyStateProps {
 }
 
 export function EmptyState({
-  title = 'No hay datos',
-  description = 'Aún no hay información para mostrar.',
+  title = 'No data',
+  description = 'There is no information to display yet.',
   actionLabel,
   onAction,
 }: EmptyStateProps) {

@@ -1,19 +1,19 @@
-# SKAMA — Seeds de datos de desarrollo
+# SKAMA - Development Data Seeds
 
-Ejecutar **después** de crear tablas y stored procedures.
+Run **after** creating tables and stored procedures.
 
-## Ejecución rápida
+## Quick Run
 
 ```bash
 sqlcmd -S localhost -d SkamaDb -E -i SeedAll.sql
 ```
 
-O ejecutar cada archivo manualmente en el orden indicado abajo.
+Or execute each file manually in the order listed below.
 
-## Orden de ejecución
+## Execution Order
 
-| # | Archivo | Tabla(s) |
-|---|---------|----------|
+| # | File | Table(s) |
+|---|------|----------|
 | 1 | `Role.sql` | Role |
 | 2 | `ResultCode.sql` | ResultCode |
 | 3 | `User.sql` | User |
@@ -31,62 +31,68 @@ O ejecutar cada archivo manualmente en el orden indicado abajo.
 | 15 | `EmailNotification.sql` | EmailNotification |
 | 16 | `PasswordResetToken.sql` | PasswordResetToken |
 
-Todos los scripts son **idempotentes** (`IF NOT EXISTS`) y pueden ejecutarse varias veces.
+All scripts are **idempotent** (`IF NOT EXISTS`) and can be executed multiple times.
 
-## Credenciales de prueba
+## Test Credentials
 
-| Rol | Email | Contraseña |
-|-----|-------|------------|
+| Role | Email | Password |
+|------|-------|----------|
 | Admin | `admin@skama.com` | `MiClave123` |
-| Cliente | `cliente@ejemplo.com` | `MiClave123` |
-| Cliente | `maria.garcia@skama.com` | `MiClave123` |
+| Customer | `customer@example.com` | `MiClave123` |
+| Customer | `maria.garcia@skama.com` | `MiClave123` |
 
-## Datos incluidos
+## Included Data
 
-### Catálogo
-- **4 categorías**: Anillos, Collares, Aretes, Pulseras
-- **6 productos** con precios en COP
-- **2 productos con stock bajo** (dashboard): Collar Premium (2/5), Anillo Solitario (1/2)
-- **6 imágenes** de producto (URLs de referencia; subir archivos reales vía admin si se desea vista previa)
+### Catalog
 
-### Promociones
-- **Descuento Primavera** (15%) en anillos y collares seleccionados
-- **Bienvenida SKAMA** (10%) en pulsera
+- **4 categories**: Rings, Necklaces, Earrings, Bracelets
+- **6 products** with COP prices
+- **2 low-stock products** for the dashboard: Premium Emerald Necklace (2/5), Emerald Solitaire Ring (1/2)
+- **6 product images** with reference URLs; upload real files through admin if previews are needed
 
-### Pedidos (5)
-| Número | Cliente | Estado | Uso |
-|--------|---------|--------|-----|
-| ORD-20260215-001 | cliente@ejemplo.com | DELIVERED | Reseña + reportes |
-| ORD-20260301-001 | cliente@ejemplo.com | SHIPPED | Historial |
-| ORD-20260310-001 | cliente@ejemplo.com | PAID | Notificación pendiente |
-| ORD-20260320-001 | cliente@ejemplo.com | CANCELLED | Cancelación |
-| ORD-20260401-001 | maria.garcia@skama.com | DELIVERED | Reseña + segundo cliente |
+### Promotions
 
-### Carritos activos
-- `cliente@ejemplo.com`: Anillo Solitario × 1
-- `maria.garcia@skama.com`: Aretes × 2
+- **Spring Discount** (15%) on selected rings and necklaces
+- **Welcome to SKAMA** (10%) on bracelets
 
-### Favoritos, reseñas, inventario
-- **3 ítems** en wishlist
-- **2 reseñas** publicadas (una por cliente)
-- **6 movimientos** de inventario (ajustes, ventas, devolución)
-- **4 notificaciones** de correo (SENT, FAILED, PENDING)
-- **1 token** de reset usado (histórico)
+### Orders
 
-### Perfiles
-- Perfil completo para `cliente@ejemplo.com` y `maria.garcia@skama.com`
+| Number | Customer | Status | Use |
+|--------|----------|--------|-----|
+| ORD-20260215-001 | customer@example.com | DELIVERED | Review + reports |
+| ORD-20260301-001 | customer@example.com | SHIPPED | History |
+| ORD-20260310-001 | customer@example.com | PAID | Pending notification |
+| ORD-20260320-001 | customer@example.com | CANCELLED | Cancellation |
+| ORD-20260401-001 | maria.garcia@skama.com | DELIVERED | Review + second customer |
 
-## Probar el dashboard y reportes
+### Active Carts
 
-Usa rango de fechas **2026-01-01** a **2026-06-30** en el panel admin para ver ventas y productos top con datos reales.
+- `customer@example.com`: Emerald Solitaire Ring x 1
+- `maria.garcia@skama.com`: Emerald Drop Earrings x 2
 
-## Reset de contraseña
+### Favorites, Reviews, Inventory
 
-Los tokens válidos se generan vía API:
+- **3 wishlist items**
+- **2 published reviews** (one per customer)
+- **6 inventory movements** (adjustments, sales, return)
+- **4 email notifications** (SENT, FAILED, PENDING)
+- **1 used reset token** for historical data
+
+### Profiles
+
+- Complete profile for `customer@example.com` and `maria.garcia@skama.com`
+
+## Testing Dashboard And Reports
+
+Use date range **2026-01-01** to **2026-06-30** in the admin panel to view sales and top products with real data.
+
+## Password Reset
+
+Valid tokens are generated through the API:
 
 ```http
 POST /api/auth/forgot-password
-{ "email": "cliente@ejemplo.com" }
+{ "email": "customer@example.com" }
 ```
 
-En desarrollo la respuesta incluye `resetToken` para usar en `POST /api/auth/reset-password`.
+In development, the response includes `resetToken` for use in `POST /api/auth/reset-password`.

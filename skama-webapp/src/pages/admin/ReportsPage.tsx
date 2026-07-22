@@ -17,10 +17,10 @@ type ReportView = 'period' | 'product';
 const periodColumns: TableColumn<ISalesByPeriodDto>[] = [
   {
     id: 'saleDate',
-    label: 'Fecha',
+    label: 'Date',
     render: (row) => formatDisplayDate(row.saleDate),
   },
-  { id: 'orderCount', label: 'Pedidos', accessor: 'orderCount', align: 'center' },
+  { id: 'orderCount', label: 'Orders', accessor: 'orderCount', align: 'center' },
   {
     id: 'subtotal',
     label: 'Subtotal',
@@ -29,7 +29,7 @@ const periodColumns: TableColumn<ISalesByPeriodDto>[] = [
   },
   {
     id: 'discountTotal',
-    label: 'Descuentos',
+    label: 'Discounts',
     align: 'right',
     render: (row) => formatPrice(row.discountTotal),
   },
@@ -42,16 +42,16 @@ const periodColumns: TableColumn<ISalesByPeriodDto>[] = [
 ];
 
 const productColumns: TableColumn<ISalesByProductDto>[] = [
-  { id: 'productName', label: 'Producto', accessor: 'productName' },
+  { id: 'productName', label: 'Product', accessor: 'productName' },
   {
     id: 'totalQuantitySold',
-    label: 'Unidades',
+    label: 'Units',
     accessor: 'totalQuantitySold',
     align: 'center',
   },
   {
     id: 'totalSales',
-    label: 'Ventas',
+    label: 'Sales',
     align: 'right',
     render: (row) => formatPrice(row.totalSales),
   },
@@ -67,11 +67,11 @@ export function ReportsPage() {
 
   return (
     <PageShell
-      title="Reportes"
-      subtitle="Análisis de ventas por período"
+      title="Reports"
+      subtitle="Sales analysis by period"
       breadcrumbs={[
         { label: 'Admin', path: ROUTES.admin.dashboard },
-        { label: 'Reportes' },
+        { label: 'Reports' },
       ]}
     >
       <Card>
@@ -82,7 +82,7 @@ export function ReportsPage() {
           onEndDateChange={(endDate) => setDateRange((current) => ({ ...current, endDate }))}
           onApply={() => void fetchReports()}
           loading={loading}
-          applyLabel="Generar reporte"
+          applyLabel="Generate report"
         />
 
         <Box sx={{ display: 'flex', gap: tokens.spacing.sm, mt: tokens.spacing.lg, mb: tokens.spacing.md }}>
@@ -91,25 +91,25 @@ export function ReportsPage() {
             size="sm"
             onClick={() => setView('period')}
           >
-            Por día
+            By day
           </Button>
           <Button
             variant={view === 'product' ? 'primary' : 'outline'}
             size="sm"
             onClick={() => setView('product')}
           >
-            Por producto
+            By product
           </Button>
         </Box>
 
         {loading ? (
-          <Loading message="Generando reporte..." />
+          <Loading message="Generating report..." />
         ) : error ? (
           <ErrorState description={error} onRetry={() => void fetchReports()} />
         ) : rows.length === 0 ? (
           <EmptyState
-            title="Sin datos"
-            description="No hay ventas registradas en el período seleccionado."
+            title="No data"
+            description="No sales registered in the selected period."
           />
         ) : view === 'period' ? (
           <Table
@@ -128,8 +128,8 @@ export function ReportsPage() {
         {!loading && !error && rows.length > 0 && (
           <Text variant="caption" muted sx={{ display: 'block', mt: tokens.spacing.md }}>
             {view === 'period'
-              ? `${salesByPeriod.length} día(s) con ventas`
-              : `${salesByProduct.length} producto(s) con ventas`}
+              ? `${salesByPeriod.length} day(s) with sales`
+              : `${salesByProduct.length} product(s) with sales`}
           </Text>
         )}
       </Card>

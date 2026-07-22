@@ -46,7 +46,7 @@ export function Dialog({
         >
           {title}
           {onClose && (
-            <IconButton aria-label="Cerrar" onClick={onClose} size="small">
+            <IconButton aria-label="Close" onClick={onClose} size="small">
               <CloseIcon fontSize="small" />
             </IconButton>
           )}

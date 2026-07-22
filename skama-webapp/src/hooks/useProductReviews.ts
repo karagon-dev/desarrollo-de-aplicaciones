@@ -23,7 +23,7 @@ export function useProductReviews(productId?: string) {
       setReviews(data);
     } catch (err) {
       setReviews([]);
-      setError(getApiErrorMessage(err, 'No se pudieron cargar las reseñas.'));
+      setError(getApiErrorMessage(err, 'Could not load reviews.'));
     } finally {
       setLoading(false);
     }

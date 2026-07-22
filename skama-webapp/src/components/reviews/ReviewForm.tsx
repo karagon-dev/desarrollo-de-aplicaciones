@@ -18,11 +18,11 @@ export interface ReviewFormProps {
 }
 
 const ratingOptions = [
-  { value: '5', label: '5 - Excelente' },
-  { value: '4', label: '4 - Muy bueno' },
-  { value: '3', label: '3 - Bueno' },
-  { value: '2', label: '2 - Regular' },
-  { value: '1', label: '1 - Malo' },
+  { value: '5', label: '5 - Excellent' },
+  { value: '4', label: '4 - Very good' },
+  { value: '3', label: '3 - Good' },
+  { value: '2', label: '2 - Fair' },
+  { value: '1', label: '1 - Poor' },
 ];
 
 export function ReviewForm({
@@ -46,7 +46,7 @@ export function ReviewForm({
     event.preventDefault();
 
     if (!orderId) {
-      toast.error('Selecciona el pedido asociado a tu compra.');
+      toast.error('Select the order associated with your purchase.');
       return;
     }
 
@@ -59,12 +59,12 @@ export function ReviewForm({
         rating: Number(rating),
         comment: comment.trim(),
       });
-      toast.success('Reseña publicada.');
+      toast.success('Review published.');
       setComment('');
       setOrderId('');
       onSuccess();
     } catch (err) {
-      toast.error(getApiErrorMessage(err, 'No se pudo publicar la reseña.'));
+      toast.error(getApiErrorMessage(err, 'Could not publish the review.'));
     } finally {
       setSubmitting(false);
     }
@@ -74,7 +74,7 @@ export function ReviewForm({
     return (
       <Card>
         <Text variant="body" muted>
-          Verificando pedidos elegibles...
+          Verificando orders elegibles...
         </Text>
       </Card>
     );
@@ -84,7 +84,7 @@ export function ReviewForm({
     return (
       <Card>
         <Text variant="body" muted>
-          Compra este producto para poder dejar una reseña.
+          Buy this product to leave a review.
         </Text>
       </Card>
     );
@@ -97,28 +97,28 @@ export function ReviewForm({
         onSubmit={handleSubmit}
         sx={{ display: 'flex', flexDirection: 'column', gap: tokens.spacing.md }}
       >
-        <Text variant="h3">Escribir reseña</Text>
+        <Text variant="h3">Write review</Text>
         <Select
-          label="Pedido"
+          label="Order"
           options={orderOptions}
           value={orderId}
           required
           onChange={(event) => setOrderId(String(event.target.value))}
         />
         <Select
-          label="Calificación"
+          label="Rating"
           options={ratingOptions}
           value={rating}
           onChange={(event) => setRating(String(event.target.value))}
         />
         <TextArea
-          label="Comentario"
+          label="Comment"
           rows={3}
           value={comment}
           onChange={(event) => setComment(event.target.value)}
         />
         <Button type="submit" disabled={submitting} sx={{ alignSelf: 'flex-start' }}>
-          {submitting ? 'Publicando...' : 'Publicar reseña'}
+          {submitting ? 'Publishing...' : 'Publish review'}
         </Button>
       </Box>
     </Card>

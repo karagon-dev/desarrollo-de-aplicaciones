@@ -19,12 +19,12 @@ import {
 const whatsappPhone = '50672054536';
 
 const paymentOptions = [
-  { value: 'SINPE_MOVIL', label: 'SINPE Movil', helper: 'Pago movil nacional.' },
-  { value: 'TRANSFERENCIA', label: 'Transferencia', helper: 'Deposito bancario.' },
-  { value: 'TARJETA', label: 'Tarjeta', helper: 'Pago con tarjeta.' },
+  { value: 'SINPE_MOVIL', label: 'SINPE Movil', helper: 'National mobile payment.' },
+  { value: 'TRANSFERENCIA', label: 'Bank transfer', helper: 'Bank deposit.' },
+  { value: 'TARJETA', label: 'Card', helper: 'Card payment.' },
 ];
 
-const deliveryOptions = ['Retiro acordado', 'Envio', 'Entrega coordinada'];
+const deliveryOptions = ['Scheduled pickup', 'Shipping', 'Coordinated delivery'];
 
 interface ICheckoutFormState {
   firstName: string;
@@ -57,7 +57,7 @@ export function CheckoutPage() {
   const [form, setForm] = useState(initialForm);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [validation, setValidation] = useState(
-    'Por favor, completa todos los datos de entrega y selecciona un metodo de pago.',
+    'Please complete all delivery details and select a payment method.',
   );
 
   useEffect(() => {
@@ -105,23 +105,23 @@ export function CheckoutPage() {
       .join('\n');
 
     return [
-      'Hola SKAMA Jewelry, quiero coordinar este pedido:',
+      'Hello SKAMA Jewelry, I want to coordinate this order:',
       '',
-      'Productos:',
-      productLines || '- Sin productos seleccionados',
+      'Products:',
+      productLines || '- No selected products',
       '',
       `Total: ${formatPrice(totals.total)}`,
       '',
-      'Datos de entrega:',
-      `Nombre: ${form.firstName} ${form.lastName}`.trim(),
-      `Telefono: ${form.phone}`,
-      `Correo: ${form.email}`,
-      `Tipo de entrega: ${form.deliveryType || 'Pendiente'}`,
-      `Direccion: ${form.address || 'Pendiente'}`,
-      `Metodo de pago: ${
-        paymentOptions.find((option) => option.value === form.paymentMethod)?.label || 'Pendiente'
+      'Delivery details:',
+      `Name: ${form.firstName} ${form.lastName}`.trim(),
+      `Phone: ${form.phone}`,
+      `Email: ${form.email}`,
+      `Delivery type: ${form.deliveryType || 'Pending'}`,
+      `Address: ${form.address || 'Pending'}`,
+      `Payment method: ${
+        paymentOptions.find((option) => option.value === form.paymentMethod)?.label || 'Pending'
       }`,
-      form.isGift ? `Regalo: Si${form.giftMessage ? ` - ${form.giftMessage}` : ''}` : 'Regalo: No',
+      form.isGift ? `Gift: Yes${form.giftMessage ? ` - ${form.giftMessage}` : ''}` : 'Gift: No',
     ].join('\n');
   }, [checkoutItems, form, totals.total]);
 
@@ -133,8 +133,8 @@ export function CheckoutPage() {
     event.preventDefault();
 
     if (!isFormValid) {
-      setValidation('Por favor, completa todos los datos obligatorios antes de finalizar.');
-      toast.error('Faltan datos obligatorios del pedido.');
+      setValidation('Please complete all required details before finishing.');
+      toast.error('Required order details are missing.');
       return;
     }
 
@@ -151,11 +151,11 @@ export function CheckoutPage() {
         setLocalItems([]);
       }
 
-      setValidation('Pedido validado. Se abrira WhatsApp con el mensaje formateado.');
+      setValidation('Order validated. WhatsApp will open with the formatted message.');
       window.open(`https://wa.me/${whatsappPhone}?text=${encodeURIComponent(whatsappMessage)}`, '_blank', 'noopener');
-      toast.success('Pedido listo para enviar por WhatsApp.');
+      toast.success('Order ready to send by WhatsApp.');
     } catch (error) {
-      toast.error(getApiErrorMessage(error, 'No se pudo finalizar el pedido.'));
+      toast.error(getApiErrorMessage(error, 'Could not complete the order.'));
     } finally {
       setIsSubmitting(false);
     }
@@ -165,11 +165,11 @@ export function CheckoutPage() {
     return (
       <div className="sk-container sk-section">
         <div className="sk-empty-state">
-          <p className="sk-kicker">Pedido por WhatsApp</p>
-          <h1>No hay productos seleccionados.</h1>
-          <p>Agrega piezas desde colecciones para generar el mensaje de pedido.</p>
+          <p className="sk-kicker">WhatsApp order</p>
+          <h1>There are no selected products.</h1>
+          <p>Add pieces from collections to generate the order message.</p>
           <RouterLink className="sk-button sk-button--primary" to={ROUTES.catalog}>
-            Ver colecciones
+            View collections
           </RouterLink>
         </div>
       </div>
@@ -179,21 +179,21 @@ export function CheckoutPage() {
   return (
     <div className="sk-page">
       <header className="sk-page-header sk-container">
-        <p className="sk-kicker">Ventas y pedidos</p>
-        <h1>Pedido por WhatsApp</h1>
+        <p className="sk-kicker">Sales and orders</p>
+        <h1>WhatsApp order</h1>
         <p className="sk-lede">
-          Completa los datos de entrega para generar el mensaje del pedido y abrir WhatsApp.
+          Complete the delivery details to generate the order message and open WhatsApp.
         </p>
       </header>
 
       <section className="sk-checkout-shell">
         <form className="sk-checkout-form" onSubmit={handleSubmit} noValidate>
           <section className="sk-checkout-panel" aria-labelledby="delivery-title">
-            <p className="sk-kicker">Datos de entrega</p>
-            <h2 id="delivery-title">Informacion del cliente</h2>
+            <p className="sk-kicker">Delivery details</p>
+            <h2 id="delivery-title">Customer information</h2>
             <div className="sk-form-grid">
               <label className="sk-field" htmlFor="checkout-first-name">
-                <span className="sk-field__label">Nombre</span>
+                <span className="sk-field__label">First name</span>
                 <input
                   className="sk-input"
                   id="checkout-first-name"
@@ -204,7 +204,7 @@ export function CheckoutPage() {
                 />
               </label>
               <label className="sk-field" htmlFor="checkout-last-name">
-                <span className="sk-field__label">Apellidos</span>
+                <span className="sk-field__label">Last name</span>
                 <input
                   className="sk-input"
                   id="checkout-last-name"
@@ -215,7 +215,7 @@ export function CheckoutPage() {
                 />
               </label>
               <label className="sk-field" htmlFor="checkout-phone">
-                <span className="sk-field__label">Telefono</span>
+                <span className="sk-field__label">Phone</span>
                 <input
                   className="sk-input"
                   id="checkout-phone"
@@ -226,7 +226,7 @@ export function CheckoutPage() {
                 />
               </label>
               <label className="sk-field" htmlFor="checkout-email">
-                <span className="sk-field__label">Correo electronico</span>
+                <span className="sk-field__label">Email address</span>
                 <input
                   className="sk-input"
                   id="checkout-email"
@@ -237,7 +237,7 @@ export function CheckoutPage() {
                 />
               </label>
               <label className="sk-field" htmlFor="delivery-type">
-                <span className="sk-field__label">Tipo de entrega</span>
+                <span className="sk-field__label">Delivery type</span>
                 <select
                   className="sk-input sk-select"
                   id="delivery-type"
@@ -245,7 +245,7 @@ export function CheckoutPage() {
                   onChange={(event) => updateField('deliveryType', event.target.value)}
                   required
                 >
-                  <option value="">Seleccione una opcion</option>
+                  <option value="">Select an option</option>
                   {deliveryOptions.map((option) => (
                     <option key={option} value={option}>
                       {option}
@@ -254,7 +254,7 @@ export function CheckoutPage() {
                 </select>
               </label>
               <label className="sk-field span-2" htmlFor="checkout-address">
-                <span className="sk-field__label">Direccion</span>
+                <span className="sk-field__label">Address</span>
                 <textarea
                   className="sk-input sk-input--textarea"
                   id="checkout-address"
@@ -268,10 +268,10 @@ export function CheckoutPage() {
           </section>
 
           <section className="sk-checkout-panel" aria-labelledby="payment-title">
-            <p className="sk-kicker">Metodo de pago</p>
-            <h2 id="payment-title">Seleccion obligatoria</h2>
+            <p className="sk-kicker">Payment method</p>
+            <h2 id="payment-title">Required selection</h2>
             <fieldset className="sk-radio-grid">
-              <legend>Metodo de pago</legend>
+              <legend>Payment method</legend>
               {paymentOptions.map((option) => (
                 <label className="sk-option" key={option.value}>
                   <input
@@ -290,8 +290,8 @@ export function CheckoutPage() {
           </section>
 
           <section className="sk-checkout-panel" aria-labelledby="gift-title">
-            <p className="sk-kicker">Regalo</p>
-            <h2 id="gift-title">Dedicatoria opcional</h2>
+            <p className="sk-kicker">Gift</p>
+            <h2 id="gift-title">Optional dedication</h2>
             <label className="sk-choice" htmlFor="is-gift">
               <input
                 id="is-gift"
@@ -300,10 +300,10 @@ export function CheckoutPage() {
                 onChange={(event) => updateField('isGift', event.target.checked)}
               />
               <span className="sk-choice__control" aria-hidden="true" />
-              <span className="sk-choice__label">Es un regalo</span>
+              <span className="sk-choice__label">This is a gift</span>
             </label>
             <label className="sk-field" htmlFor="gift-message">
-              <span className="sk-field__label">Dedicatoria</span>
+              <span className="sk-field__label">Dedication</span>
               <textarea
                 className="sk-input sk-input--textarea"
                 id="gift-message"
@@ -315,14 +315,14 @@ export function CheckoutPage() {
           </section>
 
           <button className="sk-button sk-button--primary sk-button--lg" type="submit" disabled={isSubmitting}>
-            {isSubmitting ? 'Finalizando...' : 'Finalizar pedido'}
+            {isSubmitting ? 'Finishing...' : 'Finish order'}
           </button>
         </form>
 
-        <aside className="sk-checkout-sidebar" aria-label="Resumen y mensaje de pedido">
+        <aside className="sk-checkout-sidebar" aria-label="Order summary and message">
           <section className="sk-checkout-panel">
-            <p className="sk-kicker">Carrito</p>
-            <h2>Productos seleccionados</h2>
+            <p className="sk-kicker">Cart</p>
+            <h2>Selected products</h2>
             <div className="sk-order-items">
               {checkoutItems.map((item) => (
                 <article className="sk-order-item" key={item.id}>
@@ -333,7 +333,7 @@ export function CheckoutPage() {
                   />
                   <div>
                     <p>{item.name}</p>
-                    <span>Cantidad {item.quantity}</span>
+                    <span>Quantity {item.quantity}</span>
                   </div>
                   <strong className="sk-price">{formatPrice(item.subtotal)}</strong>
                 </article>
@@ -347,9 +347,9 @@ export function CheckoutPage() {
 
           <section className="sk-checkout-panel">
             <p className="sk-kicker">WhatsApp</p>
-            <h2>Mensaje del pedido</h2>
+            <h2>Order message</h2>
             <label className="sk-field" htmlFor="whatsapp-message">
-              <span className="sk-field__label">Mensaje formateado</span>
+              <span className="sk-field__label">Formatted message</span>
               <textarea
                 className="sk-input sk-input--textarea"
                 id="whatsapp-message"
@@ -359,7 +359,7 @@ export function CheckoutPage() {
               />
             </label>
             <p className="sk-validation" data-state={isFormValid ? 'valid' : 'invalid'} aria-live="polite">
-              {isFormValid ? 'Pedido listo para enviar por WhatsApp.' : validation}
+              {isFormValid ? 'Order ready to send by WhatsApp.' : validation}
             </p>
           </section>
         </aside>

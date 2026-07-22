@@ -1,4 +1,4 @@
--- Token usado (histórico)
+-- Used token (historical)
 IF NOT EXISTS (SELECT 1 FROM PasswordResetToken WHERE TID_Id = 'b1c2d3e4-f5a6-7890-bcde-111111111111')
 BEGIN
     INSERT INTO PasswordResetToken (
@@ -14,5 +14,5 @@ BEGIN
     );
 END
 
--- Para probar reset-password en desarrollo, usa POST /api/auth/forgot-password
--- con cliente@ejemplo.com; la API devuelve resetToken en la respuesta.
+-- To test reset-password in development, use POST /api/auth/forgot-password
+-- with customer@example.com; the API returns resetToken in the response.

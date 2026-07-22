@@ -27,7 +27,7 @@ function NotFoundPage() {
       <div className="sk-container sk-section">
         <div className="sk-empty-state">
           <p className="sk-kicker">404</p>
-          <h1>Pagina no encontrada</h1>
+          <h1>Page not found</h1>
         </div>
       </div>
     </PublicLayout>

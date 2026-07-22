@@ -8,7 +8,7 @@ export interface SearchBarProps extends Omit<InputProps, 'type'> {
 }
 
 export function SearchBar({
-  placeholder = 'Buscar...',
+  placeholder = 'Search...',
   onSearch,
   onKeyDown,
   ...props

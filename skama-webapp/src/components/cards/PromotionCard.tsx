@@ -28,7 +28,7 @@ export function PromotionCard({ promotion }: PromotionCardProps) {
         {promotion.description}
       </Text>
       <Text variant="caption" muted>
-        Válida hasta {formatDisplayDate(promotion.endDate)}
+        Valid until {formatDisplayDate(promotion.endDate)}
       </Text>
     </Card>
   );

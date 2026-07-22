@@ -8,7 +8,7 @@ export interface LoadingProps {
   fullPage?: boolean;
 }
 
-export function Loading({ message = 'Cargando...', fullPage = false }: LoadingProps) {
+export function Loading({ message = 'Loading...', fullPage = false }: LoadingProps) {
   return (
     <Box
       role="status"

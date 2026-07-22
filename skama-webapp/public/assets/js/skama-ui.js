@@ -194,11 +194,11 @@
         return product.isLimited ? 1 : Math.min(stock, purchaseLimit);
     };
     const formatStockLabel = (product) => {
-        const units = product.stock === 1 ? "unidad" : "unidades";
+        const units = product.stock === 1 ? "unit" : "unites";
         const limit = getProductQuantityLimit(product);
         return product.isLimited
-            ? `Disponible: ${product.stock} ${units}. Limite de compra: 1 joya limitada por persona.`
-            : `Disponible: ${product.stock} ${units}. Maximo por pedido: ${limit}.`;
+            ? `Available: ${product.stock} ${units}. Purchase limit: 1 limited piece per person.`
+            : `Available: ${product.stock} ${units}. Maximo por order: ${limit}.`;
     };
     const normalizeCatalogProductData = (value) => {
         if (!isRecord(value)) {
@@ -259,8 +259,8 @@
             button.classList.toggle("sk-button--secondary", !authenticated);
             button.classList.toggle("sk-button--primary", authenticated);
             button.textContent = authenticated
-                ? button.dataset.limitedUnlockedLabel || "Agregar"
-                : button.dataset.limitedLockedLabel || "Iniciar sesión para comprar";
+                ? button.dataset.limitedUnlockedLabel || "Add"
+                : button.dataset.limitedLockedLabel || "Sign in to buy";
             if (authenticated) {
                 delete button.dataset.limitedPurchaseTrigger;
                 button.dataset.productAddTrigger = "";
@@ -334,8 +334,8 @@
         setText(addModal?.querySelector("[data-product-add-stock]") || null, remainingQuantity > 0
             ? formatStockLabel(product)
             : product.isLimited
-                ? "Ya alcanzaste el limite de 1 joya limitada por persona."
-                : "Ya agregaste la cantidad maxima disponible para esta joya.");
+                ? "You have reached the limit of 1 limited piece per person."
+                : "You have added the maximum available quantity for this piece.");
         if (quantity) {
             quantity.value = "1";
             quantity.max = String(effectiveMax);
@@ -343,7 +343,7 @@
         }
         if (submitButton) {
             submitButton.disabled = remainingQuantity === 0;
-            submitButton.textContent = remainingQuantity === 0 ? "Limite alcanzado" : "Agregar seleccion";
+            submitButton.textContent = remainingQuantity === 0 ? "Limit reached" : "Add selection";
         }
         showDialog(addModal || null);
         window.setTimeout(() => quantity?.focus(), 0);
@@ -370,10 +370,10 @@
             addButton.classList.toggle("sk-button--secondary", lockedLimited);
             addButton.classList.toggle("sk-button--primary", !lockedLimited);
             addButton.textContent = lockedLimited
-                ? "Iniciar sesión para comprar"
+                ? "Sign in to buy"
                 : limitReached
-                    ? "Limite alcanzado"
-                    : "Agregar al pedido";
+                    ? "Limit reached"
+                    : "Add to order";
         }
         showDialog(modal || null);
     };
@@ -413,7 +413,7 @@
         document.querySelectorAll("[data-cart-count]").forEach((counter) => {
             counter.textContent = "";
             counter.hidden = count === 0;
-            counter.setAttribute("aria-label", count === 1 ? "1 artículo en el carrito" : `${count} artículos en el carrito`);
+            counter.setAttribute("aria-label", count === 1 ? "1 item in cart" : `${count} items in cart`);
         });
     };
     const createCartDrawerItem = (item) => {
@@ -437,7 +437,7 @@
         removeButton.className = "sk-icon-button sk-icon-button--sm";
         removeButton.type = "button";
         removeButton.dataset.cartRemove = item.id;
-        removeButton.setAttribute("aria-label", `Eliminar ${item.name} del carrito`);
+        removeButton.setAttribute("aria-label", `Delete ${item.name} from cart`);
         const removeIcon = document.createElement("span");
         removeIcon.className = "sk-icon";
         removeIcon.dataset.icon = "x";
@@ -455,7 +455,7 @@
         price.textContent = formatCatalogPrice(item.price * item.quantity);
         const quantityLabel = document.createElement("span");
         quantityLabel.className = "sk-cart-item__favorite";
-        quantityLabel.textContent = `Cantidad x${item.quantity}`;
+        quantityLabel.textContent = `Quantity x${item.quantity}`;
         meta.append(price, quantityLabel);
         const quantity = document.createElement("div");
         quantity.className = "sk-quantity";
@@ -472,7 +472,7 @@
         input.value = String(item.quantity);
         input.dataset.quantityInput = "";
         input.dataset.cartItemQuantity = item.id;
-        input.setAttribute("aria-label", `Cantidad de ${item.name}`);
+        input.setAttribute("aria-label", `Quantity de ${item.name}`);
         const increase = document.createElement("button");
         increase.type = "button";
         increase.dataset.quantityIncrease = "";
@@ -505,7 +505,7 @@
         if (empty) {
             empty.hidden = hasItems;
         }
-        setText(document.querySelector("[data-cart-summary-count]"), count === 0 ? "Sin productos" : count === 1 ? "1 producto" : `${count} productos`);
+        setText(document.querySelector("[data-cart-summary-count]"), count === 0 ? "No products" : count === 1 ? "1 product" : `${count} products`);
         setText(document.querySelector("[data-cart-subtotal]"), formatCatalogPrice(subtotal));
         setText(document.querySelector("[data-cart-total]"), formatCatalogPrice(subtotal));
         updateCartCounter(items);
@@ -569,7 +569,7 @@
         document.querySelectorAll("[data-favorite-count]").forEach((counter) => {
             counter.textContent = "";
             counter.hidden = count === 0;
-            counter.setAttribute("aria-label", count === 1 ? "1 destacado" : `${count} destacados`);
+            counter.setAttribute("aria-label", count === 1 ? "1 favorite" : `${count} favorites`);
         });
     };
     const syncFavoriteToggles = () => {
@@ -582,7 +582,7 @@
             const product = getCatalogProductData(productCard);
             const isFavorite = isFavoriteProduct(product, favorites);
             toggle.setAttribute("aria-pressed", String(isFavorite));
-            toggle.setAttribute("aria-label", `${isFavorite ? "Quitar" : "Agregar"} ${product.name} ${isFavorite ? "de" : "a"} destacados`);
+            toggle.setAttribute("aria-label", `${isFavorite ? "Remove" : "Add"} ${product.name} ${isFavorite ? "de" : "a"} favorites`);
         });
     };
     const createFavoriteProductCard = (product) => {
@@ -604,7 +604,7 @@
         media.className = "sk-product-card__media";
         media.type = "button";
         media.dataset.productDetailTrigger = "";
-        media.setAttribute("aria-label", `Ver detalle de ${product.name}`);
+        media.setAttribute("aria-label", `View details for ${product.name}`);
         const image = document.createElement("img");
         image.src = product.image;
         image.alt = product.imageAlt || product.name;
@@ -614,7 +614,7 @@
         favorite.className = "sk-icon-button sk-icon-button--sm sk-product-card__favorite";
         favorite.type = "button";
         favorite.dataset.favoriteToggle = "";
-        favorite.setAttribute("aria-label", `Quitar ${product.name} de destacados`);
+        favorite.setAttribute("aria-label", `Remove ${product.name} de favorites`);
         favorite.setAttribute("aria-pressed", "true");
         const favoriteIcon = document.createElement("span");
         favoriteIcon.className = "sk-icon";
@@ -638,15 +638,15 @@
         price.textContent = product.priceLabel;
         const stock = document.createElement("span");
         stock.className = "sk-product-card__stock";
-        stock.textContent = `Disponible: ${product.stock} ${product.stock === 1 ? "unidad" : "unidades"}`;
+        stock.textContent = `Available: ${product.stock} ${product.stock === 1 ? "unit" : "unites"}`;
         const action = document.createElement("button");
         action.className = `sk-button sk-button--${product.isLimited ? "secondary" : "primary"} sk-button--sm`;
         action.type = "button";
-        action.textContent = product.isLimited ? "Iniciar sesión para comprar" : "Agregar";
+        action.textContent = product.isLimited ? "Sign in to buy" : "Add";
         if (product.isLimited) {
             action.dataset.limitedPurchaseTrigger = "";
-            action.dataset.limitedLockedLabel = "Iniciar sesión para comprar";
-            action.dataset.limitedUnlockedLabel = "Agregar";
+            action.dataset.limitedLockedLabel = "Sign in to buy";
+            action.dataset.limitedUnlockedLabel = "Add";
         }
         else {
             action.dataset.productAddTrigger = "";
@@ -887,7 +887,7 @@
             const icon = passwordToggle.querySelector("[data-icon]");
             const shouldShow = input?.getAttribute("type") === "password";
             input?.setAttribute("type", shouldShow ? "text" : "password");
-            passwordToggle.setAttribute("aria-label", shouldShow ? "Ocultar contraseña" : "Mostrar contraseña");
+            passwordToggle.setAttribute("aria-label", shouldShow ? "Hide password" : "Show password");
             if (icon) {
                 icon.dataset.icon = shouldShow ? "eye-off" : "eye";
                 icon.innerHTML = iconMap[icon.dataset.icon] || "";
@@ -977,11 +977,11 @@
         if (activeCatalogProduct) {
             const addedQuantity = storeCatalogCartItem(activeCatalogProduct, quantity);
             if (activeCatalogAddButton) {
-                activeCatalogAddButton.textContent = addedQuantity > 0 ? `Agregado x${addedQuantity}` : "Limite alcanzado";
+                activeCatalogAddButton.textContent = addedQuantity > 0 ? `Agregado x${addedQuantity}` : "Limit reached";
                 activeCatalogAddButton.dataset.selectedQuantity = String(addedQuantity);
                 activeCatalogAddButton.setAttribute("aria-label", addedQuantity > 0
                     ? `${activeCatalogProduct.name} agregado, cantidad ${addedQuantity}`
-                    : `${activeCatalogProduct.name} ya alcanzo el limite permitido`);
+                    : `${activeCatalogProduct.name} has reached the allowed limit`);
             }
         }
         modal?.close();

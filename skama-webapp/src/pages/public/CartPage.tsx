@@ -60,7 +60,7 @@ export function CartPage() {
         setLocalItems(updateLocalCartItemQuantity(productId, quantity));
       }
     } catch (error) {
-      toast.error(getApiErrorMessage(error, 'No se pudo actualizar la cantidad.'));
+      toast.error(getApiErrorMessage(error, 'Could not update quantity.'));
     } finally {
       setIsUpdating(false);
     }
@@ -75,9 +75,9 @@ export function CartPage() {
         setLocalItems(removeLocalCartItem(productId));
       }
 
-      toast.success('Producto eliminado del pedido.');
+      toast.success('Product removed from order.');
     } catch (error) {
-      toast.error(getApiErrorMessage(error, 'No se pudo eliminar el producto.'));
+      toast.error(getApiErrorMessage(error, 'Could not delete product.'));
     } finally {
       setIsUpdating(false);
     }
@@ -86,21 +86,21 @@ export function CartPage() {
   return (
     <div className="sk-page">
       <header className="sk-page-header sk-container">
-        <p className="sk-kicker">Carrito</p>
-        <h1>Productos seleccionados</h1>
+        <p className="sk-kicker">Cart</p>
+        <h1>Selected products</h1>
         <p className="sk-lede">
-          Revisa cantidades antes de generar el mensaje de pedido por WhatsApp.
+          Review quantities before generating the WhatsApp order message.
         </p>
       </header>
 
-      <section className="sk-cart-shell" aria-label="Detalle de carrito">
+      <section className="sk-cart-shell" aria-label="Cart details">
         <div className="sk-cart-panel">
           {checkoutItems.length === 0 ? (
             <div className="sk-empty-state">
-              <h2>Tu carrito esta vacio.</h2>
-              <p>Explora colecciones y agrega las piezas que queres coordinar.</p>
+              <h2>Your cart is empty.</h2>
+              <p>Explore collections and add the pieces you want to coordinate.</p>
               <RouterLink className="sk-button sk-button--primary" to={ROUTES.catalog}>
-                Ver colecciones
+                View collections
               </RouterLink>
             </div>
           ) : (
@@ -114,10 +114,10 @@ export function CartPage() {
                   />
                   <div className="sk-cart-line__content">
                     <h3>{item.name}</h3>
-                    <span>{formatPrice(item.unitPrice)} por unidad</span>
+                    <span>{formatPrice(item.unitPrice)} per unit</span>
                     <div className="sk-cart-line__controls">
                       <label className="sk-field" htmlFor={`quantity-${item.id}`}>
-                        <span className="sk-field__label">Cantidad</span>
+                        <span className="sk-field__label">Quantity</span>
                         <input
                           className="sk-input"
                           id={`quantity-${item.id}`}
@@ -138,7 +138,7 @@ export function CartPage() {
                     <button
                       className="sk-icon-button"
                       type="button"
-                      aria-label={`Eliminar ${item.name}`}
+                      aria-label={`Delete ${item.name}`}
                       disabled={isUpdating}
                       onClick={() => void handleRemove(item.id, item.productId)}
                     >
@@ -151,11 +151,11 @@ export function CartPage() {
           )}
         </div>
 
-        <aside className="sk-cart-panel" aria-label="Resumen de carrito">
-          <p className="sk-kicker">Resumen</p>
-          <h2>Total del pedido</h2>
+        <aside className="sk-cart-panel" aria-label="Cart summary">
+          <p className="sk-kicker">Summary</p>
+          <h2>Order total</h2>
           <div className="sk-total-line">
-            <span>Productos</span>
+            <span>Products</span>
             <strong>{totals.itemCount}</strong>
           </div>
           <div className="sk-total-line">
@@ -167,7 +167,7 @@ export function CartPage() {
               className="sk-button sk-button--primary sk-button--lg"
               to={checkoutItems.length > 0 ? ROUTES.checkout : ROUTES.catalog}
             >
-              {checkoutItems.length > 0 ? 'Continuar al pedido' : 'Ver colecciones'}
+              {checkoutItems.length > 0 ? 'Continue to order' : 'View collections'}
             </RouterLink>
           </div>
         </aside>

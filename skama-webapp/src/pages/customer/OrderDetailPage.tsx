@@ -17,11 +17,11 @@ import { formatPrice, getApiErrorMessage, tokens } from '../../utils';
 import { ROUTES } from '../../routes/routePaths';
 
 const itemColumns: TableColumn<IOrderItemDto>[] = [
-  { id: 'productName', label: 'Producto', accessor: 'productName' },
-  { id: 'quantity', label: 'Cant.', accessor: 'quantity', align: 'center' },
+  { id: 'productName', label: 'Product', accessor: 'productName' },
+  { id: 'quantity', label: 'Qty.', accessor: 'quantity', align: 'center' },
   {
     id: 'unitPrice',
-    label: 'Precio',
+    label: 'Price',
     align: 'right',
     render: (row) => formatPrice(row.unitPrice),
   },
@@ -34,11 +34,11 @@ const itemColumns: TableColumn<IOrderItemDto>[] = [
 ];
 
 const statusOptions = [
-  { value: 'PENDING', label: 'Pendiente' },
-  { value: 'PAID', label: 'Pagado' },
-  { value: 'SHIPPED', label: 'Enviado' },
-  { value: 'DELIVERED', label: 'Entregado' },
-  { value: 'CANCELLED', label: 'Cancelado' },
+  { value: 'PENDING', label: 'Pending' },
+  { value: 'PAID', label: 'Paid' },
+  { value: 'SHIPPED', label: 'Shipped' },
+  { value: 'DELIVERED', label: 'Delivered' },
+  { value: 'CANCELLED', label: 'Cancelled' },
 ];
 
 const cancellableStatuses = new Set(['PENDING', 'PAID']);
@@ -52,14 +52,14 @@ export function OrderDetailPage() {
   const [cancelling, setCancelling] = useState(false);
 
   if (loading) {
-    return <Loading fullPage message="Cargando pedido..." />;
+    return <Loading fullPage message="Loading order..." />;
   }
 
   if (error || !order) {
     return (
       <ErrorState
-        title="Pedido no encontrado"
-        description={error ?? 'No encontramos este pedido.'}
+        title="Order no encontrado"
+        description={error ?? 'No encontramos este order.'}
         onRetry={() => void refetch()}
       />
     );
@@ -71,10 +71,10 @@ export function OrderDetailPage() {
     setCancelling(true);
     try {
       await orderService.cancel(order!.id);
-      toast.success('Pedido cancelado.');
+      toast.success('Order cancelado.');
       await refetch();
     } catch (err) {
-      toast.error(getApiErrorMessage(err, 'No se pudo cancelar el pedido.'));
+      toast.error(getApiErrorMessage(err, 'Could not cancel the order.'));
     } finally {
       setCancelling(false);
     }
@@ -88,10 +88,10 @@ export function OrderDetailPage() {
     setUpdating(true);
     try {
       await orderService.updateStatus(order!.id, { status });
-      toast.success('Estado actualizado.');
+      toast.success('Status actualizado.');
       await refetch();
     } catch (err) {
-      toast.error(getApiErrorMessage(err, 'No se pudo actualizar el estado.'));
+      toast.error(getApiErrorMessage(err, 'Could not update the status.'));
     } finally {
       setUpdating(false);
     }
@@ -99,12 +99,12 @@ export function OrderDetailPage() {
 
   return (
     <PageShell
-      title={`Pedido ${order.orderNumber}`}
-      subtitle={`Creado el ${new Date(order.createdAt).toLocaleString('es-CO')}`}
+      title={`Order ${order.orderNumber}`}
+      subtitle={`Created on ${new Date(order.createdAt).toLocaleString('es-CO')}`}
       badge={order.status}
       breadcrumbs={[
-        { label: 'Inicio', path: ROUTES.home },
-        { label: 'Pedidos', path: ROUTES.orderHistory },
+        { label: 'Home', path: ROUTES.home },
+        { label: 'Orders', path: ROUTES.orderHistory },
         { label: order.orderNumber },
       ]}
     >
@@ -117,13 +117,13 @@ export function OrderDetailPage() {
         <Grid size={{ xs: 12, md: 4 }}>
           <Card>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: tokens.spacing.md }}>
-              <Text variant="h3">Resumen</Text>
+              <Text variant="h3">Summary</Text>
               <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                 <Text variant="body" muted>Subtotal</Text>
                 <Text variant="body">{formatPrice(order.subtotal)}</Text>
               </Box>
               <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                <Text variant="body" muted>Descuentos</Text>
+                <Text variant="body" muted>Discounts</Text>
                 <Text variant="body">{formatPrice(order.discountTotal)}</Text>
               </Box>
               <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -134,13 +134,13 @@ export function OrderDetailPage() {
               </Box>
               <Chip label={order.paymentMethod} chipVariant="default" sx={{ alignSelf: 'flex-start' }} />
               <Text variant="small" muted>
-                Envío: {order.shippingAddress}
+                Shipping: {order.shippingAddress}
               </Text>
 
               {isAdmin && (
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: tokens.spacing.sm }}>
                   <Select
-                    label="Estado del pedido"
+                    label="Order status"
                     options={statusOptions}
                     value={status || order.status}
                     onChange={(event) => setStatus(String(event.target.value))}
@@ -150,7 +150,7 @@ export function OrderDetailPage() {
                     disabled={updating}
                     onClick={() => void handleStatusUpdate()}
                   >
-                    {updating ? 'Actualizando...' : 'Actualizar estado'}
+                    {updating ? 'Updating...' : 'Update status'}
                   </Button>
                 </Box>
               )}
@@ -158,11 +158,11 @@ export function OrderDetailPage() {
               <Box sx={{ display: 'flex', flexDirection: 'column', gap: tokens.spacing.sm }}>
                 {canCancel && (
                   <Button variant="danger" disabled={cancelling} onClick={() => void handleCancel()}>
-                    {cancelling ? 'Cancelando...' : 'Cancelar pedido'}
+                    {cancelling ? 'Cancelling...' : 'Cancel order'}
                   </Button>
                 )}
                 <Button component={RouterLink} to={ROUTES.orderHistory} variant="ghost">
-                  Volver a pedidos
+                  Back to orders
                 </Button>
               </Box>
             </Box>

@@ -57,7 +57,7 @@ export function CatalogPage() {
   const flatProducts = shouldUseApiProducts ? visibleApiProducts : staticProducts;
 
   const collectionOptions = [
-    { value: '', label: 'Todas las colecciones' },
+    { value: '', label: 'All collections' },
     ...skamaSegments.map((segment) => ({ value: segment.id, label: segment.title })),
     ...categories.map((category) => ({ value: category.id, label: category.name })),
   ];
@@ -66,11 +66,11 @@ export function CatalogPage() {
     <div className="sk-page">
       <section className="sk-collections-hero" aria-labelledby="collections-title">
         <div className="sk-container sk-collections-hero__content">
-          <p className="sk-kicker">Colecciones SKAMA</p>
-          <h1 id="collections-title">Colecciones de joyeria para momentos memorables.</h1>
+          <p className="sk-kicker">SKAMA collections</p>
+          <h1 id="collections-title">Jewelry collections for memorable moments.</h1>
           <p>
-            Cada coleccion reune piezas pensadas para una forma distinta de presencia: edicion
-            limitada, plata verde, plata y oro.
+            Each collection brings together pieces designed for a distinct presence:
+            limited edition, green silver, silver, and gold.
           </p>
         </div>
       </section>
@@ -78,28 +78,28 @@ export function CatalogPage() {
       <section className="sk-section" aria-labelledby="collections-heading">
         <div className="sk-container">
           <div className="sk-section-heading">
-            <p className="sk-kicker">Catalogo</p>
-            <h2 id="collections-heading">Explora lineas con identidad propia.</h2>
+            <p className="sk-kicker">Catalog</p>
+            <h2 id="collections-heading">Explore lines with their own identity.</h2>
             <p className="sk-lede">
-              Las busquedas y categorias consultan el API cuando hay datos disponibles; el catalogo
-              local mantiene el prototipo completo para revision visual y flujo de compra.
+              Searches and categories query the API when data is available; the catalog
+              keeps the full local prototype for visual review and purchase flow.
             </p>
           </div>
 
-          <div className="sk-filter-bar" aria-label="Filtros de catalogo">
+          <div className="sk-filter-bar" aria-label="Catalog filters">
             <label className="sk-field" htmlFor="catalog-search">
-              <span className="sk-field__label">Buscar productos</span>
+              <span className="sk-field__label">Search products</span>
               <input
                 className="sk-input"
                 id="catalog-search"
                 type="search"
                 value={search}
                 onChange={(event) => setSearch(event.target.value)}
-                placeholder="Anillo, pulsera, oro..."
+                placeholder="Ring, bracelet, gold..."
               />
             </label>
             <label className="sk-field" htmlFor="catalog-collection">
-              <span className="sk-field__label">Coleccion</span>
+              <span className="sk-field__label">Collection</span>
               <select
                 className="sk-input sk-select"
                 id="catalog-collection"
@@ -121,8 +121,8 @@ export function CatalogPage() {
         <section className="sk-section sk-section--muted" aria-labelledby="limited-title">
           <div className="sk-container">
             <div className="sk-section-heading">
-              <p className="sk-kicker">Edicion limitada</p>
-              <h2 id="limited-title">Disponibilidad reducida para piezas exclusivas.</h2>
+              <p className="sk-kicker">Limited edition</p>
+              <h2 id="limited-title">Limited availability for exclusive pieces.</h2>
             </div>
             <div className="sk-limited-carousel">
               <img src={activeLimitedProduct.imageUrl} alt={activeLimitedProduct.imageAlt} />
@@ -131,11 +131,11 @@ export function CatalogPage() {
                 <h3>{activeLimitedProduct.name}</h3>
                 <p>{activeLimitedProduct.description}</p>
                 <span>
-                  Disponible: {activeLimitedProduct.stockQuantity}{' '}
-                  {activeLimitedProduct.stockQuantity === 1 ? 'unidad' : 'unidades'}
+                  Available: {activeLimitedProduct.stockQuantity}{' '}
+                  {activeLimitedProduct.stockQuantity === 1 ? 'unit' : 'units'}
                 </span>
                 <SkamaProductCard product={activeLimitedProduct} compact />
-                <div className="sk-actions" aria-label="Seleccionar pieza de edicion limitada">
+                <div className="sk-actions" aria-label="Select limited edition piece">
                   {limitedProducts.map((product, index) => (
                     <button
                       className="sk-chip"
@@ -157,9 +157,9 @@ export function CatalogPage() {
       <section className="sk-section" aria-labelledby="catalog-results-title">
         <div className="sk-container">
           <div className="sk-section-heading">
-            <p className="sk-kicker">{shouldUseApiProducts ? 'Productos del API' : 'Coleccion visual'}</p>
+            <p className="sk-kicker">{shouldUseApiProducts ? 'API products' : 'Visual collection'}</p>
             <h2 id="catalog-results-title">
-              {flatProducts.length > 0 ? 'Piezas disponibles' : 'No hay piezas para esta seleccion.'}
+              {flatProducts.length > 0 ? 'Available pieces' : 'No pieces for this selection.'}
             </h2>
           </div>
         </div>
@@ -173,8 +173,8 @@ export function CatalogPage() {
         ) : (
           <div className="sk-container">
             <div className="sk-empty-state">
-              <h2>No hay resultados</h2>
-              <p>Ajusta la busqueda o cambia la coleccion seleccionada.</p>
+              <h2>No results</h2>
+              <p>Adjust the search or change the selected collection.</p>
             </div>
           </div>
         )}

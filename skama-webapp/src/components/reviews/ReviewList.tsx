@@ -17,8 +17,8 @@ export function ReviewList({ reviews }: ReviewListProps) {
   if (reviews.length === 0) {
     return (
       <EmptyState
-        title="Sin reseñas"
-        description="Sé el primero en compartir tu experiencia con este producto."
+        title="No reviews"
+        description="Be the first to share your experience with this product."
       />
     );
   }
@@ -31,7 +31,7 @@ export function ReviewList({ reviews }: ReviewListProps) {
             <Text
               variant="body"
               sx={{ color: tokens.color.warning, letterSpacing: '0.1em' }}
-              aria-label={`Calificación: ${review.rating} de 5`}
+              aria-label={`Rating: ${review.rating} de 5`}
             >
               {renderStars(review.rating)}
             </Text>

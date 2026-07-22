@@ -49,7 +49,7 @@ export function WishlistProvider({ children }: IWishlistProviderProps) {
       setItems(data);
     } catch (err) {
       setItems([]);
-      setError(getApiErrorMessage(err, 'No se pudieron cargar los favoritos.'));
+      setError(getApiErrorMessage(err, 'Could not load favorites.'));
     } finally {
       setIsLoading(false);
     }
@@ -77,7 +77,7 @@ export function WishlistProvider({ children }: IWishlistProviderProps) {
   const toggleFavorite = useCallback(
     async (productId: string) => {
       if (!user) {
-        throw new Error('Debes iniciar sesión para guardar favoritos.');
+        throw new Error('You must sign in to save favorites.');
       }
 
       setError(null);

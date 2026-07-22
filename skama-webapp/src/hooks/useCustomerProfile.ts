@@ -67,7 +67,7 @@ export function useCustomerProfile(userId?: string): IUseCustomerProfileResult {
         await clientService.upsertProfile(userId, data);
         await refetch();
       } catch (err) {
-        const message = getApiErrorMessage(err, 'No se pudo guardar el perfil.');
+        const message = getApiErrorMessage(err, 'Could not save the profile.');
         setError(message);
         throw new Error(message);
       } finally {

@@ -79,7 +79,7 @@
             const name = document.createElement("p");
             const quantity = document.createElement("span");
             name.textContent = product.name;
-            quantity.textContent = `Cantidad ${product.quantity}`;
+            quantity.textContent = `Quantity ${product.quantity}`;
             copy.append(name, quantity);
             const price = document.createElement("strong");
             price.className = "sk-price";
@@ -103,22 +103,22 @@
         const dedication = getValue("giftMessage") || "No aplica";
         const productLines = products.map((product) => `- ${product.name} x${product.quantity} - CRC ${currency.format(product.price * product.quantity)}`);
         return [
-            "Pedido SKAMA Jewelry",
+            "Order SKAMA Jewelry",
             "",
             `Cliente: ${getCustomerName() || "[pendiente]"}`,
-            `Correo: ${getValue("email") || "[pendiente]"}`,
-            `Teléfono: ${getValue("phone") || "[pendiente]"}`,
-            `Tipo de entrega: ${getValue("deliveryType") || "[pendiente]"}`,
-            `Dirección: ${getValue("address") || "[pendiente]"}`,
-            `Método de pago: ${getPayment() || "[pendiente]"}`,
-            `Es regalo: ${gift}`,
-            `Dedicatoria: ${dedication}`,
+            `Email: ${getValue("email") || "[pendiente]"}`,
+            `Phone: ${getValue("phone") || "[pendiente]"}`,
+            `Delivery type: ${getValue("deliveryType") || "[pendiente]"}`,
+            `Address: ${getValue("address") || "[pendiente]"}`,
+            `Payment method: ${getPayment() || "[pendiente]"}`,
+            `Gift: ${gift}`,
+            `Dedication: ${dedication}`,
             "",
-            "Productos:",
+            "Products:",
             ...productLines,
             "",
             `Total: ${formatPrice(total)}`,
-            "Estado: Pendiente"
+            "Status: Pending"
         ].join("\n");
     };
     const updateCheckout = () => {
@@ -130,8 +130,8 @@
         submit.tabIndex = complete ? 0 : -1;
         validation.dataset.state = complete ? "valid" : "invalid";
         validation.textContent = complete
-            ? "Datos completos. El pedido se enviara con formato legible para WhatsApp."
-            : "Por favor, completa todos los datos de entrega y selecciona un método de pago.";
+            ? "Details complete. The order will be sent in a readable WhatsApp format."
+            : "Please complete all delivery details and select a payment method.";
     };
     form.addEventListener("input", updateCheckout);
     form.addEventListener("change", updateCheckout);

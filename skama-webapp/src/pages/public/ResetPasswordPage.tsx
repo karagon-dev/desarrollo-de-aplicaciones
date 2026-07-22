@@ -20,17 +20,17 @@ export function ResetPasswordPage() {
     setFormError(null);
 
     if (newPassword !== confirmPassword) {
-      setFormError('Las contrasenas no coinciden.');
+      setFormError('Passwords do not match.');
       return;
     }
 
     setIsSubmitting(true);
     try {
       await authService.resetPassword({ token, newPassword, confirmPassword });
-      toast.success('Contrasena actualizada.');
+      toast.success('Password actualizada.');
       navigate(ROUTES.login);
     } catch (error) {
-      const message = getApiErrorMessage(error, 'No se pudo restablecer la contrasena.');
+      const message = getApiErrorMessage(error, 'The password could not be reset.');
       setFormError(message);
       toast.error(message);
     } finally {
@@ -41,16 +41,16 @@ export function ResetPasswordPage() {
   return (
     <section className="sk-auth-shell" aria-labelledby="reset-title">
       <div className="sk-auth-intro">
-        <p className="sk-kicker">Nuevo acceso</p>
-        <h1 id="reset-title">Define una contrasena nueva.</h1>
+        <p className="sk-kicker">New access</p>
+        <h1 id="reset-title">Set a new password.</h1>
         <p className="sk-lede">
-          Usa el token enviado por el sistema para completar el restablecimiento.
+          Use the token sent by the system to complete the reset.
         </p>
       </div>
       <article className="sk-auth-panel">
         <div>
-          <p className="sk-kicker">Cuenta SKAMA</p>
-          <h1>Restablecer contrasena</h1>
+          <p className="sk-kicker">SKAMA account</p>
+          <h1>Reset password</h1>
         </div>
         <form className="sk-auth-form" onSubmit={handleSubmit}>
           <label className="sk-field" htmlFor="reset-token">
@@ -65,7 +65,7 @@ export function ResetPasswordPage() {
             />
           </label>
           <label className="sk-field" htmlFor="reset-password">
-            <span className="sk-field__label">Nueva contrasena</span>
+            <span className="sk-field__label">New password</span>
             <input
               className="sk-input"
               id="reset-password"
@@ -76,7 +76,7 @@ export function ResetPasswordPage() {
             />
           </label>
           <label className="sk-field" htmlFor="reset-confirm-password">
-            <span className="sk-field__label">Confirmar contrasena</span>
+            <span className="sk-field__label">Confirm password</span>
             <input
               className="sk-input"
               id="reset-confirm-password"
@@ -88,10 +88,10 @@ export function ResetPasswordPage() {
           </label>
           {formError && <p className="sk-validation">{formError}</p>}
           <button className="sk-button sk-button--primary sk-button--lg" type="submit" disabled={isSubmitting}>
-            {isSubmitting ? 'Guardando...' : 'Guardar contrasena'}
+            {isSubmitting ? 'Saving...' : 'Save password'}
           </button>
           <RouterLink className="sk-button sk-button--secondary sk-button--lg" to={ROUTES.login}>
-            Volver al login
+            Back to sign in
           </RouterLink>
         </form>
       </article>
