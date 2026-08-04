@@ -42,16 +42,16 @@ export function WishlistPage() {
         id: item.productId,
         backendProductId: item.productId,
         name: item.productName,
-        collection: 'Favorites',
-        categoryName: 'Jewelry',
+        collection: 'Favoritos',
+        categoryName: 'Joyería',
         material: 'Esmeralda',
-        description: 'Product saved to favorites.',
+        description: 'Producto guardado en favoritos.',
         price: item.price,
         stockQuantity: item.stockQuantity,
         imageUrl: skamaProducts[index % skamaProducts.length].imageUrl,
         imageAlt: item.productName,
-        ratingLabel: '4.8 out of 5',
-        badge: 'Favorite',
+        ratingLabel: '4.8 de 5',
+        badge: 'Favorito',
         badgeTone: 'accent',
       })),
     [items],
@@ -63,15 +63,15 @@ export function WishlistPage() {
   return (
     <div className="sk-page">
       <header className="sk-page-header sk-container">
-        <p className="sk-kicker">Favorites</p>
-        <h1>Saved jewelry to review later.</h1>
+        <p className="sk-kicker">Favoritos</p>
+        <h1>Joyas guardadas para revisar después.</h1>
         <p className="sk-lede">
-          Keep your favorite pieces and return to the catalog whenever you want to finish the order.
+          Conserva tus piezas favoritas y vuelve al catálogo cuando quieras completar la orden.
         </p>
       </header>
 
       {visibleProducts.length > 0 ? (
-        <section className="sk-section" aria-label="Favorite products">
+        <section className="sk-section" aria-label="Productos favoritos">
           <div className="sk-product-grid">
             {visibleProducts.map((product) => (
               <SkamaProductCard key={product.id} product={product} />
@@ -81,10 +81,10 @@ export function WishlistPage() {
       ) : (
         <section className="sk-container sk-section">
           <div className="sk-empty-state">
-            <h2>No favorites yet.</h2>
-            <p>Mark pieces from collections to save them here.</p>
+            <h2>Aún no tienes favoritos.</h2>
+            <p>Marca piezas de las colecciones para guardarlas aquí.</p>
             <RouterLink className="sk-button sk-button--primary" to={ROUTES.catalog}>
-              Explore collections
+              Explorar colecciones
             </RouterLink>
           </div>
         </section>

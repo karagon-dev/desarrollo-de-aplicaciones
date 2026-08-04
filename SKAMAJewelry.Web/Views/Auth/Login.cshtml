@@ -1,0 +1,30 @@
+﻿@{
+    ViewData["Title"] = "Iniciar sesión";
+    ViewData["AuthTitle"] = "Bienvenido de nuevo a la experiencia SKAMA.";
+    ViewData["AuthDescription"] = "Inicia sesión para acceder a tus favoritos, consultar tus pedidos y descubrir nuestras colecciones exclusivas. Cada pieza de SKAMA Jewelry ha sido diseñada para ofrecer una experiencia de compra elegante, segura y personalizada.";
+}
+
+<article class="auth-card auth-card--login" aria-labelledby="login-title">
+    <div class="auth-register-card__face auth-register-card__back" aria-hidden="true">
+        <span>SKAMA</span>
+    </div>
+    <div class="auth-register-card__face auth-register-card__content">
+        <div>
+            <p class="auth-kicker">Acceso privado</p>
+            <h2 class="auth-loader-title" id="login-title"><span>Iniciar sesión</span></h2>
+            <p>Texto editable para invitar al usuario a entrar a su experiencia privada SKAMA.</p>
+        </div>
+
+        <form class="auth-form" aria-label="Formulario visual de inicio de sesión">
+            <partial name="~/Views/Shared/Components/Forms/_Input.cshtml" model='new FieldViewModel("login-email", "email", "Correo electrónico", "email", "correo@ejemplo.com")' />
+            <partial name="~/Views/Shared/Components/Forms/_PasswordInput.cshtml" model='new FieldViewModel("login-password", "password", "Contraseña", "password", "Contraseña")' />
+            <div class="auth-row">
+                <partial name="~/Views/Shared/Components/Forms/_Choice.cshtml" model='new ChoiceViewModel("login-remember", "remember", "Recordarme", "checkbox", "true")' />
+                <a class="auth-link" href="/auth/forgot-password">Olvidé mi contraseña</a>
+            </div>
+            <partial name="~/Views/Shared/Components/Buttons/_Button.cshtml" model='new ButtonViewModel("Iniciar sesión", "primary", "lg", "#")' />
+            <partial name="~/Views/Shared/Components/Buttons/_Button.cshtml" model='new ButtonViewModel("Crear cuenta", "secondary", "lg", "/auth/register")' />
+            <partial name="~/Views/Shared/Components/Buttons/_Button.cshtml" model='new ButtonViewModel("Volver al inicio", "ghost", "lg", "/")' />
+        </form>
+    </div>
+</article>

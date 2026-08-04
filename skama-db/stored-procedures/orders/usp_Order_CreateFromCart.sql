@@ -1,4 +1,4 @@
-CREATE PROCEDURE dbo.usp_Order_CreateFromCart
+﻿CREATE OR ALTER PROCEDURE dbo.usp_Order_CreateFromCart
     @CartId UNIQUEIDENTIFIER,
     @PaymentMethod NVARCHAR(50),
     @ShippingAddress NVARCHAR(500),
@@ -130,3 +130,4 @@ BEGIN
     END CATCH;
 END;
 GO
+

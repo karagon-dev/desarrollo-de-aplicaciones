@@ -51,8 +51,8 @@ public class ClientService : IClientService
         return resultCode switch
         {
             0 => (profileId, true, null),
-            1 => (Guid.Empty, false, "The identification number is already registered by another user."),
-            _ => (Guid.Empty, false, "An unexpected error occurred.")
+            1 => (Guid.Empty, false, "La identificación ya está registrada por otro usuario."),
+            _ => (Guid.Empty, false, "Ocurrió un error inesperado.")
         };
     }
 }

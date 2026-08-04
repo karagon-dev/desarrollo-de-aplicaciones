@@ -1,4 +1,4 @@
-CREATE PROCEDURE dbo.usp_EmailNotification_MarkAsFailed
+﻿CREATE OR ALTER PROCEDURE dbo.usp_EmailNotification_MarkAsFailed
     @Id UNIQUEIDENTIFIER,
     @RowsAffected INT OUTPUT
 AS
@@ -12,3 +12,4 @@ BEGIN
     SET @RowsAffected = @@ROWCOUNT;
 END;
 GO
+

@@ -13,23 +13,23 @@ import { ROUTES } from '../../routes/routePaths';
 const values = [
   {
     icon: 'M',
-    title: 'Mission',
-    text: 'Create exclusive jewelry that celebrates elegance, Costa Rican identity, and the natural beauty of emeralds.',
+    title: 'Misión',
+    text: 'Crear joyería exclusiva que celebre la elegancia, la identidad costarricense y la belleza natural de las esmeraldas.',
   },
   {
     icon: 'V',
-    title: 'Vision',
-    text: 'Establish our brand as a jewelry house recognized for quiet luxury and timeless collections.',
+    title: 'Visión',
+    text: 'Posicionar nuestra marca como una casa joyera reconocida por el lujo sobrio y las colecciones atemporales.',
   },
   {
     icon: 'S',
-    title: 'Values',
-    text: 'Authenticity, artisanal excellence, premium quality, trust, and a sophisticated shopping experience.',
+    title: 'Valores',
+    text: 'Autenticidad, excelencia artesanal, calidad premium, confianza y una experiencia de compra sofisticada.',
   },
   {
     icon: 'U',
-    title: 'Locations',
-    text: 'Multiplaza Escazu, Oxigeno, City Mall, Jaco, Santa Teresa, and Playa Tamarindo.',
+    title: 'Ubicaciones',
+    text: 'Multiplaza Escazú, Oxígeno, City Mall, Jacó, Santa Teresa y Playa Tamarindo.',
   },
 ];
 
@@ -52,63 +52,63 @@ export function HomePage() {
       <section className="sk-hero-home" aria-labelledby="home-hero-title">
         <div className="sk-hero-home__inner">
           <div className="sk-hero-home__copy">
-            <p className="sk-kicker">From Costa Rica to the world</p>
-            <h1 id="home-hero-title">Discover the luxury of emeralds.</h1>
+            <p className="sk-kicker">De Costa Rica para el mundo</p>
+            <h1 id="home-hero-title">Descubre el lujo de las esmeraldas.</h1>
             <p className="sk-lede">
-              Inspired by the natural richness of Costa Rica, our collections combine
-              contemporary design, premium materials, and carefully selected emeralds.
+              Inspiradas en la riqueza natural de Costa Rica, nuestras colecciones combinan
+              diseño contemporáneo, materiales premium y esmeraldas cuidadosamente seleccionadas.
             </p>
-            <div className="sk-actions" aria-label="Primary actions">
+            <div className="sk-actions" aria-label="Acciones principales">
               <RouterLink className="sk-button sk-button--primary sk-button--lg" to={ROUTES.catalog}>
-                Explore collections
+                Explorar colecciones
               </RouterLink>
               <a className="sk-button sk-button--secondary sk-button--lg" href="#brand-story">
-                Discover the story
+                Descubrir la historia
               </a>
             </div>
-            <div className="sk-stat-grid" aria-label="Brand indicators">
+            <div className="sk-stat-grid" aria-label="Indicadores de la marca">
               <div className="sk-stat">
                 <strong>16</strong>
-                <span>Collections</span>
+                <span>Colecciones</span>
               </div>
               <div className="sk-stat">
                 <strong>100%</strong>
-                <span>Natural emeralds</span>
+                <span>Esmeraldas naturales</span>
               </div>
               <div className="sk-stat">
                 <strong>500+</strong>
-                <span>Satisfied customers</span>
+                <span>Clientes satisfechos</span>
               </div>
               <div className="sk-stat">
-                <strong>Editions</strong>
-                <span>Limited</span>
+                <strong>Ediciones</strong>
+                <span>Limitadas</span>
               </div>
             </div>
           </div>
 
-          <div className="sk-hero-showcase" aria-label="Editorial composition of our jewelry">
+          <div className="sk-hero-showcase" aria-label="Composición editorial de nuestra joyería">
             <span className="sk-hero-showcase__halo" aria-hidden="true" />
             <picture className="sk-hero-showcase__image sk-hero-showcase__image--portrait">
               <img
                 src="/assets/images/hero/skama-hero-exterior.png"
-                alt="Modern exterior of SKAMA jewelry in Jaco"
+                alt="Exterior moderno de SKAMA Jewelry en Jacó"
               />
             </picture>
             <picture className="sk-hero-showcase__image sk-hero-showcase__image--landscape">
               <img
                 src="/assets/images/hero/skama-hero-jewelry-detail.png"
-                alt="Jewelry with necklaces, rings, earrings, and emeralds in a display case"
+                alt="Joyería con collares, anillos, aretes y esmeraldas en una vitrina"
               />
             </picture>
             <picture className="sk-hero-showcase__image sk-hero-showcase__image--detail">
               <img
                 src="/assets/images/hero/skama-hero-interior.png"
-                alt="Jewelry store interior with display cases, black marble, and gold details"
+                alt="Interior de joyería con vitrinas, mármol negro y detalles dorados"
               />
             </picture>
             <div className="sk-hero-showcase__caption" aria-hidden="true">
               <span>Editorial</span>
-              <strong>Emerald Focus</strong>
+              <strong>Enfoque Esmeralda</strong>
             </div>
           </div>
         </div>
@@ -124,15 +124,15 @@ export function HomePage() {
             />
           </figure>
           <div className="sk-split-copy">
-            <p className="sk-kicker">Our story</p>
-            <h2 id="brand-story-title">A jewelry house created to express Costa Rican nature.</h2>
+            <p className="sk-kicker">Nuestra historia</p>
+            <h2 id="brand-story-title">Una casa joyera creada para expresar la naturaleza costarricense.</h2>
             <p>
-              Our beginnings took shape in Jaco in 2025 with the vision of transforming
-              the country natural richness into fine jewelry inspired by its flora and fauna.
+              Nuestros inicios tomaron forma en Jacó en 2025 con la visión de transformar
+              la riqueza natural del país en joyería fina inspirada en su flora y fauna.
             </p>
             <p>
-              Each collection represents elegance, sophistication, and the pride of reflecting a nation
-              recognized for its biodiversity and warmth.
+              Cada colección representa elegancia, sofisticación y el orgullo de reflejar una nación
+              reconocida por su biodiversidad y calidez.
             </p>
           </div>
         </div>
@@ -141,35 +141,35 @@ export function HomePage() {
       <section className="sk-section sk-section--muted" aria-labelledby="craft-title">
         <div className="sk-split sk-split--reverse">
           <div className="sk-split-copy">
-            <p className="sk-kicker">Our process</p>
-            <h2 id="craft-title">Every detail reflects the dedication of our artisans.</h2>
+            <p className="sk-kicker">Nuestro proceso</p>
+            <h2 id="craft-title">Cada detalle refleja la dedicación de nuestros artesanos.</h2>
             <p>
-              Each piece is crafted by fine jewelry specialists who combine
-              precision tools, noble materials, and artisanal techniques.
+              Cada pieza es elaborada por especialistas en joyería fina que combinan
+              herramientas de precisión, materiales nobles y técnicas artesanales.
             </p>
-            <div className="sk-stat-grid" aria-label="Artisanal process indicators">
+            <div className="sk-stat-grid" aria-label="Indicadores del proceso artesanal">
               <div className="sk-stat">
                 <strong>01</strong>
-                <span>Exclusive design</span>
+                <span>Diseño exclusivo</span>
               </div>
               <div className="sk-stat">
                 <strong>02</strong>
-                <span>Premium materials</span>
+                <span>Materiales premium</span>
               </div>
               <div className="sk-stat">
                 <strong>03</strong>
-                <span>Artisanal crafting</span>
+                <span>Elaboración artesanal</span>
               </div>
               <div className="sk-stat">
                 <strong>04</strong>
-                <span>Careful delivery</span>
+                <span>Entrega cuidadosa</span>
               </div>
             </div>
           </div>
           <figure className="sk-split-media">
             <img
               src="/assets/images/hero/skama-about-artisan.png"
-              alt="Artisan crafting a jewel with precision tools"
+              alt="Artesano elaborando una joya con herramientas de precisión"
               loading="lazy"
             />
           </figure>
@@ -179,8 +179,8 @@ export function HomePage() {
       <section className="sk-section" aria-labelledby="values-title">
         <div className="sk-container">
           <div className="sk-section-heading">
-            <p className="sk-kicker">SKAMA identity</p>
-            <h2 id="values-title">Quiet luxury, local roots, and personalized attention.</h2>
+            <p className="sk-kicker">Identidad SKAMA</p>
+            <h2 id="values-title">Lujo sobrio, raíces locales y atención personalizada.</h2>
           </div>
         </div>
         <div className="sk-feature-grid">
@@ -199,11 +199,11 @@ export function HomePage() {
       <section className="sk-section sk-section--muted" aria-labelledby="featured-title">
         <div className="sk-container">
           <div className="sk-section-heading">
-            <p className="sk-kicker">Featured selection</p>
-            <h2 id="featured-title">Pieces ready for memorable moments.</h2>
+            <p className="sk-kicker">Selección destacada</p>
+            <h2 id="featured-title">Piezas listas para momentos memorables.</h2>
             <p className="sk-lede">
-              A sample of the active collection. The frontend consumes the API when it is available
-              and keeps a local visual selection for the prototype.
+              Una muestra de la colección activa. El frontend consume la API cuando está disponible
+              y mantiene una selección visual local para el prototipo.
             </p>
           </div>
         </div>

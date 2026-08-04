@@ -1,0 +1,11 @@
+@model SelectViewModel
+
+<label class="sk-field" for="@Model.Id">
+    <span class="sk-field__label">@Model.Label</span>
+    <select class="sk-input sk-select" id="@Model.Id" name="@Model.Name" required="@Model.Required">
+        @foreach (var option in Model.Options)
+        {
+            <option value="@option.Value" selected="@option.Selected">@option.Label</option>
+        }
+    </select>
+</label>

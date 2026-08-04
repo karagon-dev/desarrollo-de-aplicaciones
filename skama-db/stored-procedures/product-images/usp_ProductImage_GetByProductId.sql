@@ -1,4 +1,4 @@
-CREATE PROCEDURE dbo.usp_ProductImage_GetByProductId
+﻿CREATE OR ALTER PROCEDURE dbo.usp_ProductImage_GetByProductId
     @ProductId UNIQUEIDENTIFIER
 AS
 BEGIN
@@ -16,3 +16,4 @@ BEGIN
     ORDER BY TB_IsMain DESC, TN_SortOrder ASC;
 END;
 GO
+

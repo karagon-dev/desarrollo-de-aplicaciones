@@ -1,4 +1,4 @@
-CREATE PROCEDURE dbo.usp_Inventory_GetLowStock
+﻿CREATE OR ALTER PROCEDURE dbo.usp_Inventory_GetLowStock
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -15,3 +15,4 @@ BEGIN
     ORDER BY TN_StockQuantity ASC;
 END;
 GO
+

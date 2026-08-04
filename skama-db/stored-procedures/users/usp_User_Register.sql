@@ -1,4 +1,4 @@
-CREATE PROCEDURE dbo.usp_User_Register
+﻿CREATE OR ALTER PROCEDURE dbo.usp_User_Register
     @RoleId INT,
     @Email NVARCHAR(150),
     @PasswordHash NVARCHAR(255),
@@ -40,3 +40,4 @@ BEGIN
     SET @ResultCode = 0; -- Success
 END;
 GO
+

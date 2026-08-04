@@ -1,4 +1,4 @@
-CREATE PROCEDURE dbo.usp_ProductImage_Insert
+﻿CREATE OR ALTER PROCEDURE dbo.usp_ProductImage_Insert
     @ProductId UNIQUEIDENTIFIER,
     @ImageUrl NVARCHAR(500),
     @AltText NVARCHAR(255) = NULL,
@@ -38,3 +38,4 @@ BEGIN
     );
 END;
 GO
+

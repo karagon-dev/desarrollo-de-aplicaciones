@@ -1,4 +1,4 @@
-CREATE PROCEDURE dbo.usp_CustomerProfile_InsertOrUpdate
+﻿CREATE OR ALTER PROCEDURE dbo.usp_CustomerProfile_InsertOrUpdate
     @UserId UNIQUEIDENTIFIER,
     @IdentificationNumber NVARCHAR(30),
     @FirstName NVARCHAR(100),
@@ -72,3 +72,4 @@ BEGIN
     SET @ResultCode = 0;
 END;
 GO
+

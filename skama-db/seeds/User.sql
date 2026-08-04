@@ -1,4 +1,4 @@
--- Development users (password: MiClave123)
+-- Usuarios de desarrollo (contraseña: MiClave123)
 -- ADMIN  -> admin@skama.com
 -- CUSTOMER -> customer@example.com
 

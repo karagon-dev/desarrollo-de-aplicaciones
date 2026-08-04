@@ -1,0 +1,6 @@
+@model TextareaViewModel
+
+<label class="sk-field" for="@Model.Id">
+    <span class="sk-field__label">@Model.Label</span>
+    <textarea class="sk-input sk-input--textarea" id="@Model.Id" name="@Model.Name" rows="@Model.Rows" placeholder="@Model.Placeholder" required="@Model.Required">@Model.Value</textarea>
+</label>

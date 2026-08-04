@@ -1,4 +1,4 @@
--- Development active carts
+-- Carritos activos de desarrollo
 
 IF NOT EXISTS (SELECT 1 FROM Cart WHERE TID_Id = 'a1b2c3d4-e5f6-7890-abcd-ef12345678901')
 BEGIN

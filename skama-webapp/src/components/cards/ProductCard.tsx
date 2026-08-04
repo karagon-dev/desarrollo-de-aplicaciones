@@ -46,9 +46,9 @@ export function ProductCard({
     setIsAdding(true);
     try {
       await addItem(id, 1);
-      toast.success('Added to cart.');
+      toast.success('Agregado al carrito.');
     } catch (err) {
-      toast.error(getApiErrorMessage(err, 'Could not add to cart.'));
+      toast.error(getApiErrorMessage(err, 'No se pudo agregar al carrito.'));
     } finally {
       setIsAdding(false);
     }
@@ -64,7 +64,7 @@ export function ProductCard({
     try {
       await toggleFavorite(id);
     } catch (err) {
-      toast.error(getApiErrorMessage(err, 'Could not update favorites.'));
+      toast.error(getApiErrorMessage(err, 'No se pudieron actualizar los favoritos.'));
     } finally {
       setIsToggling(false);
     }
@@ -114,7 +114,7 @@ export function ProductCard({
               fontSize: '0.875rem',
             }}
           >
-            No image
+            Sin imagen
           </Box>
         )}
       </Box>
@@ -144,12 +144,12 @@ export function ProductCard({
         </Typography>
         <Box sx={{ display: 'flex', gap: tokens.spacing.sm, mt: tokens.spacing.sm }}>
           <Button size="sm" onClick={() => void handleAddToCart()} disabled={isAdding} sx={{ flex: 1 }}>
-            {isAdding ? '...' : 'Add'}
+            {isAdding ? '...' : 'Agregar'}
           </Button>
           <Button
             size="sm"
             variant="outline"
-            aria-label={favorited ? 'Remove from favorites' : 'Add to favorites'}
+            aria-label={favorited ? 'Quitar de favoritos' : 'Agregar a favoritos'}
             disabled={isToggling}
             onClick={() => void handleToggleFavorite()}
           >

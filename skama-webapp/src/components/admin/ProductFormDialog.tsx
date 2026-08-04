@@ -94,14 +94,14 @@ export function ProductFormDialog({
     <Dialog
       open={open}
       onClose={onClose}
-      title={isEditing ? 'Edit product' : 'New product'}
+      title={isEditing ? 'Editar producto' : 'Nuevo producto'}
       actions={
         <>
           <Button variant="ghost" onClick={onClose} disabled={saving}>
-            Cancel
+            Cancelar
           </Button>
           <Button type="submit" form="product-form" disabled={saving}>
-            {saving ? 'Saving...' : 'Save'}
+            {saving ? 'Guardando...' : 'Guardar'}
           </Button>
         </>
       }
@@ -113,7 +113,7 @@ export function ProductFormDialog({
         sx={{ display: 'flex', flexDirection: 'column', gap: tokens.spacing.md, pt: 1 }}
       >
         <Select
-          label="Category"
+          label="Categoría"
           options={categoryOptions}
           value={form.categoryId}
           required
@@ -122,13 +122,13 @@ export function ProductFormDialog({
           }
         />
         <Input
-          label="First name"
+          label="Nombre"
           required
           value={form.name}
           onChange={(event) => setForm((current) => ({ ...current, name: event.target.value }))}
         />
         <TextArea
-          label="Description"
+          label="Descripción"
           rows={3}
           value={form.description}
           onChange={(event) =>
@@ -138,7 +138,7 @@ export function ProductFormDialog({
         <Grid container spacing={2}>
           <Grid size={{ xs: 12, sm: 4 }}>
             <Input
-              label="Price"
+              label="Precio"
               type="number"
               required
               value={form.price}
@@ -147,7 +147,7 @@ export function ProductFormDialog({
           </Grid>
           <Grid size={{ xs: 12, sm: 4 }}>
             <Input
-              label="Stock"
+              label="Inventario"
               type="number"
               required
               value={form.stockQuantity}
@@ -158,7 +158,7 @@ export function ProductFormDialog({
           </Grid>
           <Grid size={{ xs: 12, sm: 4 }}>
             <Input
-              label="Minimum stock"
+              label="Inventario mínimo"
               type="number"
               required
               value={form.minimumStock}
@@ -170,7 +170,7 @@ export function ProductFormDialog({
         </Grid>
         {isEditing && (
           <Checkbox
-            label="Product activo"
+            label="Producto activo"
             checked={form.isActive}
             onChange={(event) =>
               setForm((current) => ({ ...current, isActive: event.target.checked }))

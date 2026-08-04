@@ -1,0 +1,7 @@
+@model ChoiceViewModel
+
+<label class="sk-choice" for="@Model.Id">
+    <input id="@Model.Id" name="@Model.Name" type="@Model.Type" value="@Model.Value" checked="@Model.Checked" />
+    <span class="sk-choice__control" aria-hidden="true"></span>
+    <span class="sk-choice__label">@Model.Label</span>
+</label>

@@ -44,7 +44,7 @@ public class ProductImagesController : ControllerBase
             {
                 return NotFound(new ProblemDetails
                 {
-                    Title = "Product not found",
+                    Title = "Producto no encontrado",
                     Detail = error,
                     Status = StatusCodes.Status404NotFound
                 });
@@ -52,7 +52,7 @@ public class ProductImagesController : ControllerBase
 
             return BadRequest(new ProblemDetails
             {
-                Title = "Could not upload product image",
+                Title = "No se pudo subir la imagen del producto",
                 Detail = error,
                 Status = StatusCodes.Status400BadRequest
             });
@@ -82,7 +82,7 @@ public class ProductImagesController : ControllerBase
             {
                 return NotFound(new ProblemDetails
                 {
-                    Title = "Product image not found",
+                    Title = "Imagen del producto no encontrada",
                     Detail = error,
                     Status = StatusCodes.Status404NotFound
                 });
@@ -90,7 +90,7 @@ public class ProductImagesController : ControllerBase
 
             return BadRequest(new ProblemDetails
             {
-                Title = "Could not update product image",
+                Title = "No se pudo actualizar la imagen del producto",
                 Detail = error,
                 Status = StatusCodes.Status400BadRequest
             });
@@ -110,7 +110,7 @@ public class ProductImagesController : ControllerBase
         {
             return NotFound(new ProblemDetails
             {
-                Title = "Product image not found",
+                Title = "Imagen del producto no encontrada",
                 Detail = error,
                 Status = StatusCodes.Status404NotFound
             });
@@ -130,7 +130,7 @@ public class ProductImagesController : ControllerBase
         {
             return NotFound(new ProblemDetails
             {
-                Title = "Product image not found",
+                Title = "Imagen del producto no encontrada",
                 Detail = error,
                 Status = StatusCodes.Status404NotFound
             });

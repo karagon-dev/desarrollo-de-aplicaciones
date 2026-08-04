@@ -51,9 +51,9 @@ export function ProductDetailPage() {
         addLocalCartItem(displayProduct, 1);
       }
 
-      toast.success('Added to order.');
+      toast.success('Agregado a la orden.');
     } catch (error) {
-      toast.error(getApiErrorMessage(error, 'Could not add to order.'));
+      toast.error(getApiErrorMessage(error, 'No se pudo agregar a la orden.'));
     } finally {
       setIsAdding(false);
     }
@@ -61,7 +61,7 @@ export function ProductDetailPage() {
 
   async function handleToggleFavorite() {
     if (!displayProduct?.backendProductId || !isAuthenticated) {
-      toast.info('Sign in to sync your favorites.');
+      toast.info('Inicia sesión para sincronizar tus favoritos.');
       navigate(ROUTES.login, { state: { from: productId ? ROUTES.productDetail(productId) : ROUTES.catalog } });
       return;
     }
@@ -69,9 +69,9 @@ export function ProductDetailPage() {
     setIsTogglingFavorite(true);
     try {
       await toggleFavorite(displayProduct.backendProductId);
-      toast.success('Favorites updated.');
+      toast.success('Favoritos actualizados.');
     } catch (error) {
-      toast.error(getApiErrorMessage(error, 'Could not update favorites.'));
+      toast.error(getApiErrorMessage(error, 'No se pudieron actualizar los favoritos.'));
     } finally {
       setIsTogglingFavorite(false);
     }
@@ -81,7 +81,7 @@ export function ProductDetailPage() {
     return (
       <div className="sk-container sk-section">
         <div className="sk-empty-state">
-          <h1>Loading product...</h1>
+          <h1>Cargando producto...</h1>
         </div>
       </div>
     );
@@ -91,10 +91,10 @@ export function ProductDetailPage() {
     return (
       <div className="sk-container sk-section">
         <div className="sk-empty-state">
-          <p className="sk-kicker">Product unavailable</p>
-          <h1>We could not find this piece.</h1>
+          <p className="sk-kicker">Producto no disponible</p>
+          <h1>No pudimos encontrar esta pieza.</h1>
           <RouterLink className="sk-button sk-button--primary" to={ROUTES.catalog}>
-            Back to collections
+            Volver a colecciones
           </RouterLink>
         </div>
       </div>
@@ -120,11 +120,11 @@ export function ProductDetailPage() {
           <div className="sk-stat-grid">
             <div className="sk-stat">
               <strong>{displayProduct.stockQuantity}</strong>
-              <span>Available</span>
+              <span>Disponible</span>
             </div>
             <div className="sk-stat">
               <strong>{displayProduct.ratingLabel}</strong>
-              <span>Rating</span>
+              <span>Calificación</span>
             </div>
             <div className="sk-stat">
               <strong>{displayProduct.material}</strong>
@@ -132,13 +132,13 @@ export function ProductDetailPage() {
             </div>
             <div className="sk-stat">
               <strong>{displayProduct.categoryName}</strong>
-              <span>Type</span>
+              <span>Tipo</span>
             </div>
           </div>
           <ul className="sk-detail-list">
-            <li>Design inspired by Costa Rican nature.</li>
-            <li>Polished finishes for an elegant and timeless presence.</li>
-            <li>Purchase coordinated by WhatsApp with validated delivery details.</li>
+            <li>Diseño inspirado en la naturaleza costarricense.</li>
+            <li>Acabados pulidos para una presencia elegante y atemporal.</li>
+            <li>Compra coordinada por WhatsApp con datos de entrega validados.</li>
           </ul>
           <div className="sk-actions">
             <button
@@ -148,7 +148,7 @@ export function ProductDetailPage() {
               onClick={() => void handleAddToCart()}
             >
               <ShoppingBagOutlinedIcon fontSize="small" />
-              {isAdding ? 'Adding...' : 'Add to order'}
+              {isAdding ? 'Agregando...' : 'Agregar a la orden'}
             </button>
             <button
               className="sk-button sk-button--secondary sk-button--lg"
@@ -157,7 +157,7 @@ export function ProductDetailPage() {
               onClick={() => void handleToggleFavorite()}
             >
               <FavoriteBorderIcon fontSize="small" />
-              Favorites
+              Favoritos
             </button>
           </div>
         </article>

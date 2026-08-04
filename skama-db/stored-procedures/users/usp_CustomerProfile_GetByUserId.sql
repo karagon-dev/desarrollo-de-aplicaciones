@@ -1,4 +1,4 @@
-CREATE PROCEDURE dbo.usp_CustomerProfile_GetByUserId
+﻿CREATE OR ALTER PROCEDURE dbo.usp_CustomerProfile_GetByUserId
     @UserId UNIQUEIDENTIFIER
 AS
 BEGIN
@@ -18,3 +18,4 @@ BEGIN
     WHERE TID_UserId = @UserId;
 END;
 GO
+

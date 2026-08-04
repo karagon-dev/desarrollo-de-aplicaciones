@@ -1,4 +1,4 @@
-CREATE PROCEDURE dbo.usp_Category_Update
+﻿CREATE OR ALTER PROCEDURE dbo.usp_Category_Update
     @Id UNIQUEIDENTIFIER,
     @Name NVARCHAR(100),
     @Description NVARCHAR(255) = NULL,
@@ -19,3 +19,4 @@ BEGIN
     SET @RowsAffected = @@ROWCOUNT;
 END;
 GO
+

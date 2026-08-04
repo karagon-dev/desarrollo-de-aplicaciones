@@ -1,4 +1,4 @@
--- Inventory history (audit only; does not modify TN_StockQuantity in Product)
+-- Historial de inventario (solo auditoría; no modifica TN_StockQuantity en Product)
 
 IF NOT EXISTS (SELECT 1 FROM InventoryMovement WHERE TID_Id = 'f6a7b8c9-d0e1-2345-f012-456789012345')
 BEGIN

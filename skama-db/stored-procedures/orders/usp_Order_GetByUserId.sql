@@ -1,4 +1,4 @@
-CREATE PROCEDURE dbo.usp_Order_GetByUserId
+﻿CREATE OR ALTER PROCEDURE dbo.usp_Order_GetByUserId
     @UserId UNIQUEIDENTIFIER
 AS
 BEGIN
@@ -21,3 +21,4 @@ BEGIN
     ORDER BY TD_CreatedAt DESC;
 END;
 GO
+

@@ -1,4 +1,4 @@
-CREATE PROCEDURE dbo.usp_Order_Cancel
+﻿CREATE OR ALTER PROCEDURE dbo.usp_Order_Cancel
     @OrderId UNIQUEIDENTIFIER,
     @RowsAffected INT OUTPUT,
     @ResultCode INT OUTPUT
@@ -42,3 +42,4 @@ BEGIN
     SET @ResultCode = 0;
 END;
 GO
+

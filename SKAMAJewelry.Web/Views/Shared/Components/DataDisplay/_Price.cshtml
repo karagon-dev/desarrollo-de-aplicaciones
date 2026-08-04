@@ -1,0 +1,6 @@
+@model PriceViewModel
+
+<span class="sk-price" aria-label="Precio @Model.Currency @Model.Amount.ToString("N0")">
+    <span class="sk-price__currency">@Model.Currency</span>
+    <span class="sk-price__amount">@Model.Amount.ToString("N0")</span>
+</span>

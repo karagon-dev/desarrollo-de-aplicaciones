@@ -1,4 +1,4 @@
-CREATE PROCEDURE dbo.usp_Cart_GetActiveByUserId
+﻿CREATE OR ALTER PROCEDURE dbo.usp_Cart_GetActiveByUserId
     @UserId UNIQUEIDENTIFIER
 AS
 BEGIN
@@ -15,3 +15,4 @@ BEGIN
       AND TC_Status = 'ACTIVE';
 END;
 GO
+

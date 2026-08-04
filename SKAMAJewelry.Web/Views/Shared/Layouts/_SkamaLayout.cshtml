@@ -1,0 +1,111 @@
+﻿<!doctype html>
+<html lang="es-CR" data-theme="light">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <title>@ViewData["Title"] - SKAMA Jewelry</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="~/assets/css/tokens.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/assets/css/themes.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/assets/css/base.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/assets/css/components.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/assets/css/utilities.css" asp-append-version="true" />
+</head>
+<body data-user-authenticated="@((User.Identity?.IsAuthenticated ?? false).ToString().ToLowerInvariant())">
+    <a class="skip-link" href="#main-content">Saltar al contenido</a>
+    <partial name="~/Views/Shared/Components/Navigation/_Navbar.cshtml" />
+    @{
+        var currentPath = Context.Request.Path.Value?.TrimEnd('/').ToLowerInvariant();
+        if (string.IsNullOrWhiteSpace(currentPath))
+        {
+            currentPath = "/";
+        }
+
+        var currentNavKey = currentPath switch
+        {
+            "/" => "home",
+            "/catalog" or "/collections" => "catalog",
+            "/destacados" => "favorites",
+            "/admin/orders" => "sales",
+            "/checkout" => "order",
+            "/auth/login" => "account",
+            _ => string.Empty
+        };
+
+        string MobileAriaCurrent(string key) => currentNavKey == key ? " aria-current=\"page\"" : string.Empty;
+
+        var homeCurrent = MobileAriaCurrent("home");
+        var catalogCurrent = MobileAriaCurrent("catalog");
+        var favoritesCurrent = MobileAriaCurrent("favorites");
+        var salesCurrent = MobileAriaCurrent("sales");
+        var orderCurrent = MobileAriaCurrent("order");
+        var accountCurrent = MobileAriaCurrent("account");
+        var mobileNavigation =
+            "<nav class=\"sk-drawer-nav\" aria-label=\"Navegación móvil\">" +
+            $"<a href=\"/\"{homeCurrent}>Inicio</a>" +
+            $"<a href=\"/collections\"{catalogCurrent}>Colecciones</a>" +
+            $"<a href=\"/destacados\"{favoritesCurrent}>Destacados</a>" +
+            $"<a href=\"/admin/orders\"{salesCurrent}>Ventas</a>" +
+            $"<a href=\"/checkout\"{orderCurrent}>Pedido</a>" +
+            $"<a href=\"/auth/login\"{accountCurrent}>Cuenta</a>" +
+            "</nav>";
+    }
+    <partial name="~/Views/Shared/Components/Overlays/_Drawer.cshtml" model='new OverlayViewModel("main-menu", "Menú principal", mobileNavigation)' />
+    <partial name="~/Views/Shared/Components/Commerce/_CartDrawer.cshtml" />
+    <dialog class="sk-modal catalog-product-dialog" id="catalog-product-detail" aria-labelledby="catalog-product-detail-title" data-modal data-product-detail-modal>
+        <button class="sk-icon-button sk-icon-button--sm" type="button" aria-label="Cerrar" data-modal-close>
+            <span class="sk-icon" aria-hidden="true" data-icon="x"></span>
+        </button>
+        <div class="catalog-product-detail">
+            <img src="" alt="" data-product-detail-image />
+            <div class="catalog-product-detail__copy">
+                <h2 id="catalog-product-detail-title" data-product-detail-name></h2>
+                <div class="catalog-product-detail__meta">
+                    <p class="catalog-product-detail__price" data-product-detail-price></p>
+                    <p class="catalog-product-detail__stock" data-product-detail-stock></p>
+                    <p data-product-detail-description></p>
+                </div>
+                <button class="sk-button sk-button--primary sk-button--lg" type="button" data-product-detail-add>Agregar al pedido</button>
+            </div>
+        </div>
+    </dialog>
+    <dialog class="sk-modal" id="catalog-add-product" aria-labelledby="catalog-add-product-title" data-modal data-product-add-modal>
+        <button class="sk-icon-button sk-icon-button--sm" type="button" aria-label="Cerrar" data-modal-close>
+            <span class="sk-icon" aria-hidden="true" data-icon="x"></span>
+        </button>
+        <form class="catalog-add-form" method="dialog" data-product-add-form>
+            <p class="catalog-kicker">Agregar joya</p>
+            <h2 id="catalog-add-product-title" data-product-add-name></h2>
+            <p data-product-add-summary></p>
+            <p data-product-add-stock></p>
+            <label class="sk-field" for="catalog-product-quantity">
+                <span class="sk-field__label">Cantidad</span>
+                <input class="sk-input" id="catalog-product-quantity" name="quantity" type="number" min="1" max="12" value="1" data-product-add-quantity />
+            </label>
+            <button class="sk-button sk-button--primary sk-button--lg" type="submit">Agregar selección</button>
+        </form>
+    </dialog>
+    <dialog class="sk-modal sk-exclusive-modal" id="limited-access-required" aria-labelledby="limited-access-required-title" data-modal data-limited-access-modal>
+        <button class="sk-icon-button sk-icon-button--sm" type="button" aria-label="Cerrar" data-modal-close>
+            <span class="sk-icon" aria-hidden="true" data-icon="x"></span>
+        </button>
+        <div class="sk-exclusive-modal__content">
+            <p class="catalog-kicker">Edición limitada</p>
+            <h2 id="limited-access-required-title">Inicia sesión para comprar piezas exclusivas.</h2>
+            <p>Para gestionar la compra de productos exclusivos necesitamos mayor información del cliente. Crea una cuenta o inicia sesión con nosotros para continuar.</p>
+            <div class="sk-exclusive-modal__actions">
+                <partial name="~/Views/Shared/Components/Buttons/_Button.cshtml" model='new ButtonViewModel("Iniciar sesión", "primary", "md", "/auth/login")' />
+                <partial name="~/Views/Shared/Components/Buttons/_Button.cshtml" model='new ButtonViewModel("Crear cuenta", "secondary", "md", "/auth/register")' />
+            </div>
+        </div>
+    </dialog>
+    <main id="main-content" tabindex="-1">
+        @RenderBody()
+    </main>
+    <partial name="~/Views/Shared/Components/Navigation/_Footer.cshtml" />
+    <div class="toast-region" data-toast-region aria-live="polite" aria-atomic="true"></div>
+    <script src="~/assets/js/skama-ui.js" asp-append-version="true" defer></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

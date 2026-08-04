@@ -38,7 +38,7 @@ public class PromotionsController : ControllerBase
         {
             return BadRequest(new ProblemDetails
             {
-                Title = "Promotion validation failed",
+                Title = "Validación de promoción fallida",
                 Detail = error,
                 Status = StatusCodes.Status400BadRequest
             });
@@ -63,14 +63,14 @@ public class PromotionsController : ControllerBase
             if (resultCode == 1)
                 return NotFound(new ProblemDetails
                 {
-                    Title = "Promotion not found",
+                Title = "Promocion no encontrada",
                     Detail = error,
                     Status = StatusCodes.Status404NotFound
                 });
 
             return BadRequest(new ProblemDetails
             {
-                Title = "Promotion validation failed",
+                Title = "Validación de promoción fallida",
                 Detail = error,
                 Status = StatusCodes.Status400BadRequest
             });
@@ -90,7 +90,7 @@ public class PromotionsController : ControllerBase
         {
             return Conflict(new ProblemDetails
             {
-                Title = "Product already assigned",
+                Title = "Producto ya asignado",
                 Detail = error,
                 Status = StatusCodes.Status409Conflict
             });
@@ -110,7 +110,7 @@ public class PromotionsController : ControllerBase
         {
             return NotFound(new ProblemDetails
             {
-                Title = "Assignment not found",
+                Title = "Asignacion no encontrada",
                 Detail = "No se encontró la asignación de producto a la promoción.",
                 Status = StatusCodes.Status404NotFound
             });

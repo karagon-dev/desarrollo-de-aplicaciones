@@ -1,4 +1,4 @@
-CREATE PROCEDURE dbo.usp_Product_Insert
+﻿CREATE OR ALTER PROCEDURE dbo.usp_Product_Insert
     @CategoryId UNIQUEIDENTIFIER,
     @Name NVARCHAR(150),
     @Description NVARCHAR(500) = NULL,
@@ -40,3 +40,4 @@ BEGIN
     );
 END;
 GO
+

@@ -1,4 +1,4 @@
-CREATE PROCEDURE dbo.usp_Order_UpdateStatus
+﻿CREATE OR ALTER PROCEDURE dbo.usp_Order_UpdateStatus
     @OrderId UNIQUEIDENTIFIER,
     @Status NVARCHAR(30),
     @RowsAffected INT OUTPUT,
@@ -30,3 +30,4 @@ BEGIN
     SET @ResultCode = 0;
 END;
 GO
+

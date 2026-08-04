@@ -1,4 +1,4 @@
-CREATE PROCEDURE dbo.usp_User_UpdateStatus
+﻿CREATE OR ALTER PROCEDURE dbo.usp_User_UpdateStatus
     @Id UNIQUEIDENTIFIER,
     @IsActive BIT,
     @RowsAffected INT OUTPUT
@@ -15,3 +15,4 @@ BEGIN
     SET @RowsAffected = @@ROWCOUNT;
 END;
 GO
+

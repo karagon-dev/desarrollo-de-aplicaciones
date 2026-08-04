@@ -1,4 +1,4 @@
-CREATE PROCEDURE dbo.usp_ProductImage_Update
+﻿CREATE OR ALTER PROCEDURE dbo.usp_ProductImage_Update
     @Id UNIQUEIDENTIFIER,
     @ImageUrl NVARCHAR(500),
     @AltText NVARCHAR(255) = NULL,
@@ -33,3 +33,4 @@ BEGIN
     SET @RowsAffected = @@ROWCOUNT;
 END;
 GO
+

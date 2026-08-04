@@ -1,4 +1,4 @@
-CREATE PROCEDURE dbo.usp_Promotion_Update
+﻿CREATE OR ALTER PROCEDURE dbo.usp_Promotion_Update
     @Id UNIQUEIDENTIFIER,
     @Name NVARCHAR(150),
     @Description NVARCHAR(500) = NULL,
@@ -40,3 +40,4 @@ BEGIN
     SET @ResultCode = 0;
 END;
 GO
+

@@ -1,4 +1,4 @@
-CREATE PROCEDURE dbo.usp_Product_GetById
+﻿CREATE OR ALTER PROCEDURE dbo.usp_Product_GetById
     @Id UNIQUEIDENTIFIER
 AS
 BEGIN
@@ -21,3 +21,4 @@ BEGIN
     WHERE P.TID_Id = @Id;
 END;
 GO
+

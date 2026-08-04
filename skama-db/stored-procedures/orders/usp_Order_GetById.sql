@@ -1,4 +1,4 @@
-CREATE PROCEDURE dbo.usp_Order_GetById
+﻿CREATE OR ALTER PROCEDURE dbo.usp_Order_GetById
     @OrderId UNIQUEIDENTIFIER
 AS
 BEGIN
@@ -20,3 +20,4 @@ BEGIN
     WHERE TID_Id = @OrderId;
 END;
 GO
+

@@ -1,4 +1,4 @@
-CREATE PROCEDURE dbo.usp_Category_Insert
+﻿CREATE OR ALTER PROCEDURE dbo.usp_Category_Insert
     @Name NVARCHAR(100),
     @Description NVARCHAR(255) = NULL,
     @NewId UNIQUEIDENTIFIER OUTPUT
@@ -28,3 +28,4 @@ BEGIN
     );
 END;
 GO
+

@@ -29,7 +29,7 @@ public class ReportsController : ControllerBase
         {
             return BadRequest(new ProblemDetails
             {
-                Title = "Invalid report parameters",
+                Title = "Parámetros de reporte inválidos",
                 Detail = error,
                 Status = StatusCodes.Status400BadRequest
             });
@@ -51,7 +51,7 @@ public class ReportsController : ControllerBase
         {
             return BadRequest(new ProblemDetails
             {
-                Title = "Invalid report parameters",
+                Title = "Parámetros de reporte inválidos",
                 Detail = error,
                 Status = StatusCodes.Status400BadRequest
             });
@@ -74,7 +74,7 @@ public class ReportsController : ControllerBase
         {
             return BadRequest(new ProblemDetails
             {
-                Title = "Invalid report parameters",
+                Title = "Parámetros de reporte inválidos",
                 Detail = error,
                 Status = StatusCodes.Status400BadRequest
             });

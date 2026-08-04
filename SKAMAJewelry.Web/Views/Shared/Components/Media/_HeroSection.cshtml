@@ -1,0 +1,9 @@
+@model HeroSectionViewModel
+
+<section class="sk-hero" style="--hero-image:url('@Model.ImageUrl')">
+    <div class="sk-hero__content">
+        <p>@Model.Kicker</p>
+        <h1>@Model.Title</h1>
+        <span>@Model.Description</span>
+    </div>
+</section>

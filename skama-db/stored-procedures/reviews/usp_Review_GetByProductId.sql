@@ -1,4 +1,4 @@
-CREATE PROCEDURE dbo.usp_Review_GetByProductId
+﻿CREATE OR ALTER PROCEDURE dbo.usp_Review_GetByProductId
     @ProductId UNIQUEIDENTIFIER
 AS
 BEGIN
@@ -17,3 +17,4 @@ BEGIN
     ORDER BY R.TD_CreatedAt DESC;
 END;
 GO
+

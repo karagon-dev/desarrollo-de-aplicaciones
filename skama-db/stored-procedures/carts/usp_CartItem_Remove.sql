@@ -1,4 +1,4 @@
-CREATE PROCEDURE dbo.usp_CartItem_Remove
+﻿CREATE OR ALTER PROCEDURE dbo.usp_CartItem_Remove
     @CartItemId UNIQUEIDENTIFIER,
     @RowsAffected INT OUTPUT,
     @ResultCode INT OUTPUT
@@ -32,3 +32,4 @@ BEGIN
     SET @ResultCode = 0;
 END;
 GO
+

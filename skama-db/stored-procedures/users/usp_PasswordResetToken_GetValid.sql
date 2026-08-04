@@ -1,4 +1,4 @@
-CREATE PROCEDURE dbo.usp_PasswordResetToken_GetValid
+﻿CREATE OR ALTER PROCEDURE dbo.usp_PasswordResetToken_GetValid
     @TokenHash NVARCHAR(255)
 AS
 BEGIN
@@ -17,3 +17,4 @@ BEGIN
       AND TD_ExpiresAt > SYSDATETIME();
 END;
 GO
+

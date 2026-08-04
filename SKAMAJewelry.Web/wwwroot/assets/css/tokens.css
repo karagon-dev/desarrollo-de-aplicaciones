@@ -1,0 +1,123 @@
+:root {
+    --brand-white: #ffffff;
+    --brand-black: #000000;
+    --brand-ivory-50: #fdfbf7;
+    --brand-ivory-100: #f7f0e4;
+    --brand-ivory-200: #eadfcf;
+    --brand-emerald-700: #16483d;
+    --brand-emerald-800: #0f352f;
+    --brand-emerald-900: #09241f;
+    --brand-gold-300: #e8d299;
+    --brand-gold-400: #d6b76a;
+    --brand-gold-500: #b8924a;
+    --brand-gold-600: #8f6f31;
+    --brand-charcoal-700: #2a2520;
+    --brand-charcoal-800: #171412;
+    --brand-neutral-500: #81766c;
+    --brand-neutral-600: #5f574f;
+    --brand-neutral-300: #a89f96;
+    --brand-ruby-500: #8d2f3f;
+    --brand-ruby-300: #d78a96;
+    --brand-amber-500: #a86e24;
+    --brand-amber-300: #e0b068;
+    --brand-sage-500: #6f8f7f;
+    --brand-sage-300: #7fc9ad;
+    --brand-sapphire-500: #294f7a;
+    --brand-sapphire-300: #8bb4de;
+    --alpha-0: 0;
+    --alpha-1: 0.04;
+    --alpha-2: 0.08;
+    --alpha-3: 0.12;
+    --alpha-4: 0.18;
+    --alpha-5: 0.28;
+    --alpha-6: 0.42;
+    --alpha-7: 0.68;
+
+    --font-family-base: "Inter", "Segoe UI", Arial, sans-serif;
+    --font-family-display: "Cormorant Garamond", Georgia, serif;
+    --font-family-price: "Inter", "Segoe UI", Arial, sans-serif;
+    --font-size-caption: clamp(0.7rem, 0.68rem + 0.08vw, 0.75rem);
+    --font-size-small: clamp(0.78rem, 0.75rem + 0.12vw, 0.875rem);
+    --font-size-body: clamp(0.95rem, 0.91rem + 0.16vw, 1rem);
+    --font-size-body-lg: clamp(1.05rem, 1rem + 0.22vw, 1.18rem);
+    --font-size-subtitle: clamp(1.18rem, 1.08rem + 0.48vw, 1.45rem);
+    --font-size-heading-4: clamp(1.25rem, 1.12rem + 0.62vw, 1.65rem);
+    --font-size-heading-3: clamp(1.48rem, 1.26rem + 0.95vw, 2rem);
+    --font-size-heading-2: clamp(1.85rem, 1.5rem + 1.45vw, 2.75rem);
+    --font-size-heading-1: clamp(2.35rem, 1.7rem + 2.85vw, 4.4rem);
+    --font-size-display-lg: clamp(3rem, 2.1rem + 4vw, 6rem);
+    --font-size-display-xl: clamp(3.8rem, 2.4rem + 6vw, 8rem);
+    --font-size-price: clamp(1.1rem, 1.02rem + 0.32vw, 1.32rem);
+    --font-size-badge: 0.72rem;
+    --font-size-button: 0.86rem;
+    --font-size-label: 0.82rem;
+    --font-size-navigation: clamp(0.84rem, 0.76rem + 0.32vw, 1.08rem);
+    --font-size-xs: var(--font-size-caption);
+    --font-size-sm: var(--font-size-small);
+    --font-size-md: var(--font-size-body);
+    --font-size-lg: var(--font-size-body-lg);
+    --font-size-xl: var(--font-size-heading-4);
+    --font-size-2xl: var(--font-size-heading-3);
+    --font-size-3xl: var(--font-size-heading-2);
+    --font-size-4xl: var(--font-size-heading-1);
+    --line-height-tight: 1;
+    --line-height-heading: 1.08;
+    --line-height-body: 1.55;
+    --letter-spacing-label: 0.06em;
+    --letter-spacing-navigation: 0.03em;
+    --font-weight-regular: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+
+    --space-0: 0;
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-5: 1.5rem;
+    --space-6: 2rem;
+    --space-7: 3rem;
+    --space-8: 4rem;
+    --space-9: 6rem;
+    --space-10: 8rem;
+
+    --radius-xs: 0.125rem;
+    --radius-sm: 0.25rem;
+    --radius-md: 0.5rem;
+    --radius-lg: 0.75rem;
+    --radius-xl: 1rem;
+    --radius-full: 999px;
+
+    --shadow-xs: 0 0.0625rem 0.125rem var(--shadow-color);
+    --shadow-sm: 0 0.35rem 1rem var(--shadow-color);
+    --shadow-md: 0 0.75rem 1.75rem var(--shadow-color);
+    --shadow-lg: 0 1.25rem 3rem var(--shadow-color-strong);
+    --shadow-focus: 0 0 0 0.2rem var(--color-focus);
+
+    --duration-instant: 90ms;
+    --duration-fast: 180ms;
+    --duration-normal: 240ms;
+    --duration-slow: 300ms;
+    --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+    --ease-luxury: cubic-bezier(0.16, 1, 0.3, 1);
+
+    --container-sm: 40rem;
+    --container-md: 56rem;
+    --container-lg: 72rem;
+    --container-xl: 88rem;
+
+    --breakpoint-sm: 36rem;
+    --breakpoint-md: 48rem;
+    --breakpoint-lg: 64rem;
+    --breakpoint-xl: 80rem;
+
+    --icon-sm: 1rem;
+    --icon-md: 1.25rem;
+    --icon-lg: 1.5rem;
+    --icon-xl: 2rem;
+
+    --control-sm: 2.25rem;
+    --control-md: 2.875rem;
+    --control-lg: 3.375rem;
+}

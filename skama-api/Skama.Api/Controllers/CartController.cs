@@ -34,7 +34,7 @@ public class CartController : ControllerBase
         if (cart is null)
             return NotFound(new ProblemDetails
             {
-                Title = "Active cart not found",
+                Title = "Carrito activo no encontrado",
                 Detail = $"El usuario {userId} no tiene un carrito activo.",
                 Status = StatusCodes.Status404NotFound
             });
@@ -52,7 +52,7 @@ public class CartController : ControllerBase
         if (detail is null)
             return NotFound(new ProblemDetails
             {
-                Title = "Cart not found",
+                Title = "Carrito no encontrado",
                 Detail = $"No se encontró el carrito con Id {cartId}.",
                 Status = StatusCodes.Status404NotFound
             });
@@ -74,7 +74,7 @@ public class CartController : ControllerBase
         {
             return BadRequest(new ProblemDetails
             {
-                Title = "Could not add item to cart",
+                Title = "No se pudo agregar el producto al carrito",
                 Detail = error,
                 Status = StatusCodes.Status400BadRequest
             });
@@ -99,14 +99,14 @@ public class CartController : ControllerBase
             if (resultCode == 30)
                 return NotFound(new ProblemDetails
                 {
-                    Title = "Cart item not found",
+                    Title = "Producto del carrito no encontrado",
                     Detail = error,
                     Status = StatusCodes.Status404NotFound
                 });
 
             return BadRequest(new ProblemDetails
             {
-                Title = "Could not update item quantity",
+                Title = "No se pudo actualizar la cantidad del producto",
                 Detail = error,
                 Status = StatusCodes.Status400BadRequest
             });
@@ -126,7 +126,7 @@ public class CartController : ControllerBase
         {
             return NotFound(new ProblemDetails
             {
-                Title = "Cart item not found",
+                Title = "Producto del carrito no encontrado",
                 Detail = error,
                 Status = StatusCodes.Status404NotFound
             });

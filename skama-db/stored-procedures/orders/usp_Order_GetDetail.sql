@@ -1,4 +1,4 @@
-CREATE PROCEDURE dbo.usp_Order_GetDetail
+﻿CREATE OR ALTER PROCEDURE dbo.usp_Order_GetDetail
     @OrderId UNIQUEIDENTIFIER
 AS
 BEGIN
@@ -33,3 +33,4 @@ BEGIN
     ORDER BY TC_ProductName;
 END;
 GO
+

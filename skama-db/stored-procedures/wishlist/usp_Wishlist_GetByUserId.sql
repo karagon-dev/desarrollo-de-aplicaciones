@@ -1,4 +1,4 @@
-CREATE PROCEDURE dbo.usp_Wishlist_GetByUserId
+﻿CREATE OR ALTER PROCEDURE dbo.usp_Wishlist_GetByUserId
     @UserId UNIQUEIDENTIFIER
 AS
 BEGIN
@@ -19,3 +19,4 @@ BEGIN
     ORDER BY W.TD_CreatedAt DESC;
 END;
 GO
+

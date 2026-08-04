@@ -1,4 +1,4 @@
-CREATE PROCEDURE dbo.usp_Promotion_GetActive
+﻿CREATE OR ALTER PROCEDURE dbo.usp_Promotion_GetActive
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -19,3 +19,4 @@ BEGIN
     ORDER BY TD_EndDate ASC;
 END;
 GO
+

@@ -1,0 +1,9 @@
+@model ToggleViewModel
+
+<label class="sk-toggle" for="@Model.Id">
+    <input id="@Model.Id" name="@Model.Name" type="checkbox" checked="@Model.Checked" data-toggle="@Model.Action" />
+    <span class="sk-toggle__track" aria-hidden="true">
+        <span class="sk-toggle__thumb"></span>
+    </span>
+    <span class="sk-toggle__label">@Model.Label</span>
+</label>

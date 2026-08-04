@@ -14,16 +14,16 @@ import type { ITopProductSummary } from '../../types';
 import { ROUTES } from '../../routes/routePaths';
 
 const topProductColumns: TableColumn<ITopProductSummary>[] = [
-  { id: 'productName', label: 'Product', accessor: 'productName' },
+  { id: 'productName', label: 'Producto', accessor: 'productName' },
   {
     id: 'totalQuantitySold',
-    label: 'Units',
+    label: 'Unidades',
     accessor: 'totalQuantitySold',
     align: 'center',
   },
   {
     id: 'totalSales',
-    label: 'Sales',
+    label: 'Ventas',
     align: 'right',
     render: (row) => formatPrice(row.totalSales),
   },
@@ -34,7 +34,7 @@ export function DashboardPage() {
   const { summary, loading, error, refetch } = useDashboardSummary(dateRange);
 
   if (loading && !summary) {
-    return <Loading fullPage message="Loading dashboard..." />;
+    return <Loading fullPage message="Cargando panel..." />;
   }
 
   if (error && !summary) {
@@ -43,11 +43,11 @@ export function DashboardPage() {
 
   return (
     <PageShell
-      title="Dashboard"
-      subtitle="Summary del negocio"
+      title="Panel administrativo"
+      subtitle="Resumen del negocio"
       breadcrumbs={[
-        { label: 'Admin', path: ROUTES.admin.dashboard },
-        { label: 'Dashboard' },
+        { label: 'Administración', path: ROUTES.admin.dashboard },
+        { label: 'Panel' },
       ]}
     >
       <DateRangeFilter
@@ -63,16 +63,16 @@ export function DashboardPage() {
         <>
           <Grid container spacing={3} sx={{ mt: tokens.spacing.md }}>
             <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-              <StatCard label="Total sales" value={formatPrice(summary.totalSales)} />
+              <StatCard label="Ventas totales" value={formatPrice(summary.totalSales)} />
             </Grid>
             <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-              <StatCard label="Orders" value={String(summary.totalOrders)} />
+              <StatCard label="Órdenes" value={String(summary.totalOrders)} />
             </Grid>
             <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-              <StatCard label="Average order value" value={formatPrice(summary.averageOrderValue)} />
+              <StatCard label="Valor promedio por orden" value={formatPrice(summary.averageOrderValue)} />
             </Grid>
             <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-              <StatCard label="Registered customers" value={String(summary.registeredCustomers)} />
+              <StatCard label="Clientes registrados" value={String(summary.registeredCustomers)} />
             </Grid>
           </Grid>
 
@@ -80,26 +80,26 @@ export function DashboardPage() {
             <Grid size={{ xs: 12, md: 4 }}>
               <Card>
                 <Text variant="h3" sx={{ mb: tokens.spacing.sm }}>
-                  Low stock
+                  Stock bajo
                 </Text>
                 <Text variant="h2" sx={{ color: tokens.color.warning }}>
                   {summary.lowStockProducts}
                 </Text>
                 <Text variant="small" muted>
-                  Active products with stock at or below the minimum
+                  Productos activos con stock igual o inferior al mínimo
                 </Text>
               </Card>
             </Grid>
             <Grid size={{ xs: 12, md: 8 }}>
               <Card padding={false}>
                 <Box sx={{ p: tokens.spacing.md }}>
-                  <Text variant="h3">Top products</Text>
+                  <Text variant="h3">Productos más vendidos</Text>
                 </Box>
                 <Table
                   columns={topProductColumns}
                   rows={summary.topProducts}
                   getRowId={(row) => row.productId}
-                  emptyMessage="No sales in the selected period"
+                  emptyMessage="No hay ventas en el período seleccionado"
                 />
               </Card>
             </Grid>

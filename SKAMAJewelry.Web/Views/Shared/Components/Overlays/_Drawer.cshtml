@@ -1,0 +1,13 @@
+@model OverlayViewModel
+
+<aside class="sk-drawer" id="@Model.Id" aria-hidden="true" data-drawer>
+    <div class="sk-drawer__panel" role="dialog" aria-modal="true" aria-labelledby="@($"{Model.Id}-title")">
+        <div class="sk-drawer__header">
+            <h2 id="@($"{Model.Id}-title")">@Model.Title</h2>
+            <button class="sk-icon-button sk-icon-button--sm" type="button" aria-label="Cerrar" data-drawer-close>
+                <span class="sk-icon" aria-hidden="true" data-icon="x"></span>
+            </button>
+        </div>
+        @Html.Raw(Model.Content)
+    </div>
+</aside>

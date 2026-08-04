@@ -21,7 +21,7 @@ export function ForgotPasswordPage() {
       setMessage(data.message);
       toast.success(data.message);
     } catch (error) {
-      const fallback = 'The recovery request could not be submitted.';
+      const fallback = 'No se pudo enviar la solicitud de recuperación.';
       const errorMessage = getApiErrorMessage(error, fallback);
       setMessage(errorMessage);
       toast.error(errorMessage);
@@ -33,20 +33,20 @@ export function ForgotPasswordPage() {
   return (
     <section className="sk-auth-shell" aria-labelledby="forgot-title">
       <div className="sk-auth-intro">
-        <p className="sk-kicker">Recovery</p>
-        <h1 id="forgot-title">Reset your private access.</h1>
+        <p className="sk-kicker">Recuperación</p>
+        <h1 id="forgot-title">Restablece tu acceso privado.</h1>
         <p className="sk-lede">
-          Enter the email associated with your account to start recovery.
+          Ingresa el correo asociado con tu cuenta para iniciar la recuperación.
         </p>
       </div>
       <article className="sk-auth-panel">
         <div>
-          <p className="sk-kicker">SKAMA account</p>
-          <h1>Forgot password</h1>
+          <p className="sk-kicker">Cuenta SKAMA</p>
+          <h1>Olvidé mi contraseña</h1>
         </div>
         <form className="sk-auth-form" onSubmit={handleSubmit}>
           <label className="sk-field" htmlFor="forgot-email">
-            <span className="sk-field__label">Email address</span>
+            <span className="sk-field__label">Correo electrónico</span>
             <input
               className="sk-input"
               id="forgot-email"
@@ -59,10 +59,10 @@ export function ForgotPasswordPage() {
           </label>
           {message && <p className="sk-validation">{message}</p>}
           <button className="sk-button sk-button--primary sk-button--lg" type="submit" disabled={isSubmitting}>
-            {isSubmitting ? 'Sending...' : 'Send request'}
+            {isSubmitting ? 'Enviando...' : 'Enviar solicitud'}
           </button>
           <RouterLink className="sk-button sk-button--secondary sk-button--lg" to={ROUTES.login}>
-            Back to sign in
+            Volver a iniciar sesión
           </RouterLink>
         </form>
       </article>

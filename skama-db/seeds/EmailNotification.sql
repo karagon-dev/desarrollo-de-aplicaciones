@@ -10,7 +10,7 @@ BEGIN
         'b8c9d0e1-f2a3-4567-1234-678901234567',
         'ORDER_CONFIRMATION',
         'customer@example.com',
-        'Order confirmation ORD-20260215-001',
+        'Confirmación de orden ORD-20260215-001',
         'SENT',
         '2026-02-15T10:35:00',
         '2026-02-15T10:31:00'
@@ -29,7 +29,7 @@ BEGIN
         'b8c9d0e1-f2a3-4567-1234-678901234568',
         'ORDER_STATUS_UPDATE',
         'customer@example.com',
-        'Tu order ORD-20260301-001 has been shipped',
+        'Tu orden ORD-20260301-001 fue enviada',
         'FAILED',
         NULL,
         '2026-03-02T08:00:00'
@@ -48,7 +48,7 @@ BEGIN
         'b8c9d0e1-f2a3-4567-1234-678901234569',
         'ORDER_CONFIRMATION',
         'customer@example.com',
-        'Order confirmation ORD-20260310-001',
+        'Confirmación de orden ORD-20260310-001',
         'PENDING',
         NULL,
         '2026-03-10T09:05:00'
@@ -67,7 +67,7 @@ BEGIN
         NULL,
         'PASSWORD_RESET',
         'customer@example.com',
-        'SKAMA password recovery',
+        'Recuperación de contraseña SKAMA',
         'PENDING',
         NULL,
         '2026-06-01T12:00:00'

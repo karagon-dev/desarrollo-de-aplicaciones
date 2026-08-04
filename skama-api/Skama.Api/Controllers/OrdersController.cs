@@ -30,7 +30,7 @@ public class OrdersController : ControllerBase
         {
             return BadRequest(new ProblemDetails
             {
-                Title = "Could not create order",
+                Title = "No se pudo crear la orden",
                 Detail = error,
                 Status = StatusCodes.Status400BadRequest
             });
@@ -90,7 +90,7 @@ public class OrdersController : ControllerBase
             {
                 return NotFound(new ProblemDetails
                 {
-                    Title = "Order not found",
+                    Title = "Orden no encontrada",
                     Detail = error,
                     Status = StatusCodes.Status404NotFound
                 });
@@ -98,7 +98,7 @@ public class OrdersController : ControllerBase
 
             return BadRequest(new ProblemDetails
             {
-                Title = "Could not update order status",
+                Title = "No se pudo actualizar el estado de la orden",
                 Detail = error,
                 Status = StatusCodes.Status400BadRequest
             });
@@ -122,7 +122,7 @@ public class OrdersController : ControllerBase
             {
                 return NotFound(new ProblemDetails
                 {
-                    Title = "Order not found",
+                Title = "Orden no encontrada",
                     Detail = error,
                     Status = StatusCodes.Status404NotFound
                 });
@@ -132,7 +132,7 @@ public class OrdersController : ControllerBase
             {
                 return Conflict(new ProblemDetails
                 {
-                    Title = "Order cannot be cancelled",
+                Title = "La orden no se puede cancelar",
                     Detail = error,
                     Status = StatusCodes.Status409Conflict
                 });
@@ -140,7 +140,7 @@ public class OrdersController : ControllerBase
 
             return BadRequest(new ProblemDetails
             {
-                Title = "Could not cancel order",
+                Title = "No se pudo cancelar la orden",
                 Detail = error,
                 Status = StatusCodes.Status400BadRequest
             });

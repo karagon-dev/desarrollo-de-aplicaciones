@@ -38,7 +38,7 @@ public class NotificationsController : ControllerBase
         {
             return BadRequest(new ProblemDetails
             {
-                Title = "Could not create email notification",
+                Title = "No se pudo crear la notificacion de correo",
                 Detail = error,
                 Status = StatusCodes.Status400BadRequest
             });
@@ -58,7 +58,7 @@ public class NotificationsController : ControllerBase
         {
             return NotFound(new ProblemDetails
             {
-                Title = "Email notification not found",
+                Title = "Notificacion de correo no encontrada",
                 Detail = error,
                 Status = StatusCodes.Status404NotFound
             });
@@ -78,7 +78,7 @@ public class NotificationsController : ControllerBase
         {
             return NotFound(new ProblemDetails
             {
-                Title = "Email notification not found",
+                Title = "Notificacion de correo no encontrada",
                 Detail = error,
                 Status = StatusCodes.Status404NotFound
             });

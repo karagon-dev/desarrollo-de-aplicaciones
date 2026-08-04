@@ -1,4 +1,4 @@
-CREATE PROCEDURE dbo.usp_PasswordResetToken_MarkAsUsed
+﻿CREATE OR ALTER PROCEDURE dbo.usp_PasswordResetToken_MarkAsUsed
     @Id UNIQUEIDENTIFIER,
     @RowsAffected INT OUTPUT
 AS
@@ -13,3 +13,4 @@ BEGIN
     SET @RowsAffected = @@ROWCOUNT;
 END;
 GO
+

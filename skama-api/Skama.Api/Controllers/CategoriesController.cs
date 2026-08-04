@@ -34,7 +34,7 @@ public class CategoriesController : ControllerBase
         if (category is null)
             return NotFound(new ProblemDetails
             {
-                Title = "Category not found",
+                Title = "Categoría no encontrada",
                 Detail = $"No se encontró la categoría con Id {id}.",
                 Status = StatusCodes.Status404NotFound
             });
@@ -69,7 +69,7 @@ public class CategoriesController : ControllerBase
         if (!updated)
             return NotFound(new ProblemDetails
             {
-                Title = "Category not found",
+                Title = "Categoría no encontrada",
                 Detail = $"No se encontró la categoría con Id {id}.",
                 Status = StatusCodes.Status404NotFound
             });
@@ -87,7 +87,7 @@ public class CategoriesController : ControllerBase
         if (!deleted)
             return NotFound(new ProblemDetails
             {
-                Title = "Category not found",
+                Title = "Categoría no encontrada",
                 Detail = $"No se encontró la categoría con Id {id}.",
                 Status = StatusCodes.Status404NotFound
             });

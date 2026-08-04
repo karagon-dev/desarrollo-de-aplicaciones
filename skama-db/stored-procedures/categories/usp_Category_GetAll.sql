@@ -1,4 +1,4 @@
-CREATE PROCEDURE dbo.usp_Category_GetAll
+﻿CREATE OR ALTER PROCEDURE dbo.usp_Category_GetAll
     @IncludeInactive BIT = 0
 AS
 BEGIN
@@ -17,3 +17,4 @@ BEGIN
     ORDER BY TC_Name;
 END;
 GO
+

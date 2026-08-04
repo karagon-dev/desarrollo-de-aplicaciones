@@ -1,0 +1,564 @@
+﻿@{
+    ViewData["Title"] = "Confirmacion de orden";
+
+    var placeholderSvg = @"
+        <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 900 1125'>
+            <defs>
+                <linearGradient id='order-g' x1='0' y1='0' x2='1' y2='1'>
+                    <stop offset='0' stop-color='#f7f0e4'/>
+                    <stop offset='0.55' stop-color='#d6b76a'/>
+                    <stop offset='1' stop-color='#0f352f'/>
+                </linearGradient>
+            </defs>
+            <rect width='900' height='1125' fill='#fdfbf7'/>
+            <circle cx='450' cy='420' r='230' fill='url(#order-g)' opacity='0.22'/>
+            <path d='M280 660h340l-170 220z' fill='#0f352f' opacity='0.16'/>
+            <path d='M345 660l105-235 105 235z' fill='#b8924a' opacity='0.28'/>
+            <text x='450' y='985' text-anchor='middle' font-family='Georgia, serif' font-size='44' fill='#09241f'>SKAMA</text>
+        </svg>";
+    var imagePlaceholder = $"data:image/svg+xml,{Uri.EscapeDataString(placeholderSvg)}";
+
+    var breadcrumb = new BreadcrumbViewModel(new[]
+    {
+        new BreadcrumbItemViewModel("Inicio", "/"),
+        new BreadcrumbItemViewModel("Pago", "/checkout"),
+        new BreadcrumbItemViewModel("Confirmacion")
+    });
+
+    var recommendedProducts = new[]
+    {
+        new ProductCardViewModel("Collar Selva Dorada", "Colección Botánica", new PriceViewModel(240000), imagePlaceholder, "Imagen de referencia de collar premium", "#", "Exclusivo", "Collar", "Texto editable para collar de presencia editorial.", "4.9 de 5", null, "Ver pieza", false, "exclusive"),
+        new ProductCardViewModel("Aretes Luz de Jade", "Colección Luz", new PriceViewModel(132000), imagePlaceholder, "Imagen de referencia de aretes de lujo", "#", "Edición limitada", "Aretes", "Texto editable para aretes con acabado refinado.", "5.0 de 5", 148000, "Ver pieza", false, "limited"),
+        new ProductCardViewModel("Pulsera Naciente", "Colección Naciente", new PriceViewModel(168000), imagePlaceholder, "Imagen de referencia de pulsera artesanal", "#", "Hecho a mano", "Pulsera", "Texto editable para pulsera artesanal premium.", "4.8 de 5", null, "Ver pieza", false, "featured"),
+        new ProductCardViewModel("Dije Verde Sereno", "Colección Sereno", new PriceViewModel(156000), imagePlaceholder, "Imagen de referencia de dije premium", "#", "Más vendido", "Dije", "Texto editable para dije delicado con acento verde.", "4.9 de 5", 172000, "Ver pieza", false, "sale")
+    };
+}
+
+<style>
+    .confirmation-page {
+        overflow: hidden;
+    }
+
+    .confirmation-wrap,
+    .confirmation-section,
+    .confirmation-recommended {
+        width: min(100% - clamp(2rem, 5vw, 4rem), var(--container-xl));
+        margin-inline: auto;
+    }
+
+    .confirmation-wrap {
+        display: grid;
+        gap: clamp(var(--space-6), 6vw, var(--space-8));
+        padding-block: clamp(var(--space-6), 7vw, var(--space-9));
+    }
+
+    .confirmation-hero {
+        position: relative;
+        display: grid;
+        justify-items: center;
+        gap: var(--space-4);
+        max-width: var(--container-md);
+        margin-inline: auto;
+        text-align: center;
+        isolation: isolate;
+        animation: confirmation-fade-up var(--duration-slow) var(--ease-luxury) both;
+    }
+
+    .confirmation-hero::before {
+        position: absolute;
+        inset: -16% auto auto 50%;
+        width: min(30rem, 78vw);
+        aspect-ratio: 1;
+        content: "";
+        border: 1px solid var(--color-border-subtle);
+        border-radius: var(--radius-full);
+        opacity: 0.48;
+        transform: translateX(-50%);
+        z-index: -1;
+    }
+
+    .confirmation-icon,
+    .confirmation-support-icon {
+        width: 4rem;
+        height: 4rem;
+        display: grid;
+        place-items: center;
+        border-radius: var(--radius-full);
+        background: var(--color-accent-soft);
+        color: var(--color-accent-strong);
+        font-family: var(--font-family-display);
+        font-size: var(--font-size-heading-3);
+        transition: transform var(--duration-normal) var(--ease-luxury);
+    }
+
+    .confirmation-icon {
+        animation: confirmation-scale var(--duration-slow) var(--ease-luxury) both;
+    }
+
+    .confirmation-kicker {
+        margin: 0;
+        color: var(--color-accent-strong);
+        font-size: var(--font-size-label);
+        font-weight: var(--font-weight-semibold);
+        letter-spacing: var(--letter-spacing-label);
+        text-transform: uppercase;
+    }
+
+    .confirmation-hero h1,
+    .confirmation-section h2,
+    .confirmation-recommended h2 {
+        margin: 0;
+        font-family: var(--font-family-display);
+        font-size: var(--font-size-heading-1);
+        font-weight: var(--font-weight-regular);
+        line-height: var(--line-height-heading);
+    }
+
+    .confirmation-meta {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: var(--space-3);
+        width: 100%;
+        margin-top: var(--space-3);
+    }
+
+    .confirmation-meta div,
+    .confirmation-info-card,
+    .confirmation-payment,
+    .confirmation-timeline,
+    .confirmation-actions,
+    .confirmation-share {
+        border: 1px solid var(--color-border-subtle);
+        border-radius: var(--radius-lg);
+        background: var(--color-surface);
+        box-shadow: var(--shadow-sm);
+    }
+
+    .confirmation-meta div {
+        display: grid;
+        gap: var(--space-1);
+        padding: var(--space-4);
+    }
+
+    .confirmation-meta span,
+    .confirmation-product span,
+    .confirmation-info-card span {
+        color: var(--color-text-muted);
+        font-size: var(--font-size-small);
+    }
+
+    .confirmation-meta strong {
+        color: var(--color-text-primary);
+        font-weight: var(--font-weight-semibold);
+    }
+
+    .confirmation-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(20rem, 0.42fr);
+        gap: clamp(var(--space-5), 5vw, var(--space-8));
+        align-items: start;
+    }
+
+    .confirmation-main,
+    .confirmation-side,
+    .confirmation-section,
+    .confirmation-products,
+    .confirmation-info-grid,
+    .confirmation-support,
+    .confirmation-actions,
+    .confirmation-share {
+        display: grid;
+        gap: var(--space-5);
+    }
+
+    .confirmation-side {
+        position: sticky;
+        top: 5.5rem;
+    }
+
+    .confirmation-panel {
+        display: grid;
+        gap: var(--space-5);
+        border: 1px solid var(--color-border-subtle);
+        border-radius: var(--radius-xl);
+        background: var(--color-surface);
+        padding: clamp(var(--space-5), 4vw, var(--space-6));
+        box-shadow: var(--shadow-sm);
+        animation: confirmation-fade-up var(--duration-slow) var(--ease-luxury) both;
+    }
+
+    .confirmation-product {
+        display: grid;
+        grid-template-columns: 5rem minmax(0, 1fr) auto;
+        gap: var(--space-3);
+        align-items: center;
+        border-bottom: 1px solid var(--color-border-subtle);
+        padding-bottom: var(--space-4);
+    }
+
+    .confirmation-product:last-child {
+        border-bottom: 0;
+        padding-bottom: 0;
+    }
+
+    .confirmation-product img {
+        width: 100%;
+        aspect-ratio: 1;
+        border-radius: var(--radius-md);
+        background: var(--color-surface-muted);
+        object-fit: cover;
+    }
+
+    .confirmation-product p {
+        margin: 0;
+        color: var(--color-text-primary);
+        font-family: var(--font-family-display);
+        font-size: var(--font-size-heading-4);
+        line-height: var(--line-height-heading);
+    }
+
+    .confirmation-payment {
+        display: grid;
+        gap: var(--space-3);
+        padding: var(--space-5);
+    }
+
+    .confirmation-payment dl {
+        display: grid;
+        gap: var(--space-3);
+        margin: 0;
+    }
+
+    .confirmation-payment div {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: var(--space-3);
+        border-bottom: 1px solid var(--color-border-subtle);
+        padding-bottom: var(--space-3);
+    }
+
+    .confirmation-payment div:last-child {
+        border-bottom: 0;
+        padding-bottom: 0;
+    }
+
+    .confirmation-payment dt {
+        color: var(--color-text-muted);
+    }
+
+    .confirmation-payment dd {
+        margin: 0;
+        color: var(--color-text-primary);
+        font-weight: var(--font-weight-semibold);
+    }
+
+    .confirmation-payment__total dt,
+    .confirmation-payment__total dd {
+        color: var(--color-text-primary);
+        font-size: var(--font-size-body-lg);
+    }
+
+    .confirmation-info-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .confirmation-info-card {
+        display: grid;
+        gap: var(--space-2);
+        padding: var(--space-5);
+    }
+
+    .confirmation-info-card strong {
+        color: var(--color-text-primary);
+        font-family: var(--font-family-display);
+        font-size: var(--font-size-heading-4);
+        font-weight: var(--font-weight-regular);
+    }
+
+    .confirmation-timeline {
+        display: grid;
+        gap: var(--space-4);
+        padding: var(--space-5);
+        counter-reset: order-step;
+    }
+
+    .confirmation-step {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: var(--space-3);
+        align-items: start;
+        counter-increment: order-step;
+    }
+
+    .confirmation-step::before {
+        width: 2rem;
+        height: 2rem;
+        display: grid;
+        place-items: center;
+        content: counter(order-step, decimal-leading-zero);
+        border: 1px solid var(--color-border-subtle);
+        border-radius: var(--radius-full);
+        color: var(--color-text-muted);
+        font-size: var(--font-size-caption);
+        transition: background-color var(--duration-normal) var(--ease-standard), border-color var(--duration-normal) var(--ease-standard);
+    }
+
+    .confirmation-step[aria-current="step"]::before {
+        border-color: var(--color-accent);
+        background: var(--color-accent-soft);
+        color: var(--color-accent-strong);
+    }
+
+    .confirmation-step strong {
+        display: block;
+        color: var(--color-text-primary);
+        font-family: var(--font-family-display);
+        font-size: var(--font-size-heading-4);
+        font-weight: var(--font-weight-regular);
+    }
+
+    .confirmation-step span {
+        color: var(--color-text-muted);
+        font-size: var(--font-size-small);
+    }
+
+    .confirmation-support {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .confirmation-support .sk-card {
+        display: grid;
+        gap: var(--space-3);
+    }
+
+    .confirmation-support .sk-card:hover .confirmation-support-icon {
+        transform: translateY(-0.15rem) scale(1.04);
+    }
+
+    .confirmation-actions,
+    .confirmation-share {
+        justify-items: center;
+        padding: var(--space-5);
+    }
+
+    .confirmation-action-row,
+    .confirmation-share-row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: var(--space-3);
+    }
+
+    .confirmation-share-row .sk-icon-button:hover {
+        color: var(--color-accent-strong);
+    }
+
+    .confirmation-recommended {
+        display: grid;
+        gap: var(--space-5);
+        padding-bottom: clamp(var(--space-8), 8vw, var(--space-10));
+    }
+
+    .confirmation-recommended__grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: var(--space-5);
+    }
+
+    .confirmation-recommended .sk-product-card {
+        position: relative;
+    }
+
+    .confirmation-recommended .sk-product-card__favorite {
+        position: absolute;
+        top: var(--space-3);
+        right: var(--space-3);
+        z-index: 2;
+        background: var(--color-surface-glass);
+        backdrop-filter: blur(14px);
+    }
+
+    @@keyframes confirmation-fade-up {
+        from {
+            opacity: 0;
+            transform: translateY(1rem);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @@keyframes confirmation-scale {
+        from {
+            opacity: 0;
+            transform: scale(0.94);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    @@media (max-width: 72rem) {
+        .confirmation-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .confirmation-side {
+            position: static;
+        }
+
+        .confirmation-support,
+        .confirmation-recommended__grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    @@media (max-width: 48rem) {
+        .confirmation-meta,
+        .confirmation-info-grid,
+        .confirmation-support,
+        .confirmation-recommended__grid {
+            grid-template-columns: 1fr;
+        }
+
+        .confirmation-product {
+            grid-template-columns: 4.5rem minmax(0, 1fr);
+        }
+
+        .confirmation-product > .sk-price {
+            grid-column: 2;
+        }
+    }
+</style>
+
+<div class="confirmation-page">
+    <div class="confirmation-wrap">
+        <partial name="~/Views/Shared/Components/Navigation/_Breadcrumb.cshtml" model="breadcrumb" />
+
+        <section class="confirmation-hero" aria-labelledby="confirmation-title">
+            <span class="confirmation-icon" aria-hidden="true">✓</span>
+            <p class="confirmation-kicker">Orden confirmada</p>
+            <h1 id="confirmation-title">Su compra ha sido completada con elegancia.</h1>
+            <p class="home-lede">Mensaje editable para confirmar la orden, agradecer la confianza y reforzar la experiencia premium de SKAMA Jewelry.</p>
+            <div class="confirmation-meta" aria-label="Detalles principales de la orden">
+                <div><span>Número de orden</span><strong>#SKAMA-000128</strong></div>
+                <div><span>Fecha de orden</span><strong>2 de julio de 2026</strong></div>
+                <div><span>Entrega estimada</span><strong>Por confirmar</strong></div>
+            </div>
+        </section>
+
+        <div class="confirmation-grid">
+            <main class="confirmation-main">
+                <section class="confirmation-panel" aria-labelledby="order-summary-title">
+                    <p class="confirmation-kicker">Resumen de orden</p>
+                    <h2 id="order-summary-title">Piezas seleccionadas</h2>
+                    <div class="confirmation-products">
+                        <article class="confirmation-product">
+                            <img src="@imagePlaceholder" alt="Imagen de referencia de Anillo Aurora Esmeralda" loading="lazy" decoding="async" />
+                            <div>
+                                <p>Anillo Aurora Esmeralda</p>
+                                <span>Oro · Esmeralda natural · Cantidad 1</span>
+                            </div>
+                            <partial name="~/Views/Shared/Components/DataDisplay/_Price.cshtml" model="new PriceViewModel(185000)" />
+                        </article>
+                        <article class="confirmation-product">
+                            <img src="@imagePlaceholder" alt="Imagen de referencia de Collar Selva Dorada" loading="lazy" decoding="async" />
+                            <div>
+                                <p>Collar Selva Dorada</p>
+                                <span>Vermeil · Acabado artesanal · Cantidad 1</span>
+                            </div>
+                            <partial name="~/Views/Shared/Components/DataDisplay/_Price.cshtml" model="new PriceViewModel(240000)" />
+                        </article>
+                    </div>
+                </section>
+
+                <section class="confirmation-panel" aria-labelledby="delivery-info-title">
+                    <p class="confirmation-kicker">Información de entrega</p>
+                    <h2 id="delivery-info-title">Entrega y autenticidad</h2>
+                    <div class="confirmation-info-grid">
+                        <div class="confirmation-info-card"><strong>Dirección de entrega</strong><span>Dirección de referencia, Costa Rica.</span></div>
+                        <div class="confirmation-info-card"><strong>Método de entrega</strong><span>Entrega de lujo por confirmar.</span></div>
+                        <div class="confirmation-info-card"><strong>Fecha estimada de entrega</strong><span>Dato editable.</span></div>
+                        <div class="confirmation-info-card"><strong>Número de seguimiento</strong><span>TRK-SKAMA-0000</span></div>
+                        <div class="confirmation-info-card"><strong>Certificado de autenticidad</strong><span>Incluido visualmente como referencia.</span></div>
+                        <div class="confirmation-info-card"><strong>Empaque de lujo</strong><span>Empaque premium por confirmar.</span></div>
+                    </div>
+                </section>
+
+                <section class="confirmation-panel" aria-labelledby="customer-info-title">
+                    <p class="confirmation-kicker">Información del cliente</p>
+                    <h2 id="customer-info-title">Información del cliente</h2>
+                    <div class="confirmation-info-grid">
+                        <div class="confirmation-info-card"><strong>Nombre del cliente</strong><span>Cliente de referencia</span></div>
+                        <div class="confirmation-info-card"><strong>Correo electrónico</strong><span>correo@ejemplo.com</span></div>
+                        <div class="confirmation-info-card"><strong>Teléfono</strong><span>+506 0000 0000</span></div>
+                        <div class="confirmation-info-card"><strong>Dirección de facturación</strong><span>Dirección placeholder de facturación.</span></div>
+                    </div>
+                </section>
+
+                <section class="confirmation-panel" aria-labelledby="support-title">
+                    <p class="confirmation-kicker">Soporte</p>
+                    <h2 id="support-title">Acompañamiento después de la compra</h2>
+                    <div class="confirmation-support">
+                <article class="sk-card"><span class="confirmation-support-icon" aria-hidden="true">C</span><h3>Atención al cliente</h3><p>Referencia para soporte premium.</p></article>
+                <article class="sk-card"><span class="confirmation-support-icon" aria-hidden="true">F</span><h3>Preguntas frecuentes</h3><p>Referencia para preguntas frecuentes.</p></article>
+                <article class="sk-card"><span class="confirmation-support-icon" aria-hidden="true">R</span><h3>Política de devolución</h3><p>Referencia para política de retorno.</p></article>
+                <article class="sk-card"><span class="confirmation-support-icon" aria-hidden="true">T</span><h3>Seguimiento de orden</h3><p>Referencia para seguimiento de orden.</p></article>
+                    </div>
+                </section>
+            </main>
+
+            <aside class="confirmation-side" aria-label="Resumen de pago y siguientes pasos">
+                <section class="confirmation-payment" aria-labelledby="payment-summary-title">
+                    <h2 id="payment-summary-title">Resumen de pago</h2>
+                    <dl>
+                        <div><dt>Subtotal</dt><dd>CRC 425,000</dd></div>
+                    <div><dt>Envío</dt><dd>Por confirmar</dd></div>
+                        <div><dt>Descuento</dt><dd>CRC 0</dd></div>
+                    <div><dt>Impuestos</dt><dd>Por confirmar</dd></div>
+                        <div class="confirmation-payment__total"><dt>Total pagado</dt><dd>CRC 425,000</dd></div>
+                    </dl>
+                </section>
+
+                <section class="confirmation-timeline" aria-label="Siguientes pasos">
+                    <div class="confirmation-step" aria-current="step"><strong>Orden confirmada</strong><span>Estado actual placeholder.</span></div>
+                    <div class="confirmation-step"><strong>Preparando orden</strong><span>Preparación visual pendiente.</span></div>
+                    <div class="confirmation-step"><strong>Envío</strong><span>Envío visual pendiente.</span></div>
+                    <div class="confirmation-step"><strong>Entregado</strong><span>Entrega visual pendiente.</span></div>
+                </section>
+
+                <section class="confirmation-actions" aria-label="Acciones principales">
+                    <div class="confirmation-action-row">
+                        <partial name="~/Views/Shared/Components/Buttons/_Button.cshtml" model='new ButtonViewModel("Seguir comprando", "primary", "lg", "/collections")' />
+                        <partial name="~/Views/Shared/Components/Buttons/_Button.cshtml" model='new ButtonViewModel("Volver al inicio", "secondary", "lg", "/")' />
+                        <partial name="~/Views/Shared/Components/Buttons/_Button.cshtml" model='new ButtonViewModel("Ver colecciones", "outline", "md", "/collections")' />
+                    </div>
+                </section>
+
+                <section class="confirmation-share" aria-label="Compartir en redes sociales">
+                    <p class="confirmation-kicker">Compartir</p>
+                    <div class="confirmation-share-row">
+                        <button class="sk-icon-button sk-icon-button--sm" type="button" aria-label="Instagram"><span class="sk-icon" aria-hidden="true" data-icon="instagram"></span></button>
+                        <button class="sk-icon-button sk-icon-button--sm" type="button" aria-label="Facebook"><span class="sk-icon" aria-hidden="true" data-icon="facebook"></span></button>
+                        <button class="sk-icon-button sk-icon-button--sm" type="button" aria-label="WhatsApp"><span class="sk-icon" aria-hidden="true" data-icon="whatsapp"></span></button>
+                        <button class="sk-icon-button sk-icon-button--sm" type="button" aria-label="X"><span class="sk-icon" aria-hidden="true" data-icon="x-social"></span></button>
+                        <button class="sk-icon-button sk-icon-button--sm" type="button" aria-label="Pinterest"><span class="sk-icon" aria-hidden="true" data-icon="pinterest"></span></button>
+                    </div>
+                </section>
+            </aside>
+        </div>
+    </div>
+
+    <section class="confirmation-recommended" aria-labelledby="recommended-title">
+        <p class="confirmation-kicker">Recommended Products</p>
+        <h2 id="recommended-title">Piezas para continuar la experiencia SKAMA.</h2>
+        <div class="confirmation-recommended__grid">
+            @foreach (var product in recommendedProducts)
+            {
+                <partial name="~/Views/Shared/Components/Surfaces/_ProductCard.cshtml" model="product" />
+            }
+        </div>
+    </section>
+</div>

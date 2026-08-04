@@ -14,5 +14,5 @@ BEGIN
     );
 END
 
--- To test reset-password in development, use POST /api/auth/forgot-password
--- with customer@example.com; the API returns resetToken in the response.
+-- Para probar reset-password en desarrollo, usar POST /api/auth/forgot-password
+-- con customer@example.com; la API devuelve resetToken en la respuesta.

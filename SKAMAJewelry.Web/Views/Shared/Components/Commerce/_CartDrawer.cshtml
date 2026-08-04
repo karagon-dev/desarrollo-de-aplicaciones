@@ -1,0 +1,64 @@
+﻿<aside class="sk-drawer sk-cart-drawer" id="cart-drawer" aria-hidden="true" data-drawer>
+    <div class="sk-drawer__panel sk-cart-drawer__panel" role="dialog" aria-modal="true" aria-labelledby="cart-drawer-title">
+        <header class="sk-cart-drawer__header">
+            <div>
+                <p class="sk-cart-drawer__kicker">Carrito</p>
+                <h2 id="cart-drawer-title">Carrito de compras</h2>
+                <span data-cart-summary-count>Sin productos</span>
+            </div>
+            <button class="sk-icon-button sk-icon-button--sm" type="button" aria-label="Cerrar carrito" data-drawer-close>
+                <span class="sk-icon" aria-hidden="true" data-icon="x"></span>
+            </button>
+        </header>
+
+        <div class="sk-cart-drawer__body">
+            <section class="sk-cart-drawer__items" aria-label="Productos en el carrito" data-cart-items hidden></section>
+
+            <section class="sk-cart-summary" aria-labelledby="cart-summary-title" data-cart-section hidden>
+                <h3 id="cart-summary-title">Resumen</h3>
+                <dl>
+                    <div><dt>Subtotal</dt><dd data-cart-subtotal>CRC 0</dd></div>
+                    <div><dt>Envío</dt><dd>Por confirmar</dd></div>
+                    <div><dt>Descuento</dt><dd>CRC 0</dd></div>
+                    <div><dt>Impuestos</dt><dd>Incluidos</dd></div>
+                    <div class="sk-cart-summary__total"><dt>Total estimado</dt><dd data-cart-total>CRC 0</dd></div>
+                </dl>
+            </section>
+
+            <section class="sk-cart-promo" aria-label="Código promocional visual" data-cart-section hidden>
+                <partial name="~/Views/Shared/Components/Forms/_Input.cshtml" model='new FieldViewModel("cart-promo-code", "promoCode", "Código promocional", "text", "SKAMA")' />
+                <partial name="~/Views/Shared/Components/Buttons/_Button.cshtml" model='new ButtonViewModel("Aplicar", "secondary", "sm")' />
+            </section>
+
+            <section class="sk-cart-actions" aria-label="Acciones del carrito" data-cart-section hidden>
+                <partial name="~/Views/Shared/Components/Buttons/_Button.cshtml" model='new ButtonViewModel("Finalizar pedido", "primary", "lg", "/checkout")' />
+                <partial name="~/Views/Shared/Components/Buttons/_Button.cshtml" model='new ButtonViewModel("Seguir comprando", "secondary", "lg", "#", null, "button", false, null, true)' />
+            </section>
+
+            <section class="sk-cart-empty" aria-label="Estado vacío del carrito" data-cart-empty>
+                <span aria-hidden="true">S</span>
+                <h3>Su carrito está listo para una selección especial.</h3>
+                <p>Agregue una joya al carrito para revisar cantidades, subtotal y total estimado.</p>
+                <partial name="~/Views/Shared/Components/Buttons/_Button.cshtml" model='new ButtonViewModel("Explorar colecciones", "primary", "md", "/collections")' />
+            </section>
+
+            <section class="sk-cart-info" aria-label="Información de entrega" data-cart-section hidden>
+                <article class="sk-card">
+                    <p class="sk-card__eyebrow">Seguro</p>
+                    <h3>Envío seguro</h3>
+                    <p>Placeholder para entrega segura y seguimiento.</p>
+                </article>
+                <article class="sk-card">
+                    <p class="sk-card__eyebrow">Auténtico</p>
+                    <h3>Certificado de autenticidad</h3>
+                    <p>Placeholder para certificado de autenticidad.</p>
+                </article>
+                <article class="sk-card">
+                    <p class="sk-card__eyebrow">Premium</p>
+                    <h3>Empaque premium</h3>
+                    <p>Placeholder para empaque de lujo.</p>
+                </article>
+            </section>
+        </div>
+    </div>
+</aside>

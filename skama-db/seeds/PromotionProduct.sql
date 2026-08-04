@@ -1,4 +1,4 @@
--- Product-to-promotion assignments
+-- Asignaciones de productos a promociones
 
 IF NOT EXISTS (
     SELECT 1 FROM PromotionProduct

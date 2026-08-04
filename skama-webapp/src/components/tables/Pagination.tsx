@@ -32,7 +32,7 @@ export function Pagination({
         color="primary"
         shape="rounded"
         onChange={(_, value) => onPageChange(value)}
-        aria-label="Pagination"
+        aria-label="Paginación"
         {...props}
       />
     </Box>

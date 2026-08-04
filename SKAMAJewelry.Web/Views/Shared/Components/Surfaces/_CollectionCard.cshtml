@@ -1,0 +1,10 @@
+@model CollectionCardViewModel
+
+<article class="sk-collection-card">
+    <img src="@Model.ImageUrl" alt="@Model.ImageAlt" loading="lazy" />
+    <div>
+        <p>@Model.Kicker</p>
+        <h3>@Model.Title</h3>
+        <a href="@Model.Href">Explorar</a>
+    </div>
+</article>

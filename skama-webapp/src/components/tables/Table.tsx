@@ -41,7 +41,7 @@ export function Table<T>({
         backgroundColor: tokens.color.surface,
       }}
     >
-      <MuiTable aria-label="Data table">
+      <MuiTable aria-label="Tabla de datos">
         <TableHead>
           <TableRow>
             {columns.map((column) => (

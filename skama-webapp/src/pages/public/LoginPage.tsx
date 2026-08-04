@@ -20,10 +20,10 @@ export function LoginPage() {
 
     try {
       await login({ email, password });
-      toast.success('Signed in successfully.');
+      toast.success('Sesión iniciada correctamente.');
       navigate(from, { replace: true });
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Sign in failed.';
+      const message = error instanceof Error ? error.message : 'No se pudo iniciar sesión.';
       setFormError(message);
       toast.error(message);
     }
@@ -32,24 +32,24 @@ export function LoginPage() {
   return (
     <section className="sk-auth-shell" aria-labelledby="login-title">
       <div className="sk-auth-intro">
-        <p className="sk-kicker">Private access</p>
-        <h1 id="login-title">Welcome back to the SKAMA experience.</h1>
+        <p className="sk-kicker">Acceso privado</p>
+        <h1 id="login-title">Bienvenido de nuevo a la experiencia SKAMA.</h1>
         <p className="sk-lede">
-          Sign in to access favorites, orders, and exclusive limited edition pieces.
+          Inicia sesión para acceder a favoritos, órdenes y piezas exclusivas de edición limitada.
         </p>
         <RouterLink className="sk-button sk-button--secondary sk-button--lg" to={ROUTES.home}>
-          Back to home
+          Volver al inicio
         </RouterLink>
       </div>
 
       <article className="sk-auth-panel">
         <div>
-          <p className="sk-kicker">SKAMA account</p>
-          <h1>Sign in</h1>
+          <p className="sk-kicker">Cuenta SKAMA</p>
+          <h1>Iniciar sesión</h1>
         </div>
         <form className="sk-auth-form" onSubmit={handleSubmit}>
           <label className="sk-field" htmlFor="login-email">
-            <span className="sk-field__label">Email address</span>
+            <span className="sk-field__label">Correo electrónico</span>
             <input
               className="sk-input"
               id="login-email"
@@ -61,7 +61,7 @@ export function LoginPage() {
             />
           </label>
           <label className="sk-field" htmlFor="login-password">
-            <span className="sk-field__label">Password</span>
+            <span className="sk-field__label">Contraseña</span>
             <input
               className="sk-input"
               id="login-password"
@@ -76,18 +76,18 @@ export function LoginPage() {
             <label className="sk-choice" htmlFor="login-remember">
               <input id="login-remember" type="checkbox" />
               <span className="sk-choice__control" aria-hidden="true" />
-              <span className="sk-choice__label">Remember me</span>
+              <span className="sk-choice__label">Recordarme</span>
             </label>
             <RouterLink className="sk-link" to={ROUTES.forgotPassword}>
-              Forgot password
+              Olvidé mi contraseña
             </RouterLink>
           </div>
           {formError && <p className="sk-validation">{formError}</p>}
           <button className="sk-button sk-button--primary sk-button--lg" type="submit" disabled={isLoading}>
-            {isLoading ? 'Signing in...' : 'Sign in'}
+            {isLoading ? 'Iniciando sesión...' : 'Iniciar sesión'}
           </button>
           <RouterLink className="sk-button sk-button--secondary sk-button--lg" to={ROUTES.register}>
-            Create account
+            Crear cuenta
           </RouterLink>
         </form>
       </article>

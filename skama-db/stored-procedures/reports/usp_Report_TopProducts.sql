@@ -1,4 +1,4 @@
-CREATE PROCEDURE dbo.usp_Report_TopProducts
+﻿CREATE OR ALTER PROCEDURE dbo.usp_Report_TopProducts
     @StartDate DATE,
     @EndDate DATE,
     @Top INT = 5
@@ -19,3 +19,4 @@ BEGIN
     ORDER BY TotalQuantitySold DESC;
 END;
 GO
+

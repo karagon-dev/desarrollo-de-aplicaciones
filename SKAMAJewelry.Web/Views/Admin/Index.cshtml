@@ -1,0 +1,126 @@
+﻿@{
+    ViewData["Title"] = "Panel";
+    ViewData["AdminSection"] = "dashboard";
+
+    var metrics = new[]
+    {
+        new { Icon = "gem", Title = "Total productos", Value = "128", Trend = "+12% este mes" },
+        new { Icon = "receipt", Title = "Órdenes", Value = "46", Trend = "8 pendientes" },
+        new { Icon = "users", Title = "Clientes", Value = "1,284", Trend = "+24 nuevos" },
+        new { Icon = "chart", Title = "Ingresos", Value = "CRC 18.4M", Trend = "Resumen mensual" },
+        new { Icon = "clock", Title = "Órdenes pendientes", Value = "12", Trend = "Requieren revisión" },
+        new { Icon = "alert", Title = "Stock bajo", Value = "7", Trend = "Inventario bajo" }
+    };
+
+    var actions = new[]
+    {
+        new { Icon = "plus", Title = "Agregar producto", Text = "Crear una nueva pieza para colecciones.", Href = "/admin/products" },
+        new { Icon = "layers", Title = "Gestionar categorías", Text = "Organizar familias y tipos de joyería.", Href = "/admin/categories" },
+        new { Icon = "receipt", Title = "Ver ventas", Text = "Revisar órdenes, estados y entregas.", Href = "/admin/orders" },
+        new { Icon = "chart", Title = "Generar reporte", Text = "Consultar ventas por período y producto.", Href = "/admin/reports" },
+        new { Icon = "users", Title = "Gestionar clientes", Text = "Preparar administración de relaciones premium.", Href = "/admin/customers" }
+    };
+}
+
+<section class="admin-page admin-fade-in" aria-labelledby="admin-dashboard-title">
+    <header class="admin-page-header">
+        <div>
+            <p class="admin-kicker">Operación interna</p>
+            <h1 id="admin-dashboard-title">Panel administrativo SKAMA.</h1>
+            <p>Vista premium para monitorear productos, ventas, clientes y operaciones internas.</p>
+        </div>
+        <partial name="~/Views/Shared/Components/Buttons/_Button.cshtml" model='new ButtonViewModel("Nuevo producto", "primary", "md", "/admin/products", "plus")' />
+    </header>
+
+    <section class="admin-metric-grid" aria-label="Métricas administrativas">
+        @foreach (var metric in metrics)
+        {
+            <article class="admin-card admin-stat-card">
+                <span class="admin-card__icon sk-icon" aria-hidden="true" data-icon="@metric.Icon"></span>
+                <div>
+                    <p>@metric.Title</p>
+                    <strong>@metric.Value</strong>
+                    <small>@metric.Trend</small>
+                </div>
+            </article>
+        }
+    </section>
+
+    <section class="admin-grid admin-grid--two" aria-label="Acciones rápidas y actividad">
+        <div class="admin-panel">
+            <div class="admin-panel__header">
+                <div>
+                    <p class="admin-kicker">Acciones rápidas</p>
+                    <h2>Gestión esencial.</h2>
+                </div>
+            </div>
+            <div class="admin-action-grid">
+                @foreach (var action in actions)
+                {
+                    <a class="admin-card admin-action-card" href="@action.Href">
+                        <span class="sk-icon" aria-hidden="true" data-icon="@action.Icon"></span>
+                        <strong>@action.Title</strong>
+                        <small>@action.Text</small>
+                    </a>
+                }
+            </div>
+        </div>
+
+        <div class="admin-panel">
+            <div class="admin-panel__header">
+                <div>
+                    <p class="admin-kicker">Actividad reciente</p>
+                    <h2>Operaciones preparadas.</h2>
+                </div>
+                <partial name="~/Views/Shared/Components/DataDisplay/_Badge.cshtml" model='new BadgeViewModel("Visual", "accent")' />
+            </div>
+            <div class="admin-timeline">
+                <article><span></span><div><strong>Orden #SK-1048</strong><small>Revisión de empaque premium.</small></div></article>
+                <article><span></span><div><strong>Producto editorial actualizado</strong><small>Preparado para flujo de colecciones.</small></div></article>
+                <article><span></span><div><strong>Cliente VIP agregado</strong><small>Sin persistencia ni integración backend.</small></div></article>
+            </div>
+        </div>
+    </section>
+
+    <section class="admin-panel" aria-labelledby="dashboard-table-title">
+        <div class="admin-panel__header">
+            <div>
+                <p class="admin-kicker">Tabla reusable</p>
+                <h2 id="dashboard-table-title">Órdenes recientes.</h2>
+            </div>
+            <partial name="~/Views/Shared/Components/Forms/_SearchBar.cshtml" model='new SearchBarViewModel("dashboard-table-search", "dashboardTableSearch", "Buscar", "Buscar orden visual")' />
+        </div>
+        <div class="admin-table-wrap">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th scope="col"><input type="checkbox" aria-label="Seleccionar todas las órdenes" /></th>
+                        <th scope="col">Orden</th>
+                        <th scope="col">Cliente</th>
+                        <th scope="col">Estado</th>
+                        <th scope="col">Total</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input type="checkbox" aria-label="Seleccionar orden SK-1048" /></td>
+                        <td>#SK-1048</td>
+                        <td>Cliente SKAMA</td>
+                        <td><partial name="~/Views/Shared/Components/DataDisplay/_Badge.cshtml" model='new BadgeViewModel("Pendiente", "warning")' /></td>
+                        <td>CRC 240,000</td>
+                        <td class="admin-table__actions"><button class="sk-icon-button sk-icon-button--sm" type="button" aria-label="Ver detalle"><span class="sk-icon" aria-hidden="true" data-icon="eye"></span></button></td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" aria-label="Seleccionar orden SK-1047" /></td>
+                        <td>#SK-1047</td>
+                        <td>Cliente editorial</td>
+                        <td><partial name="~/Views/Shared/Components/DataDisplay/_Badge.cshtml" model='new BadgeViewModel("Preparando", "accent")' /></td>
+                        <td>CRC 185,000</td>
+                        <td class="admin-table__actions"><button class="sk-icon-button sk-icon-button--sm" type="button" aria-label="Ver detalle"><span class="sk-icon" aria-hidden="true" data-icon="eye"></span></button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</section>

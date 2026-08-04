@@ -41,7 +41,7 @@ public class WishlistController : ControllerBase
             {
                 return Conflict(new ProblemDetails
                 {
-                    Title = "Product already in wishlist",
+                Title = "El producto ya esta en favoritos",
                     Detail = error,
                     Status = StatusCodes.Status409Conflict
                 });
@@ -49,7 +49,7 @@ public class WishlistController : ControllerBase
 
             return BadRequest(new ProblemDetails
             {
-                Title = "Could not add product to wishlist",
+                Title = "No se pudo agregar el producto a favoritos",
                 Detail = error,
                 Status = StatusCodes.Status400BadRequest
             });
@@ -69,7 +69,7 @@ public class WishlistController : ControllerBase
         {
             return NotFound(new ProblemDetails
             {
-                Title = "Wishlist item not found",
+                Title = "Favorito no encontrado",
                 Detail = error,
                 Status = StatusCodes.Status404NotFound
             });

@@ -18,7 +18,7 @@ export function RegisterPage() {
     setFormError(null);
 
     if (password !== confirmPassword) {
-      const message = 'Passwords do not match.';
+      const message = 'Las contraseñas no coinciden.';
       setFormError(message);
       toast.error(message);
       return;
@@ -26,10 +26,10 @@ export function RegisterPage() {
 
     try {
       await register({ email, password, confirmPassword });
-      toast.success('Account created. You can now sign in.');
+      toast.success('Cuenta creada. Ya puedes iniciar sesión.');
       navigate(ROUTES.login);
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Registration could not be completed.';
+      const message = error instanceof Error ? error.message : 'No se pudo completar el registro.';
       setFormError(message);
       toast.error(message);
     }
@@ -38,25 +38,25 @@ export function RegisterPage() {
   return (
     <section className="sk-auth-shell" aria-labelledby="register-title">
       <div className="sk-auth-intro">
-        <p className="sk-kicker">Private account</p>
-        <h1 id="register-title">Create your SKAMA Jewelry access.</h1>
+        <p className="sk-kicker">Cuenta privada</p>
+        <h1 id="register-title">Crea tu acceso a SKAMA Jewelry.</h1>
         <p className="sk-lede">
-          Create an account to sync favorites, review orders, and manage pieces
-          exclusivas con informacion de cliente.
+          Crea una cuenta para sincronizar favoritos, revisar órdenes y gestionar piezas
+          exclusivas con información de cliente.
         </p>
         <RouterLink className="sk-button sk-button--secondary sk-button--lg" to={ROUTES.catalog}>
-          Explore collections
+          Explorar colecciones
         </RouterLink>
       </div>
 
       <article className="sk-auth-panel">
         <div>
-          <p className="sk-kicker">New customer</p>
-          <h1>Create account</h1>
+          <p className="sk-kicker">Nuevo cliente</p>
+          <h1>Crear cuenta</h1>
         </div>
         <form className="sk-auth-form" onSubmit={handleSubmit}>
           <label className="sk-field" htmlFor="register-email">
-            <span className="sk-field__label">Email address</span>
+            <span className="sk-field__label">Correo electrónico</span>
             <input
               className="sk-input"
               id="register-email"
@@ -68,7 +68,7 @@ export function RegisterPage() {
             />
           </label>
           <label className="sk-field" htmlFor="register-password">
-            <span className="sk-field__label">Password</span>
+            <span className="sk-field__label">Contraseña</span>
             <input
               className="sk-input"
               id="register-password"
@@ -80,7 +80,7 @@ export function RegisterPage() {
             />
           </label>
           <label className="sk-field" htmlFor="register-confirm-password">
-            <span className="sk-field__label">Confirm password</span>
+            <span className="sk-field__label">Confirmar contraseña</span>
             <input
               className="sk-input"
               id="register-confirm-password"
@@ -93,10 +93,10 @@ export function RegisterPage() {
           </label>
           {formError && <p className="sk-validation">{formError}</p>}
           <button className="sk-button sk-button--primary sk-button--lg" type="submit" disabled={isLoading}>
-            {isLoading ? 'Registering...' : 'Register'}
+            {isLoading ? 'Registrando...' : 'Registrarse'}
           </button>
           <RouterLink className="sk-button sk-button--secondary sk-button--lg" to={ROUTES.login}>
-            I already have an account
+            Ya tengo una cuenta
           </RouterLink>
         </form>
       </article>

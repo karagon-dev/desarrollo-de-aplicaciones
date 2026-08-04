@@ -1,4 +1,4 @@
-CREATE PROCEDURE dbo.usp_PromotionProduct_Remove
+﻿CREATE OR ALTER PROCEDURE dbo.usp_PromotionProduct_Remove
     @PromotionId UNIQUEIDENTIFIER,
     @ProductId UNIQUEIDENTIFIER,
     @RowsAffected INT OUTPUT
@@ -13,3 +13,4 @@ BEGIN
     SET @RowsAffected = @@ROWCOUNT;
 END;
 GO
+

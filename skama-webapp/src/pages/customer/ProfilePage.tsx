@@ -60,7 +60,7 @@ export function ProfilePage() {
   }, [profile, loading]);
 
   if (loading) {
-    return <Loading fullPage message="Loading profile..." />;
+    return <Loading fullPage message="Cargando perfil..." />;
   }
 
   if (error && !profile) {
@@ -82,19 +82,19 @@ export function ProfilePage() {
         phone: form.phone.trim() || null,
         birthDate: form.birthDate || null,
       });
-      toast.success(isNewProfile ? 'Profile created successfully.' : 'Profile updated.');
+      toast.success(isNewProfile ? 'Perfil creado correctamente.' : 'Perfil actualizado.');
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : 'Could not save the profile.');
+      toast.error(err instanceof Error ? err.message : 'No se pudo guardar el perfil.');
     }
   }
 
   return (
     <PageShell
-      title="My profile"
-      subtitle="Manage your personal information"
+      title="Mi perfil"
+      subtitle="Administra tu información personal"
       breadcrumbs={[
-        { label: 'Home', path: ROUTES.home },
-        { label: 'My profile' },
+        { label: 'Inicio', path: ROUTES.home },
+        { label: 'Mi perfil' },
       ]}
     >
       <Card>
@@ -104,16 +104,16 @@ export function ProfilePage() {
           sx={{ display: 'flex', flexDirection: 'column', gap: tokens.spacing.md }}
         >
           <Input
-            label="Email address"
+            label="Correo electrónico"
             value={user?.email ?? ''}
             disabled
-            helperText="Email cannot be changed here"
+            helperText="El correo electrónico no se puede cambiar aquí"
           />
 
           <Grid container spacing={2}>
             <Grid size={{ xs: 12, sm: 6 }}>
               <Input
-                label="First name"
+                label="Nombre"
                 required
                 value={form.firstName}
                 onChange={(event) => updateField('firstName', event.target.value)}
@@ -121,7 +121,7 @@ export function ProfilePage() {
             </Grid>
             <Grid size={{ xs: 12, sm: 6 }}>
               <Input
-                label="Last name"
+                label="Apellidos"
                 required
                 value={form.lastName}
                 onChange={(event) => updateField('lastName', event.target.value)}
@@ -129,7 +129,7 @@ export function ProfilePage() {
             </Grid>
             <Grid size={{ xs: 12, sm: 6 }}>
               <Input
-                label="Identification"
+                label="Identificación"
                 required
                 value={form.identificationNumber}
                 onChange={(event) => updateField('identificationNumber', event.target.value)}
@@ -137,14 +137,14 @@ export function ProfilePage() {
             </Grid>
             <Grid size={{ xs: 12, sm: 6 }}>
               <Input
-                label="Phone"
+                label="Teléfono"
                 value={form.phone}
                 onChange={(event) => updateField('phone', event.target.value)}
               />
             </Grid>
             <Grid size={{ xs: 12, sm: 6 }}>
               <Input
-                label="Date de nacimiento"
+                label="Fecha de nacimiento"
                 type="date"
                 value={form.birthDate}
                 onChange={(event) => updateField('birthDate', event.target.value)}
@@ -160,7 +160,7 @@ export function ProfilePage() {
           )}
 
           <Button type="submit" disabled={saving} sx={{ alignSelf: 'flex-start' }}>
-            {saving ? 'Saving...' : isNewProfile ? 'Create profile' : 'Save cambios'}
+            {saving ? 'Guardando...' : isNewProfile ? 'Crear perfil' : 'Guardar cambios'}
           </Button>
         </Box>
       </Card>

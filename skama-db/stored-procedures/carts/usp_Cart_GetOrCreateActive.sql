@@ -1,4 +1,4 @@
-CREATE PROCEDURE dbo.usp_Cart_GetOrCreateActive
+﻿CREATE OR ALTER PROCEDURE dbo.usp_Cart_GetOrCreateActive
     @UserId UNIQUEIDENTIFIER,
     @CartId UNIQUEIDENTIFIER OUTPUT
 AS
@@ -30,3 +30,4 @@ BEGIN
     END;
 END;
 GO
+

@@ -1,4 +1,4 @@
-CREATE PROCEDURE dbo.usp_CartItem_Add
+﻿CREATE OR ALTER PROCEDURE dbo.usp_CartItem_Add
     @CartId UNIQUEIDENTIFIER,
     @ProductId UNIQUEIDENTIFIER,
     @Quantity INT,
@@ -102,3 +102,4 @@ BEGIN
     SET @ResultCode = 0; -- SUCCESS
 END;
 GO
+

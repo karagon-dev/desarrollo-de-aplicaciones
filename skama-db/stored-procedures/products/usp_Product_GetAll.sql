@@ -1,4 +1,4 @@
-CREATE PROCEDURE dbo.usp_Product_GetAll
+﻿CREATE OR ALTER PROCEDURE dbo.usp_Product_GetAll
     @Search NVARCHAR(150) = NULL,
     @CategoryId UNIQUEIDENTIFIER = NULL,
     @IncludeInactive BIT = 0
@@ -32,3 +32,4 @@ BEGIN
     ORDER BY P.TC_Name;
 END;
 GO
+

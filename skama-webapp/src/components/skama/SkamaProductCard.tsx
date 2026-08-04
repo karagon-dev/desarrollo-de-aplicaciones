@@ -50,7 +50,7 @@ export function SkamaProductCard({ product, compact = false }: ISkamaProductCard
 
   async function handleAddToCart() {
     if (product.isLimitedEdition && !isAuthenticated) {
-      toast.info('Sign in to buy limited edition pieces.');
+      toast.info('Inicia sesión para comprar piezas de edición limitada.');
       navigate(ROUTES.login, { state: { from: ROUTES.catalog } });
       return;
     }
@@ -63,9 +63,9 @@ export function SkamaProductCard({ product, compact = false }: ISkamaProductCard
         addLocalCartItem(product, 1);
       }
 
-      toast.success('Added to order.');
+      toast.success('Agregado a la orden.');
     } catch (error) {
-      toast.error(getApiErrorMessage(error, 'Could not add to order.'));
+      toast.error(getApiErrorMessage(error, 'No se pudo agregar a la orden.'));
     } finally {
       setIsAdding(false);
     }
@@ -88,7 +88,7 @@ export function SkamaProductCard({ product, compact = false }: ISkamaProductCard
         setLocalFavorites(nextFavorites);
       }
     } catch (error) {
-      toast.error(getApiErrorMessage(error, 'Could not update favorites.'));
+      toast.error(getApiErrorMessage(error, 'No se pudieron actualizar los favoritos.'));
     } finally {
       setIsToggling(false);
     }
@@ -99,7 +99,7 @@ export function SkamaProductCard({ product, compact = false }: ISkamaProductCard
       <RouterLink
         className="sk-product-card__media"
         to={ROUTES.productDetail(product.id)}
-        aria-label={`View details for ${product.name}`}
+        aria-label={`Ver detalles de ${product.name}`}
       >
         <img src={product.imageUrl} alt={product.imageAlt} loading="lazy" />
         {product.badge && (
@@ -112,7 +112,7 @@ export function SkamaProductCard({ product, compact = false }: ISkamaProductCard
       <button
         className="sk-icon-button sk-icon-button--sm sk-product-card__favorite"
         type="button"
-        aria-label={isFavorited ? `Remove ${product.name} from favorites` : `Add ${product.name} to favorites`}
+        aria-label={isFavorited ? `Quitar ${product.name} de favoritos` : `Agregar ${product.name} a favoritos`}
         aria-pressed={isFavorited}
         disabled={isToggling}
         onClick={() => void handleToggleFavorite()}
@@ -131,7 +131,7 @@ export function SkamaProductCard({ product, compact = false }: ISkamaProductCard
           <span>{product.ratingLabel}</span>
         </span>
         <span className="sk-product-card__stock">
-          Available: {product.stockQuantity} {product.stockQuantity === 1 ? 'unit' : 'units'}
+          Disponible: {product.stockQuantity} {product.stockQuantity === 1 ? 'unidad' : 'unidades'}
         </span>
         <strong className="sk-price">{formatPrice(product.price)}</strong>
         <button
@@ -140,7 +140,7 @@ export function SkamaProductCard({ product, compact = false }: ISkamaProductCard
           disabled={isAdding}
           onClick={() => void handleAddToCart()}
         >
-          {isAdding ? 'Adding...' : product.isLimitedEdition && !isAuthenticated ? 'Sign in to buy' : 'Add'}
+          {isAdding ? 'Agregando...' : product.isLimitedEdition && !isAuthenticated ? 'Iniciar sesión para comprar' : 'Agregar'}
         </button>
       </div>
     </article>

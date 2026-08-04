@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <NpmCommand>npm</NpmCommand>
+    <NpmCommand Condition="'$(OS)' == 'Windows_NT' And Exists('C:\Program Files\nodejs\node.exe') And Exists('C:\Program Files\nodejs\node_modules\npm\bin\npm-cli.js')">&quot;C:\Program Files\nodejs\node.exe&quot; &quot;C:\Program Files\nodejs\node_modules\npm\bin\npm-cli.js&quot;</NpmCommand>
+    <NodeCommand>node</NodeCommand>
+    <NodeCommand Condition="'$(OS)' == 'Windows_NT' And Exists('C:\Program Files\nodejs\node.exe')">&quot;C:\Program Files\nodejs\node.exe&quot;</NodeCommand>
+    <TypeScriptCompiler>$(MSBuildProjectDirectory)\node_modules\typescript\bin\tsc</TypeScriptCompiler>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="Assets\ts\**;artifacts\**;node_modules\**;package.json;package-lock.json;tsconfig.json" />
+    <None Remove="artifacts\**;node_modules\**" />
+    <None Update="Assets\ts\**;package.json;package-lock.json;tsconfig.json" CopyToOutputDirectory="Never" CopyToPublishDirectory="Never" />
+    <Content Update="Views\**\*.cshtml" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <Target Name="RestoreNodeDependencies" BeforeTargets="PrepareForBuild" Condition="!Exists('$(MSBuildProjectDirectory)\node_modules')">
+    <Message Importance="high" Text="Restoring Node dependencies for TypeScript build..." />
+    <Exec WorkingDirectory="$(MSBuildProjectDirectory)" Command="$(NpmCommand) install" />
+  </Target>
+
+  <Target Name="BuildTypeScript" BeforeTargets="PrepareForBuild" DependsOnTargets="RestoreNodeDependencies">
+    <Message Importance="high" Text="Compiling TypeScript assets..." />
+    <Exec WorkingDirectory="$(MSBuildProjectDirectory)" Command="$(NodeCommand) &quot;$(TypeScriptCompiler)&quot; -p tsconfig.json" />
+  </Target>
+
+</Project>

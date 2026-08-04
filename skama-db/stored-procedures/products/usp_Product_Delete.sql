@@ -1,4 +1,4 @@
-CREATE PROCEDURE dbo.usp_Product_Delete
+﻿CREATE OR ALTER PROCEDURE dbo.usp_Product_Delete
     @Id UNIQUEIDENTIFIER,
     @RowsAffected INT OUTPUT
 AS
@@ -14,3 +14,4 @@ BEGIN
     SET @RowsAffected = @@ROWCOUNT;
 END;
 GO
+

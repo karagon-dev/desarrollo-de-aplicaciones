@@ -1,4 +1,4 @@
-CREATE PROCEDURE dbo.usp_EmailNotification_MarkAsSent
+﻿CREATE OR ALTER PROCEDURE dbo.usp_EmailNotification_MarkAsSent
     @Id UNIQUEIDENTIFIER,
     @RowsAffected INT OUTPUT
 AS
@@ -14,3 +14,4 @@ BEGIN
     SET @RowsAffected = @@ROWCOUNT;
 END;
 GO
+

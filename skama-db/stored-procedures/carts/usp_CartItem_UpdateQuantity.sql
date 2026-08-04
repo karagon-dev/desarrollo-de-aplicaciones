@@ -1,4 +1,4 @@
-CREATE PROCEDURE dbo.usp_CartItem_UpdateQuantity
+﻿CREATE OR ALTER PROCEDURE dbo.usp_CartItem_UpdateQuantity
     @CartItemId UNIQUEIDENTIFIER,
     @Quantity INT,
     @RowsAffected INT OUTPUT,
@@ -61,3 +61,4 @@ BEGIN
     SET @ResultCode = 0;
 END;
 GO
+

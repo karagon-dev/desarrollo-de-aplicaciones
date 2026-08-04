@@ -1,4 +1,4 @@
-CREATE PROCEDURE dbo.usp_Cart_GetDetail
+﻿CREATE OR ALTER PROCEDURE dbo.usp_Cart_GetDetail
     @CartId UNIQUEIDENTIFIER
 AS
 BEGIN
@@ -34,3 +34,4 @@ BEGIN
     WHERE CI.TID_CartId = @CartId;
 END;
 GO
+

@@ -23,7 +23,11 @@ public class DashboardRepository : IDashboardRepository
 
         using var multi = await connection.QueryMultipleAsync(
             "usp_Dashboard_GetSummary",
-            new { StartDate = startDate, EndDate = endDate },
+            new
+            {
+                StartDate = startDate.ToDateTime(TimeOnly.MinValue),
+                EndDate = endDate.ToDateTime(TimeOnly.MinValue)
+            },
             commandType: CommandType.StoredProcedure);
 
         var salesMetrics = await multi.ReadSingleOrDefaultAsync<DashboardSalesMetrics>()

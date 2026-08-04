@@ -12,9 +12,9 @@ import { tokens } from '../../utils';
 import { ROUTES } from '../../routes/routePaths';
 
 const adminLinks = [
-  { label: 'Dashboard', path: ROUTES.admin.dashboard, icon: DashboardOutlinedIcon },
-  { label: 'Products', path: ROUTES.admin.products, icon: Inventory2OutlinedIcon },
-  { label: 'Reports', path: ROUTES.admin.reports, icon: AssessmentOutlinedIcon },
+  { label: 'Panel', path: ROUTES.admin.dashboard, icon: DashboardOutlinedIcon },
+  { label: 'Productos', path: ROUTES.admin.products, icon: Inventory2OutlinedIcon },
+  { label: 'Reportes', path: ROUTES.admin.reports, icon: AssessmentOutlinedIcon },
 ];
 
 export function Sidebar() {
@@ -23,7 +23,7 @@ export function Sidebar() {
   return (
     <Box
       component="aside"
-      aria-label="Admin navigation"
+      aria-label="Navegación administrativa"
       sx={{
         width: { xs: '100%', md: 240 },
         flexShrink: 0,
@@ -43,7 +43,7 @@ export function Sidebar() {
           letterSpacing: '0.1em',
         }}
       >
-        Administration
+        Administración
       </Typography>
       <List dense>
         {adminLinks.map((link) => {

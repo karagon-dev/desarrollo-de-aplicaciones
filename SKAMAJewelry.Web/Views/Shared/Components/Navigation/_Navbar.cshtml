@@ -1,0 +1,50 @@
+﻿@{
+    var currentPath = Context.Request.Path.Value?.TrimEnd('/').ToLowerInvariant();
+    if (string.IsNullOrWhiteSpace(currentPath))
+    {
+        currentPath = "/";
+    }
+
+    var currentNavKey = currentPath switch
+    {
+        "/" => "home",
+        "/catalog" or "/collections" => "catalog",
+        "/admin/orders" => "sales",
+        "/checkout" => "order",
+        _ => string.Empty
+    };
+
+    string? AriaCurrent(string key) => currentNavKey == key ? "page" : null;
+}
+
+<header class="sk-navbar" data-navbar>
+    <a class="sk-navbar__brand" href="/" aria-label="SKAMA Jewelry">
+        <img class="sk-navbar__brand-logo sk-navbar__brand-logo--on-dark" src="~/assets/images/brand/skama-logo-on-dark.png" alt="" aria-hidden="true" />
+        <img class="sk-navbar__brand-logo sk-navbar__brand-logo--on-light" src="~/assets/images/brand/skama-logo-on-light.png" alt="" aria-hidden="true" />
+        <span class="sr-only">SKAMA Jewelry</span>
+    </a>
+    <nav class="sk-navbar__links" aria-label="Navegación principal">
+        <a href="/" aria-current="@AriaCurrent("home")">Inicio</a>
+        <a href="/collections" aria-current="@AriaCurrent("catalog")">Colecciones</a>
+        <a href="/admin/orders" aria-current="@AriaCurrent("sales")">Ventas</a>
+        <a href="/checkout" aria-current="@AriaCurrent("order")">Pedido</a>
+    </nav>
+    <div class="sk-navbar__actions">
+        <a class="sk-icon-button sk-icon-button--sm sk-action-button" href="/destacados" aria-label="Ver destacados">
+            <span class="sk-icon" aria-hidden="true" data-icon="heart"></span>
+            <span class="sk-counter-badge" aria-label="0 destacados" data-favorite-count hidden></span>
+        </a>
+        <button class="sk-icon-button sk-icon-button--sm sk-action-button" type="button" aria-label="Carrito de compras" aria-controls="cart-drawer" aria-expanded="false" data-drawer-open="cart-drawer">
+            <span class="sk-icon" aria-hidden="true" data-icon="shopping-bag"></span>
+            <span class="sk-counter-badge" aria-label="0 artículos en el carrito" data-cart-count hidden></span>
+        </button>
+        <partial name="~/Views/Shared/Components/Navigation/_ThemeSwitch.cshtml" />
+        <a class="sk-auth-button" href="/auth/login" aria-label="Iniciar sesión o registrar usuario">
+            <span class="sk-icon" aria-hidden="true" data-icon="users"></span>
+            <span>Cuenta</span>
+        </a>
+        <button class="sk-icon-button sk-icon-button--sm sk-navbar__menu" type="button" aria-label="Abrir menú" aria-controls="main-menu" aria-expanded="false" data-drawer-open="main-menu">
+            <span class="sk-icon" aria-hidden="true" data-icon="menu"></span>
+        </button>
+    </div>
+</header>

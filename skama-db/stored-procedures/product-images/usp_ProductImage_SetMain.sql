@@ -1,4 +1,4 @@
-CREATE PROCEDURE dbo.usp_ProductImage_SetMain
+﻿CREATE OR ALTER PROCEDURE dbo.usp_ProductImage_SetMain
     @Id UNIQUEIDENTIFIER,
     @RowsAffected INT OUTPUT
 AS
@@ -22,3 +22,4 @@ BEGIN
     SET @RowsAffected = @@ROWCOUNT;
 END;
 GO
+

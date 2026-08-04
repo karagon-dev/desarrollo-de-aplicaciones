@@ -12,10 +12,10 @@ import { getLocalCartTotals, LOCAL_CART_UPDATED_EVENT, readLocalCart } from '../
 import { ROUTES } from '../../routes/routePaths';
 
 const navLinks = [
-  { label: 'Home', path: ROUTES.home, match: ['/'] },
-  { label: 'Collections', path: ROUTES.catalog, match: [ROUTES.catalog, ROUTES.legacyCatalog] },
-  { label: 'Favorites', path: ROUTES.wishlist, match: [ROUTES.wishlist] },
-  { label: 'Order', path: ROUTES.checkout, match: [ROUTES.checkout, ROUTES.cart] },
+  { label: 'Inicio', path: ROUTES.home, match: ['/'] },
+  { label: 'Colecciones', path: ROUTES.catalog, match: [ROUTES.catalog, ROUTES.legacyCatalog] },
+  { label: 'Favoritos', path: ROUTES.wishlist, match: [ROUTES.wishlist] },
+  { label: 'Orden', path: ROUTES.checkout, match: [ROUTES.checkout, ROUTES.cart] },
 ];
 
 function useLocalCartCount() {
@@ -58,7 +58,7 @@ export function Navbar() {
   }, []);
 
   const cartCount = itemCount || localCartCount;
-  const accountLabel = useMemo(() => user?.email.split('@')[0] ?? 'Account', [user?.email]);
+  const accountLabel = useMemo(() => user?.email.split('@')[0] ?? 'Cuenta', [user?.email]);
 
   function isActive(match: string[]) {
     if (match.includes('/')) {
@@ -76,13 +76,13 @@ export function Navbar() {
           <button
             className="sk-icon-button"
             type="button"
-            aria-label="Close menu"
+            aria-label="Cerrar menú"
             onClick={() => setMobileOpen(false)}
           >
             <CloseIcon fontSize="small" />
           </button>
         </div>
-        <nav className="sk-drawer-nav" aria-label="Mobile navigation">
+        <nav className="sk-drawer-nav" aria-label="Navegación móvil">
           {navLinks.map((link) => (
             <RouterLink
               key={link.path}
@@ -95,7 +95,7 @@ export function Navbar() {
           ))}
           {isAdmin && (
             <RouterLink to={ROUTES.admin.dashboard} onClick={() => setMobileOpen(false)}>
-              Admin
+              Administración
             </RouterLink>
           )}
           {isAuthenticated ? (
@@ -107,11 +107,11 @@ export function Navbar() {
                 setMobileOpen(false);
               }}
             >
-              Sign out
+              Cerrar sesión
             </button>
           ) : (
             <RouterLink to={ROUTES.login} onClick={() => setMobileOpen(false)}>
-              Sign in
+              Iniciar sesión
             </RouterLink>
           )}
         </nav>
@@ -135,7 +135,7 @@ export function Navbar() {
           />
         </RouterLink>
 
-        <nav className="sk-navbar__links" aria-label="Main navigation">
+        <nav className="sk-navbar__links" aria-label="Navegación principal">
           {navLinks.map((link) => (
             <RouterLink
               key={link.path}
@@ -150,7 +150,7 @@ export function Navbar() {
               to={ROUTES.admin.dashboard}
               aria-current={location.pathname.startsWith('/admin') ? 'page' : undefined}
             >
-              Admin
+              Administración
             </RouterLink>
           )}
         </nav>
@@ -159,7 +159,7 @@ export function Navbar() {
           <button
             className="ui-switch sk-theme-switch"
             type="button"
-            aria-label={mode === 'light' ? 'Enable dark mode' : 'Enable light mode'}
+            aria-label={mode === 'light' ? 'Activar modo oscuro' : 'Activar modo claro'}
             aria-pressed={mode === 'dark'}
             onClick={toggleMode}
           >
@@ -168,12 +168,12 @@ export function Navbar() {
             </span>
           </button>
 
-          <RouterLink className="sk-icon-button" to={ROUTES.wishlist} aria-label="Favorites">
+          <RouterLink className="sk-icon-button" to={ROUTES.wishlist} aria-label="Favoritos">
             <FavoriteBorderIcon fontSize="small" />
             {wishlistItems.length > 0 && <span className="sk-counter-badge">{wishlistItems.length}</span>}
           </RouterLink>
 
-          <RouterLink className="sk-icon-button" to={ROUTES.cart} aria-label="Cart">
+          <RouterLink className="sk-icon-button" to={ROUTES.cart} aria-label="Carrito">
             <ShoppingBagOutlinedIcon fontSize="small" />
             {cartCount > 0 && <span className="sk-counter-badge">{cartCount}</span>}
           </RouterLink>
@@ -184,21 +184,21 @@ export function Navbar() {
                 <LoginOutlinedIcon fontSize="small" />
                 <span>{accountLabel}</span>
               </RouterLink>
-              <button className="sk-icon-button" type="button" aria-label="Sign out" onClick={logout}>
+              <button className="sk-icon-button" type="button" aria-label="Cerrar sesión" onClick={logout}>
                 <LogoutOutlinedIcon fontSize="small" />
               </button>
             </>
           ) : (
             <RouterLink className="sk-auth-button" to={ROUTES.login}>
               <LoginOutlinedIcon fontSize="small" />
-              <span>Sign in</span>
+              <span>Iniciar sesión</span>
             </RouterLink>
           )}
 
           <button
             className="sk-icon-button sk-navbar__menu"
             type="button"
-            aria-label="Open menu"
+            aria-label="Abrir menú"
             aria-expanded={mobileOpen}
             onClick={() => setMobileOpen(true)}
           >

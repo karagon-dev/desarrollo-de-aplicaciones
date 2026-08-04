@@ -20,7 +20,7 @@ export function DateRangeFilter({
   onEndDateChange,
   onApply,
   loading = false,
-  applyLabel = 'Apply',
+  applyLabel = 'Aplicar',
 }: DateRangeFilterProps) {
   return (
     <Box
@@ -32,7 +32,7 @@ export function DateRangeFilter({
       }}
     >
       <Input
-        label="From"
+        label="Desde"
         type="date"
         value={startDate}
         onChange={(event) => onStartDateChange(event.target.value)}
@@ -40,7 +40,7 @@ export function DateRangeFilter({
         sx={{ maxWidth: 200 }}
       />
       <Input
-        label="To"
+        label="Hasta"
         type="date"
         value={endDate}
         onChange={(event) => onEndDateChange(event.target.value)}
@@ -49,7 +49,7 @@ export function DateRangeFilter({
       />
       {onApply && (
         <Button onClick={onApply} disabled={loading}>
-          {loading ? 'Loading...' : applyLabel}
+          {loading ? 'Cargando...' : applyLabel}
         </Button>
       )}
     </Box>

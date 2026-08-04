@@ -1,0 +1,115 @@
+﻿@{
+    ViewData["Title"] = "Contacto";
+
+    var channels = new[]
+    {
+        new { Icon = "location", Title = "Sucursal Principal", Text = "Jacó, Puntarenas" },
+        new { Icon = "instagram", Title = "Instagram", Text = "@skamajewelryoficial" },
+        new { Icon = "whatsapp", Title = "WhatsApp", Text = "+506 72054536" },
+        new { Icon = "mail", Title = "Correo", Text = "administraciónskama@gmail.com" },
+        new { Icon = "clock", Title = "Horario", Text = "Lunes a sábado<br />9:00 a.m. - 7:00 p.m.<br />Domingo<br />10:00 a.m. - 5:00 p.m." }
+    };
+}
+
+<style>
+    .contact-page {
+        padding-block: clamp(var(--space-7), 8vw, var(--space-10));
+    }
+
+    .contact-header,
+    .contact-grid {
+        width: min(100% - clamp(2rem, 5vw, 4rem), var(--container-xl));
+        margin-inline: auto;
+    }
+
+    .contact-header {
+        display: grid;
+        gap: var(--space-4);
+        max-width: var(--container-md);
+        margin-bottom: clamp(var(--space-7), 7vw, var(--space-9));
+        text-align: center;
+    }
+
+    .contact-kicker {
+        margin: 0;
+        color: var(--color-accent-strong);
+        font-size: var(--font-size-label);
+        font-weight: var(--font-weight-semibold);
+        letter-spacing: var(--letter-spacing-label);
+        text-transform: uppercase;
+    }
+
+    .contact-header h1 {
+        margin: 0;
+        font-family: var(--font-family-display);
+        font-size: var(--font-size-heading-1);
+        font-weight: var(--font-weight-regular);
+        line-height: var(--line-height-heading);
+    }
+
+    .contact-header__lede {
+        color: var(--color-text-secondary);
+        font-size: var(--font-size-body-lg);
+    }
+
+    .contact-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: var(--space-4);
+    }
+
+    .contact-card {
+        display: grid;
+        align-content: start;
+        gap: var(--space-3);
+        min-height: 100%;
+    }
+
+    .contact-icon {
+        width: 3rem;
+        height: 3rem;
+        display: grid;
+        place-items: center;
+        border-radius: var(--radius-full);
+        background: var(--color-accent-soft);
+        color: var(--color-accent-strong);
+    }
+
+    .contact-icon .sk-icon {
+        width: var(--icon-md);
+        height: var(--icon-md);
+    }
+
+    @@media (max-width: 64rem) {
+        .contact-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    @@media (max-width: 42rem) {
+        .contact-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<div class="contact-page">
+    <header class="contact-header">
+        <p class="contact-kicker">Contacto</p>
+        <h1>Contáctanos</h1>
+        <p class="contact-header__lede">Estamos disponibles para acompañar cada visita, coordinar pedidos especiales y brindar asesoría personalizada.</p>
+    </header>
+
+    <section class="contact-grid" aria-label="Canales de contacto">
+        @foreach (var channel in channels)
+        {
+            <article class="sk-card contact-card">
+                <span class="contact-icon" aria-hidden="true">
+                    <span class="sk-icon" data-icon="@channel.Icon"></span>
+                </span>
+                <h2>@channel.Title</h2>
+                <p>@Html.Raw(channel.Text)</p>
+            </article>
+        }
+    </section>
+</div>

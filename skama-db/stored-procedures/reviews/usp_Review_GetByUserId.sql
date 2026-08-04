@@ -1,4 +1,4 @@
-CREATE PROCEDURE dbo.usp_Review_GetByUserId
+﻿CREATE OR ALTER PROCEDURE dbo.usp_Review_GetByUserId
     @UserId UNIQUEIDENTIFIER
 AS
 BEGIN
@@ -19,3 +19,4 @@ BEGIN
     ORDER BY R.TD_CreatedAt DESC;
 END;
 GO
+

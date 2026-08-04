@@ -1,13 +1,13 @@
 # SKAMA Webapp
 
-SKAMA frontend built with React + TypeScript + Vite.
+Frontend de SKAMA construido con React, TypeScript y Vite.
 
 ## Requisitos
 
 - Node.js 20+
 - API de SKAMA corriendo localmente (por ejemplo `https://localhost:7157`)
 
-## Local setup
+## Configuración local
 
 1. Instalar dependencias:
 
@@ -22,19 +22,19 @@ VITE_API_BASE_URL=
 VITE_API_PROXY_TARGET=https://localhost:7157
 ```
 
-### How the API connection works
+### Cómo funciona la conexión con la API
 
-- Si `VITE_API_BASE_URL` is empty, el frontend usa rutas relativas (`/api`, `/images`).
+- Si `VITE_API_BASE_URL` está vacío, el frontend usa rutas relativas (`/api`, `/images`).
 - En desarrollo, Vite proxyea esas rutas a `VITE_API_PROXY_TARGET`.
 - Por defecto, el proxy apunta a `https://localhost:7157`.
 
-## Run
+## Ejecución
 
 ```bash
 npm run dev
 ```
 
-## Validation
+## Validación
 
 ```bash
 npm run lint
@@ -43,6 +43,6 @@ npm run build
 
 ## CORS (API)
 
-For deployments without the Vite proxy, add the frontend origin in `skama-api`:
+Para despliegues sin el proxy de Vite, agregar el origen del frontend en `skama-api`:
 
 - `Cors:AllowedOrigins` en `appsettings*.json`

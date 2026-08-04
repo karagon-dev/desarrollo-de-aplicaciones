@@ -37,7 +37,7 @@ public class ProductsController : ControllerBase
         if (product is null)
             return NotFound(new ProblemDetails
             {
-                Title = "Product not found",
+                Title = "Producto no encontrado",
                 Detail = $"No se encontró el producto con Id {id}.",
                 Status = StatusCodes.Status404NotFound
             });
@@ -72,7 +72,7 @@ public class ProductsController : ControllerBase
         if (!updated)
             return NotFound(new ProblemDetails
             {
-                Title = "Product not found",
+                Title = "Producto no encontrado",
                 Detail = $"No se encontró el producto con Id {id}.",
                 Status = StatusCodes.Status404NotFound
             });
@@ -90,7 +90,7 @@ public class ProductsController : ControllerBase
         if (!deleted)
             return NotFound(new ProblemDetails
             {
-                Title = "Product not found",
+                Title = "Producto no encontrado",
                 Detail = $"No se encontró el producto con Id {id}.",
                 Status = StatusCodes.Status404NotFound
             });

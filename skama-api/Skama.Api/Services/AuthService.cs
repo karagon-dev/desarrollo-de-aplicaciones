@@ -26,8 +26,8 @@ public class AuthService : IAuthService
         return resultCode switch
         {
             0 => (newId, true, resultCode, null),
-            1 => (Guid.Empty, false, 11, "Email already exists."),
-            _ => (Guid.Empty, false, resultCode, "An unexpected error occurred.")
+            1 => (Guid.Empty, false, 11, "El correo ya está registrado."),
+            _ => (Guid.Empty, false, resultCode, "Ocurrió un error inesperado.")
         };
     }
 
@@ -37,12 +37,12 @@ public class AuthService : IAuthService
 
         if (user is null || !BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
         {
-            return (null, false, 12, "Invalid credentials.");
+            return (null, false, 12, "Credenciales inválidas.");
         }
 
         if (!user.IsActive)
         {
-            return (null, false, 12, "Invalid credentials.");
+            return (null, false, 12, "Credenciales inválidas.");
         }
 
         return (MapToLoginResponse(user), true, 0, null);
@@ -67,8 +67,8 @@ public class AuthService : IAuthService
         return rowsAffected switch
         {
             > 0 => (true, 0, null),
-            0 => (false, 10, "User was not found."),
-            _ => (false, 0, "An unexpected error occurred.")
+            0 => (false, 10, "Usuario no encontrado."),
+            _ => (false, 0, "Ocurrió un error inesperado.")
         };
     }
 
@@ -80,7 +80,7 @@ public class AuthService : IAuthService
         {
             return (new ForgotPasswordResponse
             {
-                Message = "If the email is registered, a reset token has been generated."
+            Message = "Si el correo está registrado, se generó un token de restablecimiento."
             }, true, 0, null);
         }
 
@@ -92,7 +92,7 @@ public class AuthService : IAuthService
 
         return (new ForgotPasswordResponse
         {
-            Message = "If the email is registered, a reset token has been generated.",
+            Message = "Si el correo está registrado, se generó un token de restablecimiento.",
             ResetToken = resetToken
         }, true, 0, null);
     }
@@ -104,7 +104,7 @@ public class AuthService : IAuthService
 
         if (resetToken is null)
         {
-            return (false, 1, "Invalid or expired reset token.");
+            return (false, 1, "Token de restablecimiento inválido o expirado.");
         }
 
         var passwordHash = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
@@ -112,7 +112,7 @@ public class AuthService : IAuthService
 
         if (rowsAffected == 0)
         {
-            return (false, 10, "User was not found or is inactive.");
+            return (false, 10, "Usuario no encontrado o inactivo.");
         }
 
         await _authRepository.MarkResetTokenAsUsedAsync(resetToken.Id);

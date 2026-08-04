@@ -1,4 +1,4 @@
-CREATE PROCEDURE dbo.usp_User_UpdatePassword
+﻿CREATE OR ALTER PROCEDURE dbo.usp_User_UpdatePassword
     @UserId UNIQUEIDENTIFIER,
     @PasswordHash NVARCHAR(255),
     @RowsAffected INT OUTPUT
@@ -16,3 +16,4 @@ BEGIN
     SET @RowsAffected = @@ROWCOUNT;
 END;
 GO
+

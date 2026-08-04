@@ -1,4 +1,4 @@
-CREATE PROCEDURE dbo.usp_InventoryMovement_Insert
+﻿CREATE OR ALTER PROCEDURE dbo.usp_InventoryMovement_Insert
     @ProductId UNIQUEIDENTIFIER,
     @MovementType NVARCHAR(30),
     @Quantity INT,
@@ -77,3 +77,4 @@ BEGIN
     SET @ResultCode = 0;
 END;
 GO
+

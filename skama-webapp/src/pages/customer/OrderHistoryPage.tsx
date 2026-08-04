@@ -11,6 +11,14 @@ import type { IOrderDto } from '../../types';
 import { getApiErrorMessage, formatPrice } from '../../utils';
 import { ROUTES } from '../../routes/routePaths';
 
+const orderStatusLabels: Record<string, string> = {
+  PENDING: 'Pendiente',
+  PAID: 'Pagada',
+  SHIPPED: 'Enviada',
+  DELIVERED: 'Entregada',
+  CANCELLED: 'Cancelada',
+};
+
 export function OrderHistoryPage() {
   const { user } = useAuth();
   const [orders, setOrders] = useState<IOrderDto[]>([]);
@@ -19,16 +27,18 @@ export function OrderHistoryPage() {
 
   const columns: TableColumn<IOrderDto>[] = useMemo(
     () => [
-      { id: 'orderNumber', label: 'Order', accessor: 'orderNumber' },
+      { id: 'orderNumber', label: 'Orden', accessor: 'orderNumber' },
       {
         id: 'createdAt',
-        label: 'Date',
+        label: 'Fecha',
         render: (row) => new Date(row.createdAt).toLocaleDateString('es-CO'),
       },
       {
         id: 'status',
-        label: 'Status',
-        render: (row) => <Chip label={row.status} chipVariant="primary" size="small" />,
+        label: 'Estado',
+        render: (row) => (
+          <Chip label={orderStatusLabels[row.status] ?? row.status} chipVariant="primary" size="small" />
+        ),
       },
       {
         id: 'total',
@@ -47,7 +57,7 @@ export function OrderHistoryPage() {
             variant="outline"
             size="sm"
           >
-            View details
+            Ver detalle
           </Button>
         ),
       },
@@ -68,7 +78,7 @@ export function OrderHistoryPage() {
       setOrders(data);
     } catch (err) {
       setOrders([]);
-      setError(getApiErrorMessage(err, 'No se pudieron cargar los orders.'));
+      setError(getApiErrorMessage(err, 'No se pudieron cargar las órdenes.'));
     } finally {
       setLoading(false);
     }
@@ -79,7 +89,7 @@ export function OrderHistoryPage() {
   }, [loadOrders]);
 
   if (loading) {
-    return <Loading fullPage message="Loading orders..." />;
+    return <Loading fullPage message="Cargando órdenes..." />;
   }
 
   if (error) {
@@ -88,18 +98,18 @@ export function OrderHistoryPage() {
 
   return (
     <PageShell
-      title="History de orders"
-      subtitle="Check the status of your purchases"
+      title="Historial de órdenes"
+      subtitle="Consulta el estado de tus compras"
       breadcrumbs={[
-        { label: 'Home', path: ROUTES.home },
-        { label: 'Orders' },
+        { label: 'Inicio', path: ROUTES.home },
+        { label: 'Órdenes' },
       ]}
     >
       <Card padding={false}>
         {orders.length === 0 ? (
           <EmptyState
-            title="Sin orders"
-            description="When you complete a purchase, it will appear here."
+            title="Sin órdenes"
+            description="Cuando completes una compra, aparecerá aquí."
           />
         ) : (
           <Table columns={columns} rows={orders} getRowId={(row) => row.id} />

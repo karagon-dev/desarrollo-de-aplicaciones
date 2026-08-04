@@ -40,17 +40,17 @@ export function CartItemList({
               {item.productName}
             </Typography>
             <Typography variant="body2" sx={{ color: tokens.color.textSecondary }}>
-              {formatPrice(item.unitPrice)} each
+              {formatPrice(item.unitPrice)} c/u
             </Typography>
             {!item.isActive && (
               <Typography variant="caption" sx={{ color: tokens.color.warning }}>
-                Product unavailable
+                Producto no disponible
               </Typography>
             )}
           </Box>
 
           <Input
-            label="Quantity"
+            label="Cantidad"
             type="number"
             key={`${item.id}-${item.quantity}`}
             defaultValue={item.quantity}
@@ -77,7 +77,7 @@ export function CartItemList({
           </Typography>
 
           <IconButton
-            aria-label={`Delete ${item.productName}`}
+            aria-label={`Eliminar ${item.productName}`}
             onClick={() => void onRemove(item.id)}
             disabled={isUpdating}
             sx={{ color: tokens.color.danger, alignSelf: { xs: 'flex-end', sm: 'center' } }}

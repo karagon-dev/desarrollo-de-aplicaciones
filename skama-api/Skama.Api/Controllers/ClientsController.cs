@@ -43,7 +43,7 @@ public class ClientsController : ControllerBase
         if (!success)
             return Conflict(new ProblemDetails
             {
-                Title = "Profile upsert conflict",
+                Title = "Conflicto al guardar el perfil",
                 Detail = error,
                 Status = StatusCodes.Status409Conflict
             });

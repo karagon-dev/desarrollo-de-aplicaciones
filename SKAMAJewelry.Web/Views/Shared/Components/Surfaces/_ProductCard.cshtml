@@ -1,0 +1,67 @@
+﻿@model ProductCardViewModel
+
+<article class="sk-product-card"
+         data-product-card
+         data-product-id="@Model.ImageUrl"
+         data-product-name="@Model.Name"
+         data-product-collection="@Model.Collection"
+         data-product-price="@Model.Price.Amount.ToString("0", System.Globalization.CultureInfo.InvariantCulture)"
+         data-product-price-label="@($"{Model.Price.Currency} {Model.Price.Amount:N0}")"
+         data-product-description="@Model.Description"
+         data-product-image="@Model.ImageUrl"
+         data-product-image-alt="@Model.ImageAlt"
+         data-product-stock="@Model.AvailableQuantity"
+         data-product-purchase-limit="@Model.PurchaseQuantityLimit"
+         data-product-limited="@Model.IsLimitedEdition.ToString().ToLowerInvariant()">
+    <button class="sk-product-card__media" type="button" aria-label="Ver detalle de @Model.Name" data-product-detail-trigger>
+        <img src="@Model.ImageUrl" alt="@Model.ImageAlt" loading="lazy" />
+        @if (!string.IsNullOrWhiteSpace(Model.Badge))
+        {
+            <span class="sk-badge sk-badge--@Model.BadgeTone">@Model.Badge</span>
+        }
+    </button>
+    <button class="sk-icon-button sk-icon-button--sm sk-product-card__favorite" type="button" aria-label="Agregar @Model.Name a favoritos" aria-pressed="@Model.IsFavorite.ToString().ToLowerInvariant()" data-favorite-toggle>
+        <span class="sk-icon" aria-hidden="true" data-icon="heart"></span>
+    </button>
+    <div class="sk-product-card__body">
+        @if (!string.IsNullOrWhiteSpace(Model.Category))
+        {
+            <span class="sk-product-card__category">@Model.Category</span>
+        }
+        <h3>
+            <button type="button" data-product-detail-trigger>@Model.Name</button>
+        </h3>
+        @if (!string.IsNullOrWhiteSpace(Model.Description))
+        {
+            <span class="sk-product-card__description">@Model.Description</span>
+        }
+        @if (!string.IsNullOrWhiteSpace(Model.RatingLabel))
+        {
+            <span class="sk-product-card__rating" aria-label="@Model.RatingLabel">
+                <span aria-hidden="true">*****</span>
+                <span>@Model.RatingLabel</span>
+            </span>
+        }
+        <span class="sk-product-card__stock">Disponible: @Model.AvailableQuantity @(Model.AvailableQuantity == 1 ? "unidad" : "unidades")</span>
+        <partial name="~/Views/Shared/Components/DataDisplay/_Price.cshtml" model="Model.Price" />
+        @if (Model.OldPrice.HasValue)
+        {
+            <span class="sk-price__old">@Model.Price.Currency @Model.OldPrice.Value.ToString("N0")</span>
+        }
+        @if (Model.IsLimitedEdition && string.Equals(Model.ActionLabel, "Agregar", StringComparison.OrdinalIgnoreCase))
+        {
+            <button class="sk-button sk-button--secondary sk-button--sm" type="button" data-limited-purchase-trigger data-limited-locked-label="Iniciar sesión para comprar" data-limited-unlocked-label="Agregar">Iniciar sesión para comprar</button>
+        }
+        else
+        {
+            @if (string.Equals(Model.ActionLabel, "Agregar", StringComparison.OrdinalIgnoreCase))
+            {
+                <button class="sk-button sk-button--primary sk-button--sm" type="button" data-product-add-trigger>@Model.ActionLabel</button>
+            }
+            else
+            {
+                <button class="sk-button sk-button--primary sk-button--sm" type="button" data-product-detail-trigger>@Model.ActionLabel</button>
+            }
+        }
+    </div>
+</article>

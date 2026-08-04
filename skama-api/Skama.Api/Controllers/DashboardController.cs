@@ -29,7 +29,7 @@ public class DashboardController : ControllerBase
         {
             return BadRequest(new ProblemDetails
             {
-                Title = "Invalid dashboard parameters",
+                Title = "Parámetros del panel inválidos",
                 Detail = error,
                 Status = StatusCodes.Status400BadRequest
             });

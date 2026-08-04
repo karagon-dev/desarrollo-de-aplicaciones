@@ -1,4 +1,4 @@
-CREATE PROCEDURE dbo.usp_User_GetByEmail
+﻿CREATE OR ALTER PROCEDURE dbo.usp_User_GetByEmail
     @Email NVARCHAR(150)
 AS
 BEGIN
@@ -18,3 +18,4 @@ BEGIN
     WHERE U.TC_Email = @Email;
 END;
 GO
+

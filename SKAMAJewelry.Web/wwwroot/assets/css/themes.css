@@ -1,0 +1,104 @@
+:root,
+[data-theme="light"] {
+    --color-primary: var(--brand-emerald-800);
+    --color-primary-hover: var(--brand-emerald-700);
+    --color-primary-active: var(--brand-emerald-900);
+    --color-secondary: var(--brand-ivory-200);
+    --color-secondary-hover: var(--brand-ivory-100);
+    --color-accent: var(--brand-gold-500);
+    --color-accent-hover: var(--brand-gold-400);
+    --color-accent-active: var(--brand-gold-600);
+    --color-accent-soft: color-mix(in srgb, var(--brand-gold-500) 16%, transparent);
+    --color-accent-strong: var(--brand-gold-600);
+    --color-accent-contrast: var(--brand-charcoal-800);
+    --color-success: var(--brand-emerald-700);
+    --color-warning: var(--brand-amber-500);
+    --color-danger: var(--brand-ruby-500);
+    --color-danger-contrast: var(--brand-white);
+    --color-info: var(--brand-sapphire-500);
+
+    --color-background: var(--brand-ivory-50);
+    --color-background-subtle: var(--brand-ivory-100);
+    --color-surface: var(--brand-white);
+    --color-surface-muted: var(--brand-ivory-100);
+    --color-surface-elevated: var(--brand-white);
+    --color-surface-glass: color-mix(in srgb, var(--brand-white) 82%, transparent);
+    --color-header-background: var(--brand-emerald-900);
+    --color-header-foreground: var(--brand-ivory-50);
+    --color-footer-background: var(--brand-emerald-900);
+    --color-footer-foreground: var(--brand-ivory-50);
+    --color-footer-muted: color-mix(in srgb, var(--brand-ivory-50) 68%, transparent);
+
+    --color-text: var(--brand-charcoal-800);
+    --color-text-primary: var(--brand-charcoal-800);
+    --color-text-secondary: var(--brand-neutral-600);
+    --color-text-muted: var(--brand-neutral-500);
+    --color-text-disabled: var(--brand-neutral-300);
+    --color-input-text: var(--brand-black);
+    --color-border: color-mix(in srgb, var(--brand-charcoal-800) 14%, transparent);
+    --color-border-subtle: color-mix(in srgb, var(--brand-charcoal-800) 8%, transparent);
+    --color-border-strong: color-mix(in srgb, var(--brand-charcoal-800) 24%, transparent);
+    --color-hover: color-mix(in srgb, var(--brand-gold-500) 12%, transparent);
+    --color-active: color-mix(in srgb, var(--brand-gold-500) 20%, transparent);
+    --color-disabled: color-mix(in srgb, var(--brand-charcoal-800) 10%, transparent);
+    --color-focus: color-mix(in srgb, var(--brand-gold-500) 36%, transparent);
+    --color-overlay: color-mix(in srgb, var(--brand-charcoal-800) 48%, transparent);
+    --color-overlay-soft: color-mix(in srgb, var(--brand-charcoal-800) 10%, transparent);
+    --color-on-media: var(--brand-white);
+    --color-glass: color-mix(in srgb, var(--brand-white) 74%, transparent);
+    --shadow-color: color-mix(in srgb, var(--brand-charcoal-800) 8%, transparent);
+    --shadow-color-strong: color-mix(in srgb, var(--brand-charcoal-800) 14%, transparent);
+    --focus-ring: var(--shadow-focus);
+}
+
+[data-theme="dark"] {
+    --color-primary: var(--brand-ivory-100);
+    --color-primary-hover: var(--brand-ivory-50);
+    --color-primary-active: var(--brand-ivory-200);
+    --color-secondary: var(--brand-emerald-700);
+    --color-secondary-hover: color-mix(in srgb, var(--brand-emerald-700) 88%, var(--brand-white));
+    --color-accent: var(--brand-gold-400);
+    --color-accent-hover: var(--brand-gold-300);
+    --color-accent-active: var(--brand-gold-500);
+    --color-accent-soft: color-mix(in srgb, var(--brand-gold-400) 18%, transparent);
+    --color-accent-strong: var(--brand-gold-300);
+    --color-accent-contrast: var(--brand-charcoal-800);
+    --color-success: var(--brand-sage-300);
+    --color-warning: var(--brand-amber-300);
+    --color-danger: var(--brand-ruby-300);
+    --color-danger-contrast: var(--brand-charcoal-800);
+    --color-info: var(--brand-sapphire-300);
+
+    --color-background: var(--brand-emerald-900);
+    --color-background-subtle: color-mix(in srgb, var(--brand-emerald-900) 82%, var(--brand-black));
+    --color-surface: color-mix(in srgb, var(--brand-emerald-800) 78%, var(--brand-black));
+    --color-surface-muted: color-mix(in srgb, var(--brand-emerald-800) 88%, var(--brand-black));
+    --color-surface-elevated: color-mix(in srgb, var(--brand-emerald-700) 72%, var(--brand-black));
+    --color-surface-glass: color-mix(in srgb, var(--brand-emerald-800) 76%, transparent);
+    --color-header-background: var(--brand-ivory-100);
+    --color-header-foreground: var(--brand-emerald-900);
+    --color-footer-background: var(--brand-ivory-100);
+    --color-footer-foreground: var(--brand-emerald-900);
+    --color-footer-muted: color-mix(in srgb, var(--brand-emerald-900) 68%, transparent);
+
+    --color-text: var(--brand-ivory-50);
+    --color-text-primary: var(--brand-ivory-50);
+    --color-text-secondary: color-mix(in srgb, var(--brand-ivory-50) 78%, transparent);
+    --color-text-muted: color-mix(in srgb, var(--brand-ivory-50) 62%, transparent);
+    --color-text-disabled: color-mix(in srgb, var(--brand-ivory-50) 38%, transparent);
+    --color-input-text: var(--brand-white);
+    --color-border: color-mix(in srgb, var(--brand-ivory-50) 16%, transparent);
+    --color-border-subtle: color-mix(in srgb, var(--brand-ivory-50) 10%, transparent);
+    --color-border-strong: color-mix(in srgb, var(--brand-ivory-50) 28%, transparent);
+    --color-hover: color-mix(in srgb, var(--brand-gold-400) 14%, transparent);
+    --color-active: color-mix(in srgb, var(--brand-gold-400) 24%, transparent);
+    --color-disabled: color-mix(in srgb, var(--brand-ivory-50) 10%, transparent);
+    --color-focus: color-mix(in srgb, var(--brand-gold-400) 42%, transparent);
+    --color-overlay: color-mix(in srgb, var(--brand-black) 56%, transparent);
+    --color-overlay-soft: color-mix(in srgb, var(--brand-black) 12%, transparent);
+    --color-on-media: var(--brand-white);
+    --color-glass: color-mix(in srgb, var(--brand-emerald-800) 74%, transparent);
+    --shadow-color: color-mix(in srgb, var(--brand-black) 18%, transparent);
+    --shadow-color-strong: color-mix(in srgb, var(--brand-black) 28%, transparent);
+    --focus-ring: var(--shadow-focus);
+}

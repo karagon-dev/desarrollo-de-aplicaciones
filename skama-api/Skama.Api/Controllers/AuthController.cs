@@ -31,7 +31,7 @@ public class AuthController : ControllerBase
         {
             return Conflict(new ProblemDetails
             {
-                Title = "Registration failed",
+                Title = "Registro fallido",
                 Detail = error,
                 Status = StatusCodes.Status409Conflict
             });
@@ -55,7 +55,7 @@ public class AuthController : ControllerBase
         {
             return Unauthorized(new ProblemDetails
             {
-                Title = "Login failed",
+                Title = "Inicio de sesión fallido",
                 Detail = error,
                 Status = StatusCodes.Status401Unauthorized
             });
@@ -107,7 +107,7 @@ public class AuthController : ControllerBase
             {
                 return NotFound(new ProblemDetails
                 {
-                    Title = "User not found",
+                    Title = "Usuario no encontrado",
                     Detail = error,
                     Status = StatusCodes.Status404NotFound
                 });
@@ -115,7 +115,7 @@ public class AuthController : ControllerBase
 
             return BadRequest(new ProblemDetails
             {
-                Title = "Status update failed",
+                Title = "No se pudo actualizar el estado",
                 Detail = error,
                 Status = StatusCodes.Status400BadRequest
             });
@@ -154,7 +154,7 @@ public class AuthController : ControllerBase
             {
                 return NotFound(new ProblemDetails
                 {
-                    Title = "Reset token not found",
+                    Title = "Token de restablecimiento no encontrado",
                     Detail = error,
                     Status = StatusCodes.Status404NotFound
                 });
@@ -162,7 +162,7 @@ public class AuthController : ControllerBase
 
             return BadRequest(new ProblemDetails
             {
-                Title = "Password reset failed",
+                Title = "No se pudo restablecer la contraseña",
                 Detail = error,
                 Status = StatusCodes.Status400BadRequest
             });

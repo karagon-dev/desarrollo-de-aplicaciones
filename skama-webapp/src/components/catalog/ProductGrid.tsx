@@ -20,7 +20,7 @@ export function ProductGrid({
   imageUrlByProductId,
 }: IProductGridProps) {
   if (loading) {
-    return <Loading message="Loading products..." />;
+    return <Loading message="Cargando productos..." />;
   }
 
   if (error) {
@@ -30,8 +30,8 @@ export function ProductGrid({
   if (products.length === 0) {
     return (
       <EmptyState
-        title="No products"
-        description="No products matched the selected filters."
+        title="No hay productos"
+        description="Ningún producto coincide con los filtros seleccionados."
       />
     );
   }

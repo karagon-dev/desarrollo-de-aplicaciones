@@ -1,0 +1,13 @@
+@model SectionTitleViewModel
+
+<header class="sk-section-title">
+    @if (!string.IsNullOrWhiteSpace(Model.Kicker))
+    {
+        <p>@Model.Kicker</p>
+    }
+    <h2>@Model.Title</h2>
+    @if (!string.IsNullOrWhiteSpace(Model.Description))
+    {
+        <span>@Model.Description</span>
+    }
+</header>

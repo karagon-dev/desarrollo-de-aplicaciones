@@ -1,4 +1,4 @@
-CREATE PROCEDURE dbo.usp_Wishlist_Add
+﻿CREATE OR ALTER PROCEDURE dbo.usp_Wishlist_Add
     @UserId UNIQUEIDENTIFIER,
     @ProductId UNIQUEIDENTIFIER,
     @NewId UNIQUEIDENTIFIER OUTPUT,
@@ -34,3 +34,4 @@ BEGIN
     SET @ResultCode = 0;
 END;
 GO
+

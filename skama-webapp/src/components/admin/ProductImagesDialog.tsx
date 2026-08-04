@@ -38,10 +38,10 @@ export function ProductImagesDialog({ open, product, onClose }: ProductImagesDia
         file,
         isMain: images.length === 0,
       });
-      toast.success('Image uploaded successfully.');
+      toast.success('Imagen cargada correctamente.');
       await refetch();
     } catch (err) {
-      toast.error(getApiErrorMessage(err, 'Could not upload image.'));
+      toast.error(getApiErrorMessage(err, 'No se pudo cargar la imagen.'));
     } finally {
       setUploading(false);
       if (fileInputRef.current) {
@@ -54,10 +54,10 @@ export function ProductImagesDialog({ open, product, onClose }: ProductImagesDia
     setWorkingId(imageId);
     try {
       await productImageService.setMain(imageId);
-      toast.success('Main image updated.');
+      toast.success('Imagen principal actualizada.');
       await refetch();
     } catch (err) {
-      toast.error(getApiErrorMessage(err, 'Could not mark as main.'));
+      toast.error(getApiErrorMessage(err, 'No se pudo marcar como principal.'));
     } finally {
       setWorkingId(null);
     }
@@ -67,10 +67,10 @@ export function ProductImagesDialog({ open, product, onClose }: ProductImagesDia
     setWorkingId(imageId);
     try {
       await productImageService.delete(imageId);
-      toast.success('Image deleted.');
+      toast.success('Imagen eliminada.');
       await refetch();
     } catch (err) {
-      toast.error(getApiErrorMessage(err, 'Could not delete image.'));
+      toast.error(getApiErrorMessage(err, 'No se pudo eliminar la imagen.'));
     } finally {
       setWorkingId(null);
     }
@@ -81,10 +81,10 @@ export function ProductImagesDialog({ open, product, onClose }: ProductImagesDia
       open={open}
       onClose={onClose}
       maxWidth="md"
-      title={product ? `Images - ${product.name}` : 'Product images'}
+      title={product ? `Imágenes - ${product.name}` : 'Imágenes del producto'}
       actions={
         <Button variant="ghost" onClick={onClose}>
-          Close
+          Cerrar
         </Button>
       }
     >
@@ -95,7 +95,7 @@ export function ProductImagesDialog({ open, product, onClose }: ProductImagesDia
             disabled={uploading || !product}
             onClick={() => fileInputRef.current?.click()}
           >
-            {uploading ? 'Uploading...' : 'Upload image'}
+            {uploading ? 'Cargando...' : 'Subir imagen'}
           </Button>
           <input
             ref={fileInputRef}
@@ -105,19 +105,19 @@ export function ProductImagesDialog({ open, product, onClose }: ProductImagesDia
             onChange={(event) => void handleUpload(event)}
           />
           <Text variant="caption" muted>
-            JPG, PNG, or WEBP - max. 5 MB
+            JPG, PNG o WEBP - máx. 5 MB
           </Text>
         </Box>
 
         {loading ? (
-          <Loading message="Loading images..." />
+          <Loading message="Cargando imágenes..." />
         ) : error ? (
           <Text variant="small" sx={{ color: tokens.color.danger }}>
             {error}
           </Text>
         ) : images.length === 0 ? (
           <Text variant="body" muted>
-            This product does not have images yet.
+            Este producto todavía no tiene imágenes.
           </Text>
         ) : (
           <Grid container spacing={2}>
@@ -152,7 +152,7 @@ export function ProductImagesDialog({ open, product, onClose }: ProductImagesDia
                           sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
                         />
                       ) : (
-                        'No preview'
+                        'Sin vista previa'
                       )}
                     </Box>
                     <Box
@@ -165,11 +165,11 @@ export function ProductImagesDialog({ open, product, onClose }: ProductImagesDia
                       }}
                     >
                       {image.isMain ? (
-                        <Chip label="Main" chipVariant="primary" size="small" />
+                        <Chip label="Principal" chipVariant="primary" size="small" />
                       ) : (
                         <IconButton
                           size="small"
-                          aria-label="Mark as main"
+                          aria-label="Marcar como principal"
                           disabled={isWorking}
                           onClick={() => void handleSetMain(image.id)}
                         >
@@ -178,7 +178,7 @@ export function ProductImagesDialog({ open, product, onClose }: ProductImagesDia
                       )}
                       <IconButton
                         size="small"
-                        aria-label="Delete imagen"
+                        aria-label="Eliminar imagen"
                         disabled={isWorking}
                         onClick={() => void handleDelete(image.id)}
                         sx={{ color: tokens.color.danger, ml: 'auto' }}

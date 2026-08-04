@@ -1,4 +1,4 @@
-IF NOT EXISTS (SELECT 1 FROM Product WHERE TC_Name = 'Classic Emerald Ring')
+IF NOT EXISTS (SELECT 1 FROM Product WHERE TC_Name = 'Anillo Aurora Esmeralda')
 BEGIN
     INSERT INTO Product (
         TID_Id,
@@ -13,8 +13,8 @@ BEGIN
     VALUES (
         'c3d4e5f6-a7b8-9012-cdef-123456789012',
         'd4e5f6a7-b8c9-0123-def0-234567890123',
-        'Classic Emerald Ring',
-        '18k gold ring with a brilliant-cut Colombian emerald. Includes an authenticity certificate.',
+        'Anillo Aurora Esmeralda',
+        'Anillo en oro de 18k con esmeralda colombiana de corte brillante. Incluye certificado de autenticidad.',
         1250000.00,
         10,
         3,
@@ -22,7 +22,7 @@ BEGIN
     );
 END
 
-IF NOT EXISTS (SELECT 1 FROM Product WHERE TC_Name = 'Premium Emerald Necklace')
+IF NOT EXISTS (SELECT 1 FROM Product WHERE TC_Name = 'Collar Selva Dorada')
 BEGIN
     INSERT INTO Product (
         TID_Id,
@@ -37,8 +37,8 @@ BEGIN
     VALUES (
         'c3d4e5f6-a7b8-9012-cdef-123456789013',
         'd4e5f6a7-b8c9-0123-def0-234567890124',
-        'Premium Emerald Necklace',
-        'White gold necklace with a central emerald and elegant design for special occasions.',
+        'Collar Selva Dorada',
+        'Collar de oro blanco con esmeralda central y diseño elegante para ocasiones especiales.',
         2100000.00,
         2,
         5,
@@ -46,7 +46,7 @@ BEGIN
     );
 END
 
-IF NOT EXISTS (SELECT 1 FROM Product WHERE TC_Name = 'Emerald Drop Earrings')
+IF NOT EXISTS (SELECT 1 FROM Product WHERE TC_Name = 'Aretes Luz de Jade')
 BEGIN
     INSERT INTO Product (
         TID_Id,
@@ -61,8 +61,8 @@ BEGIN
     VALUES (
         'c3d4e5f6-a7b8-9012-cdef-123456789014',
         'd4e5f6a7-b8c9-0123-def0-234567890125',
-        'Emerald Drop Earrings',
-        'Drop earrings with Colombian emeralds and a yellow gold finish.',
+        'Aretes Luz de Jade',
+        'Aretes colgantes con esmeraldas colombianas y acabado en oro amarillo.',
         890000.00,
         8,
         2,
@@ -70,7 +70,7 @@ BEGIN
     );
 END
 
-IF NOT EXISTS (SELECT 1 FROM Product WHERE TC_Name = 'Delicate Emerald Bracelet')
+IF NOT EXISTS (SELECT 1 FROM Product WHERE TC_Name = 'Pulsera Vínculo Eterno')
 BEGIN
     INSERT INTO Product (
         TID_Id,
@@ -85,8 +85,8 @@ BEGIN
     VALUES (
         'c3d4e5f6-a7b8-9012-cdef-123456789015',
         'd4e5f6a7-b8c9-0123-def0-234567890126',
-        'Delicate Emerald Bracelet',
-        'Fine bracelet with set emeralds and a gold safety clasp.',
+        'Pulsera Vínculo Eterno',
+        'Pulsera fina con esmeraldas engastadas y cierre de seguridad en oro.',
         750000.00,
         12,
         4,
@@ -94,7 +94,7 @@ BEGIN
     );
 END
 
-IF NOT EXISTS (SELECT 1 FROM Product WHERE TC_Name = 'Emerald Solitaire Ring')
+IF NOT EXISTS (SELECT 1 FROM Product WHERE TC_Name = 'Anillo Bruma Real')
 BEGIN
     INSERT INTO Product (
         TID_Id,
@@ -109,8 +109,8 @@ BEGIN
     VALUES (
         'c3d4e5f6-a7b8-9012-cdef-123456789016',
         'd4e5f6a7-b8c9-0123-def0-234567890123',
-        'Emerald Solitaire Ring',
-        'Solitaire ring with a high-purity emerald and platinum setting.',
+        'Anillo Bruma Real',
+        'Anillo solitario con esmeralda de alta pureza y montura en platino.',
         3200000.00,
         1,
         2,
@@ -118,7 +118,7 @@ BEGIN
     );
 END
 
-IF NOT EXISTS (SELECT 1 FROM Product WHERE TC_Name = 'Vintage Emerald Necklace')
+IF NOT EXISTS (SELECT 1 FROM Product WHERE TC_Name = 'Collar Corazón de mi Tierra')
 BEGIN
     INSERT INTO Product (
         TID_Id,
@@ -133,8 +133,8 @@ BEGIN
     VALUES (
         'c3d4e5f6-a7b8-9012-cdef-123456789017',
         'd4e5f6a7-b8c9-0123-def0-234567890124',
-        'Vintage Emerald Necklace',
-        'Vintage design inspired by classic Colombian jewelry with a central emerald.',
+        'Collar Corazón de mi Tierra',
+        'Diseño vintage inspirado en joyería colombiana clásica con esmeralda central.',
         1850000.00,
         6,
         2,

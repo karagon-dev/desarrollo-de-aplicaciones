@@ -1,4 +1,4 @@
-CREATE PROCEDURE dbo.usp_Dashboard_GetSummary
+﻿CREATE OR ALTER PROCEDURE dbo.usp_Dashboard_GetSummary
     @StartDate DATE,
     @EndDate DATE
 AS
@@ -37,3 +37,4 @@ BEGIN
     ORDER BY TotalQuantitySold DESC;
 END;
 GO
+

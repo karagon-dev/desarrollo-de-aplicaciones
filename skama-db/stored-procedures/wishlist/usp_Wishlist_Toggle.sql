@@ -1,4 +1,4 @@
-CREATE PROCEDURE dbo.usp_Wishlist_Toggle
+﻿CREATE OR ALTER PROCEDURE dbo.usp_Wishlist_Toggle
     @UserId UNIQUEIDENTIFIER,
     @ProductId UNIQUEIDENTIFIER,
     @IsFavorite BIT OUTPUT
@@ -34,3 +34,4 @@ BEGIN
     SET @IsFavorite = 1;
 END;
 GO
+

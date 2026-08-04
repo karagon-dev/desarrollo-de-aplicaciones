@@ -48,14 +48,14 @@ public class ReviewsController : ControllerBase
             if (resultCode == 3)
                 return Conflict(new ProblemDetails
                 {
-                    Title = "Review already exists",
+                    Title = "La reseña ya existe",
                     Detail = error,
                     Status = StatusCodes.Status409Conflict
                 });
 
             return BadRequest(new ProblemDetails
             {
-                Title = "Review validation failed",
+                Title = "Validación de reseña fallida",
                 Detail = error,
                 Status = StatusCodes.Status400BadRequest
             });

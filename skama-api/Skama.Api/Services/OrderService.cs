@@ -22,10 +22,10 @@ public class OrderService : IOrderService
         return resultCode switch
         {
             0 => (orderId, orderNumber, true, resultCode, null),
-            2 => (Guid.Empty, string.Empty, false, resultCode, "The cart is empty or a validation error occurred."),
+            2 => (Guid.Empty, string.Empty, false, resultCode, "El carrito está vacío u ocurrió un error de validación."),
             22 => (Guid.Empty, string.Empty, false, resultCode, "Not enough stock available."),
-            31 => (Guid.Empty, string.Empty, false, resultCode, "Cart is not active."),
-            _ => (Guid.Empty, string.Empty, false, resultCode, "An unexpected error occurred.")
+            31 => (Guid.Empty, string.Empty, false, resultCode, "El carrito no está activo."),
+            _ => (Guid.Empty, string.Empty, false, resultCode, "Ocurrió un error inesperado.")
         };
     }
 
@@ -55,9 +55,9 @@ public class OrderService : IOrderService
         return resultCode switch
         {
             0 => (true, resultCode, null),
-            2 => (false, resultCode, "Invalid order status."),
-            40 => (false, resultCode, "Order was not found."),
-            _ => (false, resultCode, "An unexpected error occurred.")
+            2 => (false, resultCode, "Estado de orden inválido."),
+            40 => (false, resultCode, "Orden no encontrada."),
+            _ => (false, resultCode, "Ocurrió un error inesperado.")
         };
     }
 
@@ -68,9 +68,9 @@ public class OrderService : IOrderService
         return resultCode switch
         {
             0 => (true, resultCode, null),
-            40 => (false, resultCode, "Order was not found."),
-            41 => (false, resultCode, "Order already processed."),
-            _ => (false, resultCode, "An unexpected error occurred.")
+            40 => (false, resultCode, "Orden no encontrada."),
+            41 => (false, resultCode, "La orden ya fue procesada."),
+            _ => (false, resultCode, "Ocurrió un error inesperado.")
         };
     }
 

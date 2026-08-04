@@ -1,4 +1,4 @@
-CREATE PROCEDURE dbo.usp_InventoryMovement_GetByProductId
+﻿CREATE OR ALTER PROCEDURE dbo.usp_InventoryMovement_GetByProductId
     @ProductId UNIQUEIDENTIFIER
 AS
 BEGIN
@@ -18,3 +18,4 @@ BEGIN
     ORDER BY TD_CreatedAt DESC;
 END;
 GO
+

@@ -1,4 +1,4 @@
-CREATE PROCEDURE dbo.usp_Promotion_Insert
+﻿CREATE OR ALTER PROCEDURE dbo.usp_Promotion_Insert
     @Name NVARCHAR(150),
     @Description NVARCHAR(500) = NULL,
     @DiscountPercentage DECIMAL(5,2),
@@ -42,3 +42,4 @@ BEGIN
     SET @ResultCode = 0;
 END;
 GO
+

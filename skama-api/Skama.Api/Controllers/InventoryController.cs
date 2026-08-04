@@ -33,7 +33,7 @@ public class InventoryController : ControllerBase
             {
                 return NotFound(new ProblemDetails
                 {
-                    Title = "Product not found",
+                    Title = "Producto no encontrado",
                     Detail = error,
                     Status = StatusCodes.Status404NotFound
                 });
@@ -41,7 +41,7 @@ public class InventoryController : ControllerBase
 
             return BadRequest(new ProblemDetails
             {
-                Title = "Could not create inventory movement",
+                Title = "No se pudo crear el movimiento de inventario",
                 Detail = error,
                 Status = StatusCodes.Status400BadRequest
             });

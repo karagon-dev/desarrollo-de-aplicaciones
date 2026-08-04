@@ -13,6 +13,6 @@ public class ResetPasswordRequest
     public string NewPassword { get; set; } = string.Empty;
 
     [Required]
-    [Compare(nameof(NewPassword), ErrorMessage = "Passwords do not match.")]
+    [Compare(nameof(NewPassword), ErrorMessage = "Las contraseñas no coinciden.")]
     public string ConfirmPassword { get; set; } = string.Empty;
 }

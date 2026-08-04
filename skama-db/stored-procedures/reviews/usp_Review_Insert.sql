@@ -1,4 +1,4 @@
-CREATE PROCEDURE dbo.usp_Review_Insert
+﻿CREATE OR ALTER PROCEDURE dbo.usp_Review_Insert
     @UserId UNIQUEIDENTIFIER,
     @ProductId UNIQUEIDENTIFIER,
     @OrderId UNIQUEIDENTIFIER,
@@ -63,3 +63,4 @@ BEGIN
     SET @ResultCode = 0;
 END;
 GO
+

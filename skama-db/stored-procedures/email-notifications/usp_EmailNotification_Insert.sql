@@ -1,4 +1,4 @@
-CREATE PROCEDURE dbo.usp_EmailNotification_Insert
+﻿CREATE OR ALTER PROCEDURE dbo.usp_EmailNotification_Insert
     @UserId UNIQUEIDENTIFIER,
     @OrderId UNIQUEIDENTIFIER = NULL,
     @Type NVARCHAR(50),
@@ -42,3 +42,4 @@ BEGIN
     SET @ResultCode = 0;
 END;
 GO
+

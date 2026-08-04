@@ -1,4 +1,4 @@
-CREATE PROCEDURE dbo.usp_EmailNotification_GetPending
+﻿CREATE OR ALTER PROCEDURE dbo.usp_EmailNotification_GetPending
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -18,3 +18,4 @@ BEGIN
     ORDER BY TD_CreatedAt ASC;
 END;
 GO
+

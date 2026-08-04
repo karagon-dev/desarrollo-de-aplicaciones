@@ -1,4 +1,4 @@
-CREATE PROCEDURE dbo.usp_PasswordResetToken_Insert
+﻿CREATE OR ALTER PROCEDURE dbo.usp_PasswordResetToken_Insert
     @UserId UNIQUEIDENTIFIER,
     @TokenHash NVARCHAR(255),
     @ExpiresAt DATETIME2,
@@ -25,3 +25,4 @@ BEGIN
     );
 END;
 GO
+

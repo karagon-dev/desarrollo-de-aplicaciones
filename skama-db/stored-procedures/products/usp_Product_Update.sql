@@ -1,4 +1,4 @@
-CREATE PROCEDURE dbo.usp_Product_Update
+﻿CREATE OR ALTER PROCEDURE dbo.usp_Product_Update
     @Id UNIQUEIDENTIFIER,
     @CategoryId UNIQUEIDENTIFIER,
     @Name NVARCHAR(150),
@@ -27,3 +27,4 @@ BEGIN
     SET @RowsAffected = @@ROWCOUNT;
 END;
 GO
+

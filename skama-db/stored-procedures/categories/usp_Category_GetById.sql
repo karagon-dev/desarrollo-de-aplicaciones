@@ -1,4 +1,4 @@
-CREATE PROCEDURE dbo.usp_Category_GetById
+﻿CREATE OR ALTER PROCEDURE dbo.usp_Category_GetById
     @Id UNIQUEIDENTIFIER
 AS
 BEGIN
@@ -15,3 +15,4 @@ BEGIN
     WHERE TID_Id = @Id;
 END;
 GO
+
