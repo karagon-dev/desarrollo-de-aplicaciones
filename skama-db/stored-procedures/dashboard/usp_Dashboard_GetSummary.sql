@@ -9,13 +9,13 @@ BEGIN
         ISNULL(SUM(TN_Total), 0) AS TotalSales,
         COUNT(TID_Id) AS TotalOrders,
         ISNULL(AVG(TN_Total), 0) AS AverageOrderValue
-    FROM dbo.Order
+    FROM dbo.[Order]
     WHERE CAST(TD_CreatedAt AS DATE) BETWEEN @StartDate AND @EndDate
       AND TC_Status IN ('PAID', 'SHIPPED', 'DELIVERED');
 
     SELECT
         COUNT(TID_Id) AS RegisteredCustomers
-    FROM dbo.User
+    FROM dbo.[User]
     WHERE TB_IsActive = 1;
 
     SELECT
@@ -30,7 +30,7 @@ BEGIN
         SUM(OI.TN_Quantity) AS TotalQuantitySold,
         SUM(OI.TN_LineTotal) AS TotalSales
     FROM dbo.OrderItem OI
-    INNER JOIN dbo.Order O ON O.TID_Id = OI.TID_OrderId
+    INNER JOIN dbo.[Order] O ON O.TID_Id = OI.TID_OrderId
     WHERE CAST(O.TD_CreatedAt AS DATE) BETWEEN @StartDate AND @EndDate
       AND O.TC_Status IN ('PAID', 'SHIPPED', 'DELIVERED')
     GROUP BY OI.TID_ProductId, OI.TC_ProductName

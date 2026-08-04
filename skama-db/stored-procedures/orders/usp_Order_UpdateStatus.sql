@@ -13,7 +13,7 @@ BEGIN
         RETURN;
     END;
 
-    UPDATE dbo.Order
+    UPDATE dbo.[Order]
     SET
         TC_Status = @Status,
         TD_UpdatedAt = SYSDATETIME()

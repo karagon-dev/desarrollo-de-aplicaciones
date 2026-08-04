@@ -55,7 +55,7 @@ BEGIN
         SET @OrderId = NEWID();
         SET @OrderNumber = 'ORD-' + CONVERT(NVARCHAR(8), GETDATE(), 112) + '-' + RIGHT(CONVERT(NVARCHAR(36), NEWID()), 6);
 
-        INSERT INTO dbo.Order
+        INSERT INTO dbo.[Order]
         (
             TID_Id,
             TID_UserId,

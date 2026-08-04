@@ -9,7 +9,7 @@ BEGIN
     DECLARE @CurrentStatus NVARCHAR(30);
 
     SELECT @CurrentStatus = TC_Status
-    FROM dbo.Order
+    FROM dbo.[Order]
     WHERE TID_Id = @OrderId;
 
     IF @CurrentStatus IS NULL
@@ -32,7 +32,7 @@ BEGIN
     INNER JOIN dbo.OrderItem OI ON OI.TID_ProductId = P.TID_Id
     WHERE OI.TID_OrderId = @OrderId;
 
-    UPDATE dbo.Order
+    UPDATE dbo.[Order]
     SET
         TC_Status = 'CANCELLED',
         TD_UpdatedAt = SYSDATETIME()

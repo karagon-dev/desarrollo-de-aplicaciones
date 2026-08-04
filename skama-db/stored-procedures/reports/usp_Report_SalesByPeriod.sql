@@ -11,7 +11,7 @@ BEGIN
         SUM(O.TN_Subtotal) AS Subtotal,
         SUM(O.TN_DiscountTotal) AS DiscountTotal,
         SUM(O.TN_Total) AS Total
-    FROM dbo.Order O
+    FROM dbo.[Order] O
     WHERE CAST(O.TD_CreatedAt AS DATE) BETWEEN @StartDate AND @EndDate
       AND O.TC_Status IN ('PAID', 'SHIPPED', 'DELIVERED')
     GROUP BY CAST(O.TD_CreatedAt AS DATE)

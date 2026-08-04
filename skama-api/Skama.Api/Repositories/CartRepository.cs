@@ -88,7 +88,11 @@ public class CartRepository : ICartRepository
             parameters,
             commandType: CommandType.StoredProcedure);
 
-        return (parameters.Get<Guid>("@CartItemId"), parameters.Get<int>("@ResultCode"));
+        // @CartItemId is left NULL on validation/business-rule failures in the SP.
+        var cartItemId = parameters.Get<Guid?>("@CartItemId") ?? Guid.Empty;
+        var resultCode = parameters.Get<int?>("@ResultCode") ?? -1;
+
+        return (cartItemId, resultCode);
     }
 
     public async Task<(int RowsAffected, int ResultCode)> UpdateItemQuantityAsync(Guid cartItemId, int quantity)
@@ -106,7 +110,10 @@ public class CartRepository : ICartRepository
             parameters,
             commandType: CommandType.StoredProcedure);
 
-        return (parameters.Get<int>("@RowsAffected"), parameters.Get<int>("@ResultCode"));
+        var rowsAffected = parameters.Get<int?>("@RowsAffected") ?? 0;
+        var resultCode = parameters.Get<int?>("@ResultCode") ?? -1;
+
+        return (rowsAffected, resultCode);
     }
 
     public async Task<(int RowsAffected, int ResultCode)> RemoveItemAsync(Guid cartItemId)
@@ -123,6 +130,9 @@ public class CartRepository : ICartRepository
             parameters,
             commandType: CommandType.StoredProcedure);
 
-        return (parameters.Get<int>("@RowsAffected"), parameters.Get<int>("@ResultCode"));
+        var rowsAffected = parameters.Get<int?>("@RowsAffected") ?? 0;
+        var resultCode = parameters.Get<int?>("@ResultCode") ?? -1;
+
+        return (rowsAffected, resultCode);
     }
 }

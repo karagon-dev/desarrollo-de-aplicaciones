@@ -6,7 +6,7 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    UPDATE dbo.User
+    UPDATE dbo.[User]
     SET
         TC_PasswordHash = @PasswordHash,
         TD_UpdatedAt = SYSDATETIME()

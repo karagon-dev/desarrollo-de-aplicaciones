@@ -13,7 +13,7 @@ BEGIN
         U.TB_IsActive AS IsActive,
         U.TD_CreatedAt AS CreatedAt,
         U.TD_UpdatedAt AS UpdatedAt
-    FROM dbo.User U
+    FROM dbo.[User] U
     INNER JOIN dbo.Role R ON R.TID_Id = U.TN_RoleId
     WHERE U.TC_Email = @Email;
 END;

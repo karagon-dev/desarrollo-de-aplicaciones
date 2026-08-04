@@ -6,7 +6,7 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    UPDATE dbo.User
+    UPDATE dbo.[User]
     SET
         TB_IsActive = @IsActive,
         TD_UpdatedAt = SYSDATETIME()

@@ -28,7 +28,7 @@ BEGIN
     IF NOT EXISTS (
         SELECT 1
         FROM dbo.OrderItem OI
-        INNER JOIN dbo.Order O ON O.TID_Id = OI.TID_OrderId
+        INNER JOIN dbo.[Order] O ON O.TID_Id = OI.TID_OrderId
         WHERE O.TID_Id = @OrderId
           AND O.TID_UserId = @UserId
           AND OI.TID_ProductId = @ProductId

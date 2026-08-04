@@ -16,7 +16,7 @@ BEGIN
         TN_Total AS Total,
         TD_CreatedAt AS CreatedAt,
         TD_UpdatedAt AS UpdatedAt
-    FROM dbo.Order
+    FROM dbo.[Order]
     WHERE TID_Id = @OrderId;
 END;
 GO
