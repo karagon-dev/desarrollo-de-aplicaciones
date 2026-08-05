@@ -1,61 +1,52 @@
 # SKAMA Jewelry
 
-Solución preparada para abrir y ejecutar el prototipo aprobado de SKAMA Jewelry en Visual Studio Community o JetBrains Rider.
+E-commerce de joyería en esmeralda. Arquitectura en tres capas:
 
-## Proyectos principales
-
-- `SKAMAJewelry.Web`: aplicación ASP.NET Core MVC/Razor en .NET 9. Es la interfaz aprobada y debe usarse como proyecto de arranque para ver el diseño final.
-- `skama-api/Skama.Api`: API ASP.NET Core en .NET 9 con los endpoints del backend real.
-- `skama-api/HashTool`: utilidad auxiliar .NET 9 para generar hashes BCrypt.
-- `skama-webapp`: prototipo frontend Vite/React conservado en el repositorio. No es la referencia visual aprobada para Visual Studio.
+- `skama-webapp` — frontend React + TypeScript + Vite
+- `skama-api` — API ASP.NET Core (.NET 9) con Dapper y stored procedures
+- `skama-db` — esquema SQL Server (tablas, SPs y seeds)
 
 ## Requisitos
 
-- Visual Studio Community 2022 con la carga de trabajo "ASP.NET y desarrollo web".
-- SDK de .NET 9.
-- Node.js LTS con `npm`, requerido por `SKAMAJewelry.Web` para compilar los archivos TypeScript.
-- SQL Server LocalDB, Express o Developer si se desea ejecutar la API real contra base de datos.
-- `sqlcmd` para ejecutar los scripts de base de datos desde terminal.
+- Node.js LTS con `npm`
+- SDK de .NET 9
+- SQL Server (LocalDB, Express o Developer)
+- `sqlcmd` (opcional, para scripts de base de datos)
 
-## Ejecutar en Visual Studio Community
-
-1. Clonar el repositorio:
-
-   ```powershell
-   git clone https://github.com/karagon-dev/desarrollo-de-aplicaciones.git
-   ```
-
-2. Abrir `SKAMAJewelry.sln` desde Visual Studio Community.
-3. Restaurar paquetes NuGet cuando Visual Studio lo solicite.
-4. Verificar que `SKAMAJewelry.Web` sea el proyecto de arranque.
-5. Ejecutar con el perfil `https` o `http`.
-
-Puertos por defecto del MVC:
-
-- HTTPS: `https://localhost:7293`
-- HTTP: `http://localhost:5189`
-
-## Ejecutar desde terminal
+## Frontend (`skama-webapp`)
 
 ```powershell
-dotnet restore SKAMAJewelry.sln
-dotnet build SKAMAJewelry.sln
-dotnet run --project SKAMAJewelry.Web\SKAMAJewelry.Web.csproj --launch-profile https
+cd skama-webapp
+npm install
+npm run dev
 ```
 
-## API y base de datos
+Por defecto corre en `http://localhost:5173`.
 
-La API real usa la cadena `DefaultConnection` de `skama-api/Skama.Api/appsettings.Development.json`. Por defecto apunta a:
+Vite reenvía `/api` e `/images` a la API (`https://localhost:7157` por defecto).  
+Podés cambiar el destino con la variable `VITE_API_PROXY_TARGET`.
+
+## API (`skama-api`)
+
+```powershell
+dotnet run --project skama-api\Skama.Api\Skama.Api.csproj --launch-profile https
+```
+
+Swagger: `https://localhost:7157/swagger`
+
+La cadena de conexión está en `skama-api/Skama.Api/appsettings.json` (o `appsettings.Development.json`):
 
 ```text
 Server=(localdb)\MSSQLLocalDB;Database=skama-db;Trusted_Connection=True;TrustServerCertificate=True;
 ```
 
-Para usar otra instancia de SQL Server, editar esa cadena localmente.
+Ajustala localmente si usás otra instancia de SQL Server.
 
-### Preparar `skama-db` en LocalDB
+Utilidad auxiliar: `skama-api/HashTool` genera hashes BCrypt.
 
-Ejecutar desde la raíz del repositorio:
+## Base de datos (`skama-db`)
+
+Desde la raíz del repositorio:
 
 ```powershell
 $server = '(localdb)\MSSQLLocalDB'
@@ -99,10 +90,9 @@ sqlcmd -S $server -d $database -E -b -i 'SeedAll.sql'
 Pop-Location
 ```
 
-Ejecutar la API:
+## Flujo local recomendado
 
-```powershell
-dotnet run --project skama-api\Skama.Api\Skama.Api.csproj --launch-profile https
-```
-
-Swagger queda disponible en `https://localhost:7157/swagger` cuando se usa el perfil `https`.
+1. Preparar `skama-db`
+2. Levantar la API en `https://localhost:7157`
+3. Levantar el frontend con `npm run dev`
+4. Abrir `http://localhost:5173`
