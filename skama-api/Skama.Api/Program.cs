@@ -1,5 +1,10 @@
+using Dapper;
+using Skama.Api;
 using Skama.Api.Repositories;
 using Skama.Api.Services;
+
+SqlMapper.AddTypeHandler(new DateOnlyTypeHandler());
+SqlMapper.AddTypeHandler(new NullableDateOnlyTypeHandler());
 
 var builder = WebApplication.CreateBuilder(args);
 
