@@ -1,6 +1,11 @@
 import axios from 'axios';
 import type { IProblemDetails } from '../types';
 
+function isHtmlPayload(value: string): boolean {
+  const trimmed = value.trimStart().toLowerCase();
+  return trimmed.startsWith('<!doctype html') || trimmed.startsWith('<html');
+}
+
 export function getApiErrorMessage(error: unknown, fallback = 'Ocurrió un error inesperado.'): string {
   if (!axios.isAxiosError(error)) {
     return error instanceof Error ? error.message : fallback;
@@ -9,7 +14,7 @@ export function getApiErrorMessage(error: unknown, fallback = 'Ocurrió un error
   const data = error.response?.data;
 
   if (typeof data === 'string' && data.trim()) {
-    return data;
+    return isHtmlPayload(data) ? fallback : data;
   }
 
   if (data && typeof data === 'object') {

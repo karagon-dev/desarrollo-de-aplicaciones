@@ -1,5 +1,6 @@
 using Dapper;
 using Skama.Api;
+using Skama.Api.Middleware;
 using Skama.Api.Repositories;
 using Skama.Api.Services;
 
@@ -56,6 +57,8 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 if (app.Environment.IsDevelopment())
 {
