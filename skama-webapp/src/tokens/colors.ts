@@ -31,19 +31,19 @@ export const lightColors: IColorTokens = {
 };
 
 export const darkColors: IColorTokens = {
-  colorPrimary: '#4EA65F',
-  colorPrimaryHover: '#63B873',
-  colorPrimarySoft: '#1D3422',
-  background: '#111714',
-  surface: '#18201B',
-  surfaceSecondary: '#202A23',
-  border: '#2F3A33',
-  textPrimary: '#F4F8F4',
-  textSecondary: '#B8C6BB',
-  muted: '#7F9184',
-  danger: '#E57373',
-  warning: '#FFC857',
-  success: '#4EA65F',
+  colorPrimary: '#D6B76A',
+  colorPrimaryHover: '#E8D299',
+  colorPrimarySoft: '#173B33',
+  background: '#09241F',
+  surface: '#0F352F',
+  surfaceSecondary: '#123D34',
+  border: '#2D5148',
+  textPrimary: '#FDFBF7',
+  textSecondary: '#D8D2C6',
+  muted: '#AFA79A',
+  danger: '#D78A96',
+  warning: '#E0B068',
+  success: '#7FC9AD',
 };
 
 export const colorTokenKeys: (keyof IColorTokens)[] = [

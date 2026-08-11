@@ -1,6 +1,8 @@
 import { useState, type FormEvent } from 'react';
 import { Link as RouterLink, useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 
 import { useAuth } from '../../hooks';
 import { ROUTES } from '../../routes/routePaths';
@@ -11,6 +13,7 @@ export function LoginPage() {
   const { login, isLoading } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
   const from = (location.state as { from?: string } | null)?.from ?? ROUTES.home;
 
@@ -30,23 +33,30 @@ export function LoginPage() {
   }
 
   return (
-    <section className="sk-auth-shell" aria-labelledby="login-title">
-      <div className="sk-auth-intro">
-        <p className="sk-kicker">Acceso privado</p>
+    <section className="sk-auth-shell sk-auth-shell--brand sk-auth-shell--login" aria-labelledby="login-title">
+      <div className="sk-auth-intro sk-auth-intro--brand">
+        <p className="sk-auth-wordmark">SKAMA</p>
         <h1 id="login-title">Bienvenido de nuevo a la experiencia SKAMA.</h1>
         <p className="sk-lede">
-          Inicia sesión para acceder a favoritos, órdenes y piezas exclusivas de edición limitada.
+          Inicia sesión para acceder a tus favoritos, consultar tus pedidos y descubrir nuestras colecciones
+          exclusivas. Cada pieza de SKAMA Jewelry ha sido diseñada para ofrecer una experiencia de compra
+          elegante, segura y personalizada.
         </p>
-        <RouterLink className="sk-button sk-button--secondary sk-button--lg" to={ROUTES.home}>
-          Volver al inicio
-        </RouterLink>
       </div>
 
-      <article className="sk-auth-panel">
-        <div>
-          <p className="sk-kicker">Cuenta SKAMA</p>
-          <h1>Iniciar sesión</h1>
+      <div className="sk-auth-logo-orb" aria-hidden="true">
+        <img src="/assets/images/brand/skama-logo-on-light.png" alt="" />
+      </div>
+
+      <article className="sk-auth-panel sk-auth-panel--brand sk-auth-panel--login sk-auth-panel--animated">
+        <div className="sk-auth-panel__header">
+          <p className="sk-kicker">Acceso privado</p>
+          <h2 className="sk-auth-panel__title sk-auth-panel__scan-title">
+            <span>Iniciar sesión</span>
+          </h2>
+          <p>Ingresa para entrar a tu experiencia privada SKAMA.</p>
         </div>
+
         <form className="sk-auth-form" onSubmit={handleSubmit}>
           <label className="sk-field" htmlFor="login-email">
             <span className="sk-field__label">Correo electrónico</span>
@@ -60,18 +70,34 @@ export function LoginPage() {
               required
             />
           </label>
-          <label className="sk-field" htmlFor="login-password">
+
+          <label className="sk-field sk-auth-password-field" htmlFor="login-password">
             <span className="sk-field__label">Contraseña</span>
-            <input
-              className="sk-input"
-              id="login-password"
-              type="password"
-              autoComplete="current-password"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              required
-            />
+            <span className="sk-auth-password-field__control">
+              <input
+                className="sk-input"
+                id="login-password"
+                type={showPassword ? 'text' : 'password'}
+                autoComplete="current-password"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                required
+              />
+              <button
+                className="sk-icon-button sk-icon-button--sm"
+                type="button"
+                aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+                onClick={() => setShowPassword((current) => !current)}
+              >
+                {showPassword ? (
+                  <VisibilityOffOutlinedIcon fontSize="small" />
+                ) : (
+                  <VisibilityOutlinedIcon fontSize="small" />
+                )}
+              </button>
+            </span>
           </label>
+
           <div className="sk-inline-row">
             <label className="sk-choice" htmlFor="login-remember">
               <input id="login-remember" type="checkbox" />
@@ -82,12 +108,17 @@ export function LoginPage() {
               Olvidé mi contraseña
             </RouterLink>
           </div>
+
           {formError && <p className="sk-validation">{formError}</p>}
+
           <button className="sk-button sk-button--primary sk-button--lg" type="submit" disabled={isLoading}>
             {isLoading ? 'Iniciando sesión...' : 'Iniciar sesión'}
           </button>
           <RouterLink className="sk-button sk-button--secondary sk-button--lg" to={ROUTES.register}>
             Crear cuenta
+          </RouterLink>
+          <RouterLink className="sk-button sk-button--secondary sk-button--lg" to={ROUTES.home}>
+            Volver al inicio
           </RouterLink>
         </form>
       </article>

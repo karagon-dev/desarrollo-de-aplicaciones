@@ -1,74 +1,44 @@
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useLocation } from 'react-router-dom';
 import { ROUTES } from '../../routes/routePaths';
 
-const shopLinks = [
+const navigationLinks = [
+  { label: 'Inicio', path: ROUTES.home },
   { label: 'Colecciones', path: ROUTES.catalog },
-  { label: 'Favoritos', path: ROUTES.wishlist },
-  { label: 'Orden', path: ROUTES.checkout },
-];
-
-const accountLinks = [
-  { label: 'Iniciar sesión', path: ROUTES.login },
-  { label: 'Crear cuenta', path: ROUTES.register },
-  { label: 'Mi perfil', path: ROUTES.profile },
+  { label: 'Nosotros', path: `${ROUTES.home}#brand-story` },
+  { label: 'Contacto', path: ROUTES.contact },
+  { label: 'Pol\u00edtica de Privacidad', path: ROUTES.privacyPolicy },
 ];
 
 export function Footer() {
+  const location = useLocation();
+
   return (
-    <footer className="sk-footer">
+    <footer id="footer" className="sk-footer">
       <div className="sk-footer__inner">
-        <div className="sk-footer__brand">
-          <RouterLink className="sk-navbar__logo" to={ROUTES.home}>
-            SKAMA
-          </RouterLink>
-          <p>
-            Joyería costarricense inspirada en esmeraldas, flora y fauna nativa.
-            Piezas elegantes para una experiencia de compra privada y memorable.
-          </p>
-          <div className="sk-social-links" aria-label="Redes sociales">
-            <a href="https://www.instagram.com/" target="_blank" rel="noreferrer">
-              Instagram
-            </a>
-            <a href="https://www.facebook.com/" target="_blank" rel="noreferrer">
-              Facebook
-            </a>
-            <a href="https://www.tiktok.com/" target="_blank" rel="noreferrer">
-              TikTok
-            </a>
-          </div>
-        </div>
-
-        <nav className="sk-footer__group" aria-label="Compra">
-          <h2>Compra</h2>
-          {shopLinks.map((link) => (
-            <RouterLink key={link.path} to={link.path}>
-              {link.label}
+        <div className="sk-footer__content">
+          <section className="sk-footer__brand" aria-label="SKAMA">
+            <RouterLink className="sk-footer__logo" to={ROUTES.home}>
+              SKAMA
             </RouterLink>
-          ))}
-        </nav>
+            <p>{'Joyer\u00eda de lujo con una experiencia digital sobria, moderna y preparada para crecer.'}</p>
+          </section>
 
-        <nav className="sk-footer__group" aria-label="Cuenta">
-          <h2>Cuenta</h2>
-          {accountLinks.map((link) => (
-            <RouterLink key={link.path} to={link.path}>
-              {link.label}
-            </RouterLink>
-          ))}
-        </nav>
-
-        <div className="sk-footer__newsletter">
-          <h2>Contacto</h2>
-          <p>Jacó, Santa Teresa, Tamarindo, Multiplaza Escazú, Oxígeno y City Mall.</p>
-          <div className="sk-payment-methods" aria-label="Métodos de pago">
-            <span>SINPE</span>
-            <span>Transferencia</span>
-            <span>Tarjeta</span>
-          </div>
+          <nav className="sk-footer__nav" aria-label="Navegación">
+            <h2>{'NAVEGACI\u00d3N'}</h2>
+            <ul>
+              {navigationLinks.map((link) => (
+                <li key={link.path}>
+                  <RouterLink to={link.path} aria-current={location.pathname === link.path ? 'page' : undefined}>
+                    {link.label}
+                  </RouterLink>
+                </li>
+              ))}
+            </ul>
+          </nav>
         </div>
 
         <div className="sk-footer__bottom">
-          <span>© {new Date().getFullYear()} SKAMA Jewelry.</span>
-          <span>Experiencia web para catálogo, carrito y órdenes por WhatsApp.</span>
+          <span>&copy; {new Date().getFullYear()} SKAMA Jewelry. Todos los derechos reservados.</span>
         </div>
       </div>
     </footer>

@@ -39,6 +39,7 @@ export function ProductDetailPage() {
     }
 
     if (displayProduct.isLimitedEdition && !isAuthenticated) {
+      toast.info('Inicia sesión para comprar piezas de edición limitada.');
       navigate(ROUTES.login, { state: { from: ROUTES.productDetail(displayProduct.id) } });
       return;
     }
@@ -148,7 +149,11 @@ export function ProductDetailPage() {
               onClick={() => void handleAddToCart()}
             >
               <ShoppingBagOutlinedIcon fontSize="small" />
-              {isAdding ? 'Agregando...' : 'Agregar a la orden'}
+              {isAdding
+                ? 'Agregando...'
+                : displayProduct.isLimitedEdition && !isAuthenticated
+                  ? 'Iniciar sesión para comprar'
+                  : 'Agregar a la orden'}
             </button>
             <button
               className="sk-button sk-button--secondary sk-button--lg"

@@ -24,7 +24,7 @@ export function useCategories(): IUseCategoriesResult {
       setCategories(data);
     } catch (err) {
       setCategories([]);
-      setError(getApiErrorMessage(err, 'Could not load categories.'));
+      setError(getApiErrorMessage(err, 'No se pudieron cargar las categorías.'));
     } finally {
       setLoading(false);
     }

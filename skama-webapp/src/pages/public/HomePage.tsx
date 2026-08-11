@@ -1,70 +1,53 @@
-import { useMemo } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 
-import { SkamaProductCard } from '../../components/skama/SkamaProductCard';
-import {
-  limitedProducts,
-  mapApiProductToSkamaProduct,
-  skamaSegments,
-} from '../../data/skamaCatalog';
-import { useProductMainImages, useProducts } from '../../hooks';
 import { ROUTES } from '../../routes/routePaths';
 
 const values = [
   {
     icon: 'M',
     title: 'Misión',
-    text: 'Crear joyería exclusiva que celebre la elegancia, la identidad costarricense y la belleza natural de las esmeraldas.',
+    text: 'Crear joyas exclusivas que celebren la elegancia, la identidad costarricense y la belleza natural de las esmeraldas, ofreciendo una experiencia premium en cada visita.',
   },
   {
     icon: 'V',
     title: 'Visión',
-    text: 'Posicionar nuestra marca como una casa joyera reconocida por el lujo sobrio y las colecciones atemporales.',
+    text: 'Consolidar nuestra firma como una casa de joyería reconocida por su lujo sereno, su atención personalizada y sus colecciones atemporales.',
   },
   {
     icon: 'S',
     title: 'Valores',
-    text: 'Autenticidad, excelencia artesanal, calidad premium, confianza y una experiencia de compra sofisticada.',
+    text: 'Autenticidad, excelencia artesanal, calidad premium, confianza, elegancia y compromiso con una experiencia de compra sofisticada y segura.',
   },
   {
     icon: 'U',
     title: 'Ubicaciones',
-    text: 'Multiplaza Escazú, Oxígeno, City Mall, Jacó, Santa Teresa y Playa Tamarindo.',
+    text: 'Centros comerciales del país: Multiplaza Escazú, Oxígeno y City Mall. Souvenirs en Jacó, Santa Teresa y Playa Tamarindo, Guanacaste.',
   },
 ];
 
+const processSteps = [
+  { number: '01', label: 'Diseño exclusivo' },
+  { number: '02', label: 'Materiales premium' },
+  { number: '03', label: 'Elaboración artesanal' },
+];
+
 export function HomePage() {
-  const { products } = useProducts({ includeInactive: false });
-  const imageMap = useProductMainImages(products.slice(0, 4).map((product) => product.id));
-
-  const featuredProducts = useMemo(() => {
-    if (products.length > 0) {
-      return products
-        .slice(0, 4)
-        .map((product, index) => mapApiProductToSkamaProduct(product, imageMap[product.id], index));
-    }
-
-    return [limitedProducts[1], ...skamaSegments[0].products.slice(0, 3)];
-  }, [imageMap, products]);
-
   return (
-    <div className="sk-page">
+    <div className="sk-page sk-home-page">
       <section className="sk-hero-home" aria-labelledby="home-hero-title">
         <div className="sk-hero-home__inner">
           <div className="sk-hero-home__copy">
             <p className="sk-kicker">De Costa Rica para el mundo</p>
             <h1 id="home-hero-title">Descubre el lujo de las esmeraldas.</h1>
             <p className="sk-lede">
-              Inspiradas en la riqueza natural de Costa Rica, nuestras colecciones combinan
-              diseño contemporáneo, materiales premium y esmeraldas cuidadosamente seleccionadas.
+              Inspiradas en la riqueza natural de nuestro país, nuestras colecciones combinan
+              diseño contemporáneo, materiales de alta calidad y esmeraldas cuidadosamente
+              seleccionadas para crear joyas inolvidables.
             </p>
             <div className="sk-actions" aria-label="Acciones principales">
               <RouterLink className="sk-button sk-button--primary sk-button--lg" to={ROUTES.catalog}>
                 Explorar colecciones
               </RouterLink>
-              <a className="sk-button sk-button--secondary sk-button--lg" href="#brand-story">
-                Descubrir la historia
-              </a>
             </div>
             <div className="sk-stat-grid" aria-label="Indicadores de la marca">
               <div className="sk-stat">
@@ -108,65 +91,78 @@ export function HomePage() {
             </picture>
             <div className="sk-hero-showcase__caption" aria-hidden="true">
               <span>Editorial</span>
-              <strong>Enfoque Esmeralda</strong>
+              <strong>Emerald Focus</strong>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="sk-section" id="brand-story" aria-labelledby="brand-story-title">
-        <div className="sk-split">
-          <figure className="sk-split-media">
+      <section className="sk-section sk-section--story" id="brand-story" aria-labelledby="brand-story-title">
+        <div className="sk-story-panel">
+          <p className="sk-kicker">Nuestra historia</p>
+          <h2 id="brand-story-title">Una joyería nacida para plasmar la naturaleza costarricense.</h2>
+          <p>
+            Nuestros inicios se plasmaron en Jacó durante el año 2025 con la visión de transformar
+            la riqueza natural del país en piezas de alta joyería inspiradas en su flora y fauna.
+            Cada colección representa elegancia, sofisticación y el orgullo de reflejar una nación
+            que alberga cerca del cinco por ciento de la biodiversidad mundial.
+          </p>
+          <p>
+            Desde entonces buscamos ofrecer una experiencia única, donde cada colección transmita
+            identidad cultural, inspiración natural, artesanía costarricense y lujo contemporáneo
+            para visitantes nacionales y extranjeros.
+          </p>
+        </div>
+      </section>
+
+      <section className="sk-section sk-section--experience" aria-labelledby="experience-title">
+        <div className="sk-split sk-experience-split">
+          <figure className="sk-split-media sk-split-media--boutique">
             <img
               src="/assets/images/hero/skama-about-exterior-complete.png"
-              alt="Full exterior of SKAMA Jewelry"
+              alt="Fachada completa de SKAMA Jewelry"
               loading="lazy"
             />
           </figure>
           <div className="sk-split-copy">
             <p className="sk-kicker">Nuestra historia</p>
-            <h2 id="brand-story-title">Una casa joyera creada para expresar la naturaleza costarricense.</h2>
+            <h2 id="experience-title">Más que una joyería, una experiencia inolvidable.</h2>
             <p>
-              Nuestros inicios tomaron forma en Jacó en 2025 con la visión de transformar
-              la riqueza natural del país en joyería fina inspirada en su flora y fauna.
+              Nuestros espacios fueron diseñados para transmitir exclusividad desde el primer momento.
+              Cada visita combina arquitectura contemporánea, materiales nobles e iluminación
+              cuidadosamente estudiada para ofrecer una experiencia única, donde cada persona descubre
+              el verdadero valor de una joya creada con dedicación y pasión.
             </p>
             <p>
-              Cada colección representa elegancia, sofisticación y el orgullo de reflejar una nación
-              reconocida por su biodiversidad y calidez.
+              Nuestros asesores acompañan cada elección con atención personalizada, mientras nuestros
+              artesanos sostienen un compromiso constante con la calidad, la precisión y el carácter
+              distintivo de nuestras colecciones.
             </p>
           </div>
         </div>
       </section>
 
-      <section className="sk-section sk-section--muted" aria-labelledby="craft-title">
-        <div className="sk-split sk-split--reverse">
+      <section className="sk-section sk-section--process" aria-labelledby="craft-title">
+        <div className="sk-split sk-process-split">
           <div className="sk-split-copy">
             <p className="sk-kicker">Nuestro proceso</p>
             <h2 id="craft-title">Cada detalle refleja la dedicación de nuestros artesanos.</h2>
             <p>
-              Cada pieza es elaborada por especialistas en joyería fina que combinan
-              herramientas de precisión, materiales nobles y técnicas artesanales.
+              En nuestras instalaciones, cada pieza es elaborada por profesionales especializados en alta
+              joyería que trabajan cuidadosamente utilizando herramientas de precisión y técnicas artesanales
+              combinadas con procesos modernos. Nuestro compromiso es garantizar acabados impecables, máxima
+              calidad y una atención excepcional durante cada creación.
             </p>
             <div className="sk-stat-grid" aria-label="Indicadores del proceso artesanal">
-              <div className="sk-stat">
-                <strong>01</strong>
-                <span>Diseño exclusivo</span>
-              </div>
-              <div className="sk-stat">
-                <strong>02</strong>
-                <span>Materiales premium</span>
-              </div>
-              <div className="sk-stat">
-                <strong>03</strong>
-                <span>Elaboración artesanal</span>
-              </div>
-              <div className="sk-stat">
-                <strong>04</strong>
-                <span>Entrega cuidadosa</span>
-              </div>
+              {processSteps.map((step) => (
+                <div className="sk-stat" key={step.number}>
+                  <strong>{step.number}</strong>
+                  <span>{step.label}</span>
+                </div>
+              ))}
             </div>
           </div>
-          <figure className="sk-split-media">
+          <figure className="sk-split-media sk-split-media--artisan">
             <img
               src="/assets/images/hero/skama-about-artisan.png"
               alt="Artesano elaborando una joya con herramientas de precisión"
@@ -176,8 +172,8 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="sk-section" aria-labelledby="values-title">
-        <div className="sk-container">
+      <section className="sk-section sk-section--values" aria-label="Identidad SKAMA">
+        <div hidden className="sk-container">
           <div className="sk-section-heading">
             <p className="sk-kicker">Identidad SKAMA</p>
             <h2 id="values-title">Lujo sobrio, raíces locales y atención personalizada.</h2>
@@ -196,7 +192,7 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="sk-section sk-section--muted" aria-labelledby="featured-title">
+      <section hidden className="sk-section sk-section--muted" aria-labelledby="featured-title">
         <div className="sk-container">
           <div className="sk-section-heading">
             <p className="sk-kicker">Selección destacada</p>
@@ -206,11 +202,6 @@ export function HomePage() {
               y mantiene una selección visual local para el prototipo.
             </p>
           </div>
-        </div>
-        <div className="sk-product-grid">
-          {featuredProducts.map((product) => (
-            <SkamaProductCard key={product.id} product={product} />
-          ))}
         </div>
       </section>
     </div>

@@ -9,6 +9,8 @@ export const ROUTES = {
   productDetail: (id: string) => `/collections/${id}`,
   cart: '/cart',
   checkout: '/checkout',
+  contact: '/contact',
+  privacyPolicy: '/privacy-policy',
   profile: '/profile',
   orderHistory: '/orders',
   orderDetail: (id: string) => `/orders/${id}`,

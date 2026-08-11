@@ -73,7 +73,7 @@ export function AuthProvider({ children }: IAuthProviderProps) {
       setUser(session);
       persistSession(session);
     } catch (error) {
-      throw new Error(getApiErrorMessage(error, 'Sign in failed.'));
+      throw new Error(getApiErrorMessage(error, 'No se pudo iniciar sesión.'));
     } finally {
       setIsLoading(false);
     }
@@ -84,7 +84,7 @@ export function AuthProvider({ children }: IAuthProviderProps) {
     try {
       await authService.register(data);
     } catch (error) {
-      throw new Error(getApiErrorMessage(error, 'Registration could not be completed.'));
+      throw new Error(getApiErrorMessage(error, 'No se pudo completar el registro.'));
     } finally {
       setIsLoading(false);
     }

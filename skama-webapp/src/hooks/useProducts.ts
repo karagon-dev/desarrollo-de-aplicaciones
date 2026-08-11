@@ -24,7 +24,7 @@ export function useProducts(filters?: IProductFilters): IUseProductsResult {
       setProducts(data);
     } catch (err) {
       setProducts([]);
-      setError(getApiErrorMessage(err, 'Could not load products.'));
+      setError(getApiErrorMessage(err, 'No se pudieron cargar los productos.'));
     } finally {
       setLoading(false);
     }

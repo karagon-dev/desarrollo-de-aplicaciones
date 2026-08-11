@@ -13,9 +13,11 @@ import { WishlistPage } from '../pages/customer/WishlistPage';
 import { CartPage } from '../pages/public/CartPage';
 import { CatalogPage } from '../pages/public/CatalogPage';
 import { CheckoutPage } from '../pages/public/CheckoutPage';
+import { ContactPage } from '../pages/public/ContactPage';
 import { ForgotPasswordPage } from '../pages/public/ForgotPasswordPage';
 import { HomePage } from '../pages/public/HomePage';
 import { LoginPage } from '../pages/public/LoginPage';
+import { PrivacyPolicyPage } from '../pages/public/PrivacyPolicyPage';
 import { ProductDetailPage } from '../pages/public/ProductDetailPage';
 import { RegisterPage } from '../pages/public/RegisterPage';
 import { ResetPasswordPage } from '../pages/public/ResetPasswordPage';
@@ -27,7 +29,7 @@ function NotFoundPage() {
       <div className="sk-container sk-section">
         <div className="sk-empty-state">
           <p className="sk-kicker">404</p>
-          <h1>Page not found</h1>
+          <h1>Página no encontrada</h1>
         </div>
       </div>
     </PublicLayout>
@@ -128,6 +130,24 @@ export function AppRouter() {
         element={
           <PublicLayout>
             <CheckoutPage />
+          </PublicLayout>
+        }
+      />
+
+      <Route
+        path={ROUTES.contact}
+        element={
+          <PublicLayout>
+            <ContactPage />
+          </PublicLayout>
+        }
+      />
+
+      <Route
+        path={ROUTES.privacyPolicy}
+        element={
+          <PublicLayout>
+            <PrivacyPolicyPage />
           </PublicLayout>
         }
       />
