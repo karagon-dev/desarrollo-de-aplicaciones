@@ -81,6 +81,69 @@ export function createSkamaTheme(mode: ThemeMode): Theme {
         styleOverrides: {
           root: {
             borderRadius: cssVar('--radius-md'),
+            backgroundColor: cssVar('--color-surface'),
+            color: cssVar('--color-input-text'),
+            transition: 'color 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55)',
+            '& .MuiOutlinedInput-notchedOutline': {
+              borderColor: cssVar('--color-border-subtle'),
+              transition: 'border-color 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55)',
+            },
+            '&:hover .MuiOutlinedInput-notchedOutline': {
+              borderColor: cssVar('--color-border-strong'),
+            },
+            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+              borderColor: cssVar('--color-input-focus'),
+              borderWidth: 2,
+            },
+            '&.Mui-disabled': {
+              backgroundColor: cssVar('--color-surface-muted'),
+              color: cssVar('--color-text-disabled'),
+            },
+            '&.Mui-error .MuiOutlinedInput-notchedOutline': {
+              borderColor: cssVar('--color-danger'),
+            },
+            '&.Mui-disabled .MuiOutlinedInput-notchedOutline': {
+              borderColor: cssVar('--color-border-subtle'),
+            },
+            '&.Mui-disabled .MuiOutlinedInput-input': {
+              WebkitTextFillColor: cssVar('--color-text-disabled'),
+            },
+          },
+          input: {
+            color: cssVar('--color-input-text'),
+            caretColor: cssVar('--color-input-focus'),
+            WebkitTextFillColor: 'currentColor',
+            '&::placeholder': {
+              color: cssVar('--color-text-muted'),
+              opacity: 0.72,
+            },
+          },
+        },
+      },
+      MuiInputLabel: {
+        styleOverrides: {
+          root: {
+            color: cssVar('--color-text-secondary'),
+            transition: 'color 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55), transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55)',
+            '&.Mui-focused': {
+              color: cssVar('--color-input-focus'),
+            },
+            '&.Mui-error': {
+              color: cssVar('--color-danger'),
+            },
+            '&.Mui-disabled': {
+              color: cssVar('--color-text-disabled'),
+            },
+          },
+        },
+      },
+      MuiFormHelperText: {
+        styleOverrides: {
+          root: {
+            color: cssVar('--color-text-muted'),
+            '&.Mui-error': {
+              color: cssVar('--color-danger'),
+            },
           },
         },
       },

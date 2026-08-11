@@ -60,7 +60,7 @@ export function useProductImages(productId?: string) {
       setImages(data);
     } catch {
       setImages([]);
-      setError('Could not load images.');
+      setError('No se pudieron cargar las imágenes.');
     } finally {
       setLoading(false);
     }

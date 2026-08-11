@@ -121,7 +121,7 @@ export function SkamaProductCard({ product, compact = false }: ISkamaProductCard
       </button>
 
       <div className="sk-product-card__body">
-        <span className="sk-product-card__category">{product.collection}</span>
+        <span className="sk-product-card__category">{product.categoryName}</span>
         <h3>
           <RouterLink to={ROUTES.productDetail(product.id)}>{product.name}</RouterLink>
         </h3>

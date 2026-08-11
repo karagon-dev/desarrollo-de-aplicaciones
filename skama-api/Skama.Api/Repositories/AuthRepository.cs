@@ -33,7 +33,9 @@ public class AuthRepository : IAuthRepository
             parameters,
             commandType: CommandType.StoredProcedure);
 
-        return (parameters.Get<Guid>("@NewId"), parameters.Get<int>("@ResultCode"));
+        var newId = parameters.Get<Guid?>("@NewId");
+        var resultCode = parameters.Get<int?>("@ResultCode");
+        return (newId ?? Guid.Empty, resultCode ?? -1);
     }
 
     public async Task<User?> GetByEmailAsync(string email)

@@ -35,6 +35,8 @@
     --color-text-muted: var(--brand-neutral-500);
     --color-text-disabled: var(--brand-neutral-300);
     --color-input-text: var(--brand-black);
+    --color-input-focus: var(--brand-charcoal-800);
+    --color-input-focus-soft: color-mix(in srgb, var(--brand-charcoal-800) 18%, transparent);
     --color-border: color-mix(in srgb, var(--brand-charcoal-800) 14%, transparent);
     --color-border-subtle: color-mix(in srgb, var(--brand-charcoal-800) 8%, transparent);
     --color-border-strong: color-mix(in srgb, var(--brand-charcoal-800) 24%, transparent);
@@ -69,12 +71,12 @@
     --color-danger-contrast: var(--brand-charcoal-800);
     --color-info: var(--brand-sapphire-300);
 
-    --color-background: var(--brand-emerald-900);
-    --color-background-subtle: color-mix(in srgb, var(--brand-emerald-900) 82%, var(--brand-black));
-    --color-surface: color-mix(in srgb, var(--brand-emerald-800) 78%, var(--brand-black));
-    --color-surface-muted: color-mix(in srgb, var(--brand-emerald-800) 88%, var(--brand-black));
-    --color-surface-elevated: color-mix(in srgb, var(--brand-emerald-700) 72%, var(--brand-black));
-    --color-surface-glass: color-mix(in srgb, var(--brand-emerald-800) 76%, transparent);
+    --color-background: #09241f;
+    --color-background-subtle: #0b2a24;
+    --color-surface: #0f352f;
+    --color-surface-muted: #123d34;
+    --color-surface-elevated: #173f36;
+    --color-surface-glass: color-mix(in srgb, #123d34 78%, transparent);
     --color-header-background: var(--brand-ivory-100);
     --color-header-foreground: var(--brand-emerald-900);
     --color-footer-background: var(--brand-ivory-100);
@@ -83,13 +85,15 @@
 
     --color-text: var(--brand-ivory-50);
     --color-text-primary: var(--brand-ivory-50);
-    --color-text-secondary: color-mix(in srgb, var(--brand-ivory-50) 78%, transparent);
-    --color-text-muted: color-mix(in srgb, var(--brand-ivory-50) 62%, transparent);
+    --color-text-secondary: color-mix(in srgb, var(--brand-ivory-50) 82%, transparent);
+    --color-text-muted: color-mix(in srgb, var(--brand-ivory-50) 66%, transparent);
     --color-text-disabled: color-mix(in srgb, var(--brand-ivory-50) 38%, transparent);
     --color-input-text: var(--brand-white);
-    --color-border: color-mix(in srgb, var(--brand-ivory-50) 16%, transparent);
-    --color-border-subtle: color-mix(in srgb, var(--brand-ivory-50) 10%, transparent);
-    --color-border-strong: color-mix(in srgb, var(--brand-ivory-50) 28%, transparent);
+    --color-input-focus: var(--brand-ivory-50);
+    --color-input-focus-soft: color-mix(in srgb, var(--brand-ivory-50) 22%, transparent);
+    --color-border: color-mix(in srgb, var(--brand-ivory-50) 15%, transparent);
+    --color-border-subtle: color-mix(in srgb, var(--brand-ivory-50) 9%, transparent);
+    --color-border-strong: color-mix(in srgb, var(--brand-ivory-50) 24%, transparent);
     --color-hover: color-mix(in srgb, var(--brand-gold-400) 14%, transparent);
     --color-active: color-mix(in srgb, var(--brand-gold-400) 24%, transparent);
     --color-disabled: color-mix(in srgb, var(--brand-ivory-50) 10%, transparent);

@@ -4,6 +4,8 @@ import { ThemeProvider } from './theme';
 import { AuthProvider } from './providers/AuthProvider';
 import { CartProvider } from './providers/CartProvider';
 import { WishlistProvider } from './providers/WishlistProvider';
+import { ScrollToTop } from './components/routing/ScrollToTop';
+import { SkamaFieldAnimator } from './components/forms/SkamaFieldAnimator';
 import { AppRouter } from './routes/AppRouter';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -14,6 +16,8 @@ function App() {
         <CartProvider>
           <WishlistProvider>
             <BrowserRouter>
+              <ScrollToTop />
+              <SkamaFieldAnimator />
               <AppRouter />
               <ToastContainer
                 position="top-right"

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState, type FormEvent } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import { useAuth, useCart } from '../../hooks';
@@ -51,6 +51,7 @@ const initialForm: ICheckoutFormState = {
 };
 
 export function CheckoutPage() {
+  const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
   const { cart, refreshCart } = useCart();
   const [localItems, setLocalItems] = useState(() => readLocalCart());
@@ -77,6 +78,7 @@ export function CheckoutPage() {
   const checkoutItems = hasBackendCart
     ? backendCartToCheckoutItems(cart)
     : localCartToCheckoutItems(localItems);
+  const hasLimitedLocalItems = localItems.some((item) => item.isLimitedEdition);
   const totals = hasBackendCart
     ? {
         itemCount: cart!.items.reduce((total, item) => total + item.quantity, 0),
@@ -132,6 +134,12 @@ export function CheckoutPage() {
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
+    if (hasLimitedLocalItems && !isAuthenticated) {
+      toast.info('Inicia sesión para comprar piezas de edición limitada.');
+      navigate(ROUTES.login, { state: { from: ROUTES.checkout } });
+      return;
+    }
+
     if (!isFormValid) {
       setValidation('Por favor, completa todos los datos requeridos antes de finalizar.');
       toast.error('Faltan datos requeridos de la orden.');
@@ -171,6 +179,26 @@ export function CheckoutPage() {
           <RouterLink className="sk-button sk-button--primary" to={ROUTES.catalog}>
             Ver colecciones
           </RouterLink>
+        </div>
+      </div>
+    );
+  }
+
+  if (hasLimitedLocalItems && !isAuthenticated) {
+    return (
+      <div className="sk-container sk-section">
+        <div className="sk-empty-state">
+          <p className="sk-kicker">Edición limitada</p>
+          <h1>Inicia sesión para comprar estas piezas.</h1>
+          <p>Las joyas de edición limitada requieren una cuenta SKAMA activa antes de finalizar la orden.</p>
+          <div className="sk-actions">
+            <RouterLink className="sk-button sk-button--primary" to={ROUTES.login} state={{ from: ROUTES.checkout }}>
+              Iniciar sesión
+            </RouterLink>
+            <RouterLink className="sk-button sk-button--secondary" to={ROUTES.catalog}>
+              Ver colecciones
+            </RouterLink>
+          </div>
         </div>
       </div>
     );

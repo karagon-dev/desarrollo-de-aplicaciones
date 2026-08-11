@@ -22,7 +22,7 @@ export function useProduct(productId?: string): IUseProductResult {
       setProduct(null);
       setImages([]);
       setLoading(false);
-      setError('Product no encontrado.');
+      setError('Producto no encontrado.');
       return;
     }
 
@@ -40,7 +40,7 @@ export function useProduct(productId?: string): IUseProductResult {
     } catch (err) {
       setProduct(null);
       setImages([]);
-      setError(getApiErrorMessage(err, 'Could not load the product.'));
+      setError(getApiErrorMessage(err, 'No se pudo cargar el producto.'));
     } finally {
       setLoading(false);
     }

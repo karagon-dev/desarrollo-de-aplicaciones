@@ -110,7 +110,7 @@ const silverGreenProducts: ISkamaProduct[] = [
     imageUrl: assetUrl('regular', 'coffee-ring-green-silver.jpeg'),
     imageAlt: 'Anillo Café de mi Tierra en plata verde',
     ratingLabel: '4.9 de 5',
-    badge: 'Destacado',
+    badge: 'Plata verde',
     badgeTone: 'featured',
   },
   {
@@ -125,7 +125,7 @@ const silverGreenProducts: ISkamaProduct[] = [
     imageUrl: assetUrl('regular', 'land-fruit-hairpin-green-silver.jpeg'),
     imageAlt: 'Horquilla Fruto de la Tierra en plata verde',
     ratingLabel: '4.8 de 5',
-    badge: 'Destacado',
+    badge: 'Plata verde',
     badgeTone: 'featured',
   },
   {
@@ -140,7 +140,7 @@ const silverGreenProducts: ISkamaProduct[] = [
     imageUrl: assetUrl('regular', 'eternal-bond-bracelet-green-silver.jpeg'),
     imageAlt: 'Pulsera Vínculo Eterno en plata verde',
     ratingLabel: '4.8 de 5',
-    badge: 'Destacado',
+    badge: 'Plata verde',
     badgeTone: 'featured',
   },
   {
@@ -155,7 +155,7 @@ const silverGreenProducts: ISkamaProduct[] = [
     imageUrl: assetUrl('regular', 'forest-spirit-watch-green-silver.jpeg'),
     imageAlt: 'Reloj Espíritu del Bosque en plata verde',
     ratingLabel: '4.9 de 5',
-    badge: 'Destacado',
+    badge: 'Plata verde',
     badgeTone: 'featured',
   },
 ];
@@ -173,7 +173,7 @@ const silverProducts: ISkamaProduct[] = [
     imageUrl: assetUrl('regular', 'coffee-ring-silver.jpeg'),
     imageAlt: 'Anillo Café de mi Tierra en plata',
     ratingLabel: '4.8 de 5',
-    badge: 'Exclusivo',
+    badge: 'Plata',
     badgeTone: 'exclusive',
   },
   {
@@ -188,7 +188,7 @@ const silverProducts: ISkamaProduct[] = [
     imageUrl: assetUrl('regular', 'land-fruit-hairpin-silver.jpeg'),
     imageAlt: 'Horquilla Fruto de la Tierra en plata',
     ratingLabel: '4.8 de 5',
-    badge: 'Exclusivo',
+    badge: 'Plata',
     badgeTone: 'exclusive',
   },
   {
@@ -203,7 +203,7 @@ const silverProducts: ISkamaProduct[] = [
     imageUrl: assetUrl('regular', 'eternal-bond-bracelet-silver.jpeg'),
     imageAlt: 'Pulsera Vínculo Eterno en plata',
     ratingLabel: '4.9 de 5',
-    badge: 'Exclusivo',
+    badge: 'Plata',
     badgeTone: 'exclusive',
   },
   {
@@ -218,7 +218,7 @@ const silverProducts: ISkamaProduct[] = [
     imageUrl: assetUrl('regular', 'forest-spirit-watch-silver.jpeg'),
     imageAlt: 'Reloj Espíritu del Bosque en plata',
     ratingLabel: '4.7 de 5',
-    badge: 'Exclusivo',
+    badge: 'Plata',
     badgeTone: 'exclusive',
   },
 ];
@@ -236,7 +236,7 @@ const goldProducts: ISkamaProduct[] = [
     imageUrl: assetUrl('regular', 'coffee-ring-gold.jpeg'),
     imageAlt: 'Anillo Café de mi Tierra en oro',
     ratingLabel: '4.9 de 5',
-    badge: 'Nuevo',
+    badge: 'Oro',
     badgeTone: 'accent',
   },
   {
@@ -251,7 +251,7 @@ const goldProducts: ISkamaProduct[] = [
     imageUrl: assetUrl('regular', 'land-fruit-hairpin-gold.jpeg'),
     imageAlt: 'Horquilla Fruto de la Tierra en oro',
     ratingLabel: '4.9 de 5',
-    badge: 'Nuevo',
+    badge: 'Oro',
     badgeTone: 'accent',
   },
   {
@@ -266,7 +266,7 @@ const goldProducts: ISkamaProduct[] = [
     imageUrl: assetUrl('regular', 'eternal-bond-bracelet-gold.jpeg'),
     imageAlt: 'Pulsera Vínculo Eterno en oro',
     ratingLabel: '4.8 de 5',
-    badge: 'Nuevo',
+    badge: 'Oro',
     badgeTone: 'accent',
   },
   {
@@ -281,7 +281,7 @@ const goldProducts: ISkamaProduct[] = [
     imageUrl: assetUrl('regular', 'forest-spirit-watch-gold.jpeg'),
     imageAlt: 'Reloj Espíritu del Bosque en oro',
     ratingLabel: '4.8 de 5',
-    badge: 'Nuevo',
+    badge: 'Oro',
     badgeTone: 'accent',
   },
 ];

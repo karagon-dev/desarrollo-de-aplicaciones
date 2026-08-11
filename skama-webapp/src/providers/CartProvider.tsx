@@ -51,7 +51,7 @@ export function CartProvider({ children }: ICartProviderProps) {
       setCart(detail);
     } catch (err) {
       setCart(null);
-      setError(getApiErrorMessage(err, 'Could not load cart.'));
+      setError(getApiErrorMessage(err, 'No se pudo cargar el carrito.'));
     } finally {
       setIsLoading(false);
     }
@@ -69,7 +69,7 @@ export function CartProvider({ children }: ICartProviderProps) {
   const addItem = useCallback(
     async (productId: string, quantity = 1) => {
       if (!user) {
-        throw new Error('You must sign in to add products to the cart.');
+        throw new Error('Debes iniciar sesión para agregar productos al carrito.');
       }
 
       setError(null);

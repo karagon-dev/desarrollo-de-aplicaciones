@@ -19,7 +19,7 @@ export function useOrder(orderId?: string): IUseOrderResult {
     if (!orderId) {
       setOrder(null);
       setLoading(false);
-      setError('Order no encontrado.');
+      setError('Orden no encontrada.');
       return;
     }
 
@@ -31,7 +31,7 @@ export function useOrder(orderId?: string): IUseOrderResult {
       setOrder(data);
     } catch (err) {
       setOrder(null);
-      setError(getApiErrorMessage(err, 'No se pudo cargar el order.'));
+      setError(getApiErrorMessage(err, 'No se pudo cargar la orden.'));
     } finally {
       setLoading(false);
     }
