@@ -8,7 +8,7 @@ export interface DateRangeFilterProps {
   endDate: string;
   onStartDateChange: (value: string) => void;
   onEndDateChange: (value: string) => void;
-  onApply?: () => void;
+  onApply?: () => void | Promise<void>;
   loading?: boolean;
   applyLabel?: string;
 }

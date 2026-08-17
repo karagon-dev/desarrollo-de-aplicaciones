@@ -8,6 +8,7 @@ import type {
   IResetPasswordRequest,
   IUpdateUserStatusRequest,
   IUserDto,
+  IUserFilters,
 } from '../types';
 import { apiClient } from './apiClient';
 import { API_PATHS } from './apiPaths';
@@ -24,6 +25,9 @@ export const authService = {
 
   getUserByEmail: (email: string) =>
     apiClient.get<IUserDto>(API_PATHS.auth.userByEmail(email)),
+
+  listUsers: (filters?: IUserFilters) =>
+    apiClient.get<IUserDto[]>(API_PATHS.auth.users, { params: filters }),
 
   updateUserStatus: (id: string, data: IUpdateUserStatusRequest) =>
     apiClient.patch(API_PATHS.auth.updateStatus(id), data),

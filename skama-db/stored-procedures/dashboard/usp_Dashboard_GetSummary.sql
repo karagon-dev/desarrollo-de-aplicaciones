@@ -1,4 +1,4 @@
-﻿CREATE OR ALTER PROCEDURE dbo.usp_Dashboard_GetSummary
+CREATE OR ALTER PROCEDURE dbo.usp_Dashboard_GetSummary
     @StartDate DATE,
     @EndDate DATE
 AS
@@ -16,13 +16,15 @@ BEGIN
     SELECT
         COUNT(TID_Id) AS RegisteredCustomers
     FROM dbo.[User]
-    WHERE TB_IsActive = 1;
+    WHERE TB_IsActive = 1
+      AND TN_RoleId = 2
+      AND CAST(TD_CreatedAt AS DATE) BETWEEN @StartDate AND @EndDate;
 
     SELECT
         COUNT(TID_Id) AS LowStockProducts
     FROM dbo.Product
     WHERE TB_IsActive = 1
-      AND TN_StockQuantity <= TN_MinimumStock;
+      AND TN_StockQuantity < 3;
 
     SELECT TOP 5
         OI.TID_ProductId AS ProductId,

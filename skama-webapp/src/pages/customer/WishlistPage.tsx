@@ -6,18 +6,7 @@ import type { ISkamaProduct } from '../../data/skamaCatalog';
 import { skamaProducts } from '../../data/skamaCatalog';
 import { useWishlist } from '../../hooks';
 import { ROUTES } from '../../routes/routePaths';
-
-const LOCAL_FAVORITES_KEY = 'skama-local-favorites';
-
-function readLocalFavoriteIds(): string[] {
-  try {
-    const raw = localStorage.getItem(LOCAL_FAVORITES_KEY);
-    const parsed = raw ? (JSON.parse(raw) as string[]) : [];
-    return Array.isArray(parsed) ? parsed : [];
-  } catch {
-    return [];
-  }
-}
+import { LOCAL_FAVORITES_UPDATED_EVENT, readLocalFavoriteIds } from '../../utils';
 
 export function WishlistPage() {
   const { items } = useWishlist();
@@ -28,9 +17,11 @@ export function WishlistPage() {
       setLocalFavoriteIds(readLocalFavoriteIds());
     }
 
+    window.addEventListener(LOCAL_FAVORITES_UPDATED_EVENT, syncFavorites);
     window.addEventListener('storage', syncFavorites);
     window.addEventListener('focus', syncFavorites);
     return () => {
+      window.removeEventListener(LOCAL_FAVORITES_UPDATED_EVENT, syncFavorites);
       window.removeEventListener('storage', syncFavorites);
       window.removeEventListener('focus', syncFavorites);
     };

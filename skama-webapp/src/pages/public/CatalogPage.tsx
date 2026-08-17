@@ -5,7 +5,9 @@ import CloseIcon from '@mui/icons-material/Close';
 import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
 
 import { SkamaProductCard } from '../../components/skama/SkamaProductCard';
+import { SkamaPrice } from '../../components/skama/SkamaPrice';
 import {
+  SILVER_ANNIVERSARY_PROMO_TEXT,
   limitedProducts,
   mapApiProductToSkamaProduct,
   skamaProducts,
@@ -14,13 +16,24 @@ import {
 } from '../../data/skamaCatalog';
 import { useAuth, useCart, useProductMainImages, useProducts } from '../../hooks';
 import { ROUTES } from '../../routes/routePaths';
-import { addLocalCartItem, formatPrice, getApiErrorMessage } from '../../utils';
+import { addLocalCartItem, formatPrice, getApiErrorMessage, hasLocalLimitedEditionCartItem } from '../../utils';
+
+const segmentMaterialNames: Record<string, string> = {
+  'green-silver': 'plata verde',
+  silver: 'plata',
+  gold: 'oro',
+};
+
+function normalizeCollectionName(value: string): string {
+  return value.trim().toLowerCase();
+}
 
 export function CatalogPage() {
   const navigate = useNavigate();
   const collection = '';
   const debouncedSearch = '';
   const [activeLimitedIndex, setActiveLimitedIndex] = useState(0);
+  const [activeSilverPromoIndex, setActiveSilverPromoIndex] = useState(0);
   const [selectedLimitedProduct, setSelectedLimitedProduct] = useState<ISkamaProduct | null>(null);
   const [addingLimitedProductId, setAddingLimitedProductId] = useState<string | null>(null);
   const { isAuthenticated } = useAuth();
@@ -30,12 +43,17 @@ export function CatalogPage() {
 
   const { products } = useProducts(filters);
   const imageMap = useProductMainImages(products.map((product) => product.id));
-  const activeLimitedProduct = limitedProducts[activeLimitedIndex];
 
   const apiProducts = useMemo(
     () => products.map((product, index) => mapApiProductToSkamaProduct(product, imageMap[product.id], index)),
     [imageMap, products],
   );
+  const apiLimitedProducts = useMemo(
+    () => apiProducts.filter((product) => product.isLimitedEdition),
+    [apiProducts],
+  );
+  const limitedDisplayProducts = apiLimitedProducts.length > 0 ? apiLimitedProducts : limitedProducts;
+  const activeLimitedProduct = limitedDisplayProducts[activeLimitedIndex % limitedDisplayProducts.length];
 
   const staticProducts = useMemo(() => {
     const normalizedSearch = debouncedSearch.trim().toLowerCase();
@@ -55,13 +73,32 @@ export function CatalogPage() {
   }, [collection, debouncedSearch]);
 
   const visibleApiProducts = products.length > 0 ? apiProducts : [];
-  const shouldUseApiProducts = visibleApiProducts.length > 0;
+  const apiCollectionSegments = useMemo(
+    () =>
+      skamaSegments
+        .map((segment) => {
+          const materialName = segmentMaterialNames[segment.id];
+
+          return {
+            ...segment,
+            products: apiProducts.filter(
+              (product) =>
+                !product.isLimitedEdition &&
+                normalizeCollectionName(product.material) === materialName,
+            ),
+          };
+        })
+        .filter((segment) => segment.products.length > 0),
+    [apiProducts],
+  );
+  const shouldUseApiProducts = apiCollectionSegments.length > 0;
+  const collectionSegments = shouldUseApiProducts ? apiCollectionSegments : skamaSegments;
   const isStaticCollectionFilter =
-    collection === '' || skamaSegments.some((segment) => segment.id === collection);
+    collection === '' || collectionSegments.some((segment) => segment.id === collection);
   const visibleStaticSegments = useMemo(() => {
     const normalizedSearch = debouncedSearch.trim().toLowerCase();
 
-    return skamaSegments
+    return collectionSegments
       .filter((segment) => collection === '' || segment.id === collection)
       .map((segment) => ({
         ...segment,
@@ -76,7 +113,15 @@ export function CatalogPage() {
         }),
       }))
       .filter((segment) => segment.products.length > 0);
-  }, [collection, debouncedSearch]);
+  }, [collection, collectionSegments, debouncedSearch]);
+  const silverPromoProducts = useMemo(
+    () => visibleStaticSegments.find((segment) => segment.id === 'silver')?.products ?? [],
+    [visibleStaticSegments],
+  );
+  const activeSilverPromoProduct =
+    silverPromoProducts.length > 0
+      ? silverPromoProducts[activeSilverPromoIndex % silverPromoProducts.length]
+      : undefined;
   const flatProducts = isStaticCollectionFilter ? [] : shouldUseApiProducts ? visibleApiProducts : staticProducts;
 
   useEffect(() => {
@@ -85,11 +130,27 @@ export function CatalogPage() {
     }
 
     const intervalId = window.setInterval(() => {
-      setActiveLimitedIndex((currentIndex) => (currentIndex + 1) % limitedProducts.length);
+      setActiveLimitedIndex((currentIndex) => (currentIndex + 1) % limitedDisplayProducts.length);
     }, 3600);
 
     return () => window.clearInterval(intervalId);
-  }, [collection, selectedLimitedProduct]);
+  }, [collection, limitedDisplayProducts.length, selectedLimitedProduct]);
+
+  useEffect(() => {
+    setActiveSilverPromoIndex(0);
+  }, [collection, debouncedSearch]);
+
+  useEffect(() => {
+    if (silverPromoProducts.length <= 1) {
+      return undefined;
+    }
+
+    const intervalId = window.setInterval(() => {
+      setActiveSilverPromoIndex((currentIndex) => (currentIndex + 1) % silverPromoProducts.length);
+    }, 4200);
+
+    return () => window.clearInterval(intervalId);
+  }, [silverPromoProducts.length]);
 
   useEffect(() => {
     if (!selectedLimitedProduct) {
@@ -110,6 +171,11 @@ export function CatalogPage() {
     if (!isAuthenticated) {
       toast.info('Inicia sesión para comprar piezas de edición limitada.');
       navigate(ROUTES.login, { state: { from: ROUTES.catalog } });
+      return;
+    }
+
+    if (hasLocalLimitedEditionCartItem()) {
+      toast.info('Solo puedes comprar 1 joya de edición limitada por cuenta.');
       return;
     }
 
@@ -155,7 +221,7 @@ export function CatalogPage() {
               <p className="sk-kicker">Edición limitada</p>
               <h2 id="limited-title">Edición limitada</h2>
               <p className="sk-lede">
-                Cuatro piezas exclusivas con disponibilidad reducida. Para comprar una joya de esta línea
+                Piezas exclusivas con disponibilidad reducida. Para comprar una joya de esta línea
                 se solicita iniciar sesión o crear una cuenta SKAMA.
               </p>
             </div>
@@ -175,13 +241,13 @@ export function CatalogPage() {
                   />
                 </button>
                 <div className="sk-limited-carousel__dots" aria-label="Seleccionar joya de edición limitada">
-                  {limitedProducts.map((product, index) => (
+                  {limitedDisplayProducts.map((product, index) => (
                     <button
                       className="sk-limited-carousel__dot"
                       key={product.id}
                       type="button"
                       aria-label={`Mostrar ${product.name}`}
-                      aria-current={index === activeLimitedIndex}
+                      aria-current={index === activeLimitedIndex % limitedDisplayProducts.length}
                       onClick={() => setActiveLimitedIndex(index)}
                     />
                   ))}
@@ -218,6 +284,52 @@ export function CatalogPage() {
                     <h2 id={`${segment.id}-title`}>{segment.title}</h2>
                     <p className="sk-lede">{segment.description}</p>
                   </div>
+
+                  {segment.id === 'silver' && activeSilverPromoProduct && (
+                    <article className="sk-anniversary-carousel" aria-label="Promoción de aniversario en joyas de plata">
+                      <div className="sk-anniversary-carousel__media">
+                        <button
+                          className="sk-anniversary-carousel__image-button"
+                          type="button"
+                          aria-label={`Ver detalle de ${activeSilverPromoProduct.name}`}
+                          onClick={() => navigate(ROUTES.productDetail(activeSilverPromoProduct.id))}
+                        >
+                          <img
+                            key={activeSilverPromoProduct.id}
+                            src={activeSilverPromoProduct.imageUrl}
+                            alt={activeSilverPromoProduct.imageAlt}
+                          />
+                          <span className="sk-anniversary-carousel__overlay">
+                            <span>Promoción de aniversario</span>
+                            <strong>{SILVER_ANNIVERSARY_PROMO_TEXT}</strong>
+                          </span>
+                        </button>
+                        <div className="sk-anniversary-carousel__dots" aria-label="Seleccionar joya de plata en promoción">
+                          {silverPromoProducts.map((product, index) => (
+                            <button
+                              className="sk-anniversary-carousel__dot"
+                              key={product.id}
+                              type="button"
+                              aria-label={`Mostrar ${product.name}`}
+                              aria-current={index === activeSilverPromoIndex % silverPromoProducts.length}
+                              onClick={() => setActiveSilverPromoIndex(index)}
+                            />
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="sk-anniversary-carousel__meta">
+                        <p className="sk-kicker">Aniversario SKAMA</p>
+                        <h3>{activeSilverPromoProduct.name}</h3>
+                        <p>{activeSilverPromoProduct.description}</p>
+                        <SkamaPrice
+                          price={activeSilverPromoProduct.price}
+                          originalPrice={activeSilverPromoProduct.originalPrice}
+                          discountPercentage={activeSilverPromoProduct.discountPercentage}
+                        />
+                      </div>
+                    </article>
+                  )}
                 </div>
 
                 <div className="sk-product-grid">

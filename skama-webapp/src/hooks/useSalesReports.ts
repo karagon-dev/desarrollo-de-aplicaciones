@@ -1,49 +1,46 @@
 import { useCallback, useEffect, useState } from 'react';
-import type { IDateRangeParams, ISalesByPeriodDto, ISalesByProductDto } from '../types';
+import type { IDateRangeParams, ISalesByProductDto } from '../types';
 import { reportService } from '../services';
-import { getApiErrorMessage } from '../utils';
+import { getApiErrorMessage, sortSalesRows } from '../utils';
 
 interface IUseSalesReportsResult {
-  salesByPeriod: ISalesByPeriodDto[];
   salesByProduct: ISalesByProductDto[];
   loading: boolean;
   error: string | null;
-  fetchReports: () => Promise<void>;
+  fetchReports: () => Promise<ISalesByProductDto[] | null>;
 }
 
 export function useSalesReports(params: IDateRangeParams): IUseSalesReportsResult {
-  const [salesByPeriod, setSalesByPeriod] = useState<ISalesByPeriodDto[]>([]);
   const [salesByProduct, setSalesByProduct] = useState<ISalesByProductDto[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { startDate, endDate } = params;
 
   const fetchReports = useCallback(async () => {
-    if (!params.startDate || !params.endDate) {
-      return;
+    if (!startDate || !endDate) {
+      return [];
     }
 
     setLoading(true);
     setError(null);
 
     try {
-      const [periodResponse, productResponse] = await Promise.all([
-        reportService.getSalesByPeriod(params),
-        reportService.getSalesByProduct(params),
-      ]);
-      setSalesByPeriod(periodResponse.data);
-      setSalesByProduct(productResponse.data);
+      const productResponse = await reportService.getSalesByProduct({ startDate, endDate });
+      const sortedSales = sortSalesRows(productResponse.data);
+      setSalesByProduct(sortedSales);
+      return sortedSales;
     } catch (err) {
-      setSalesByPeriod([]);
       setSalesByProduct([]);
       setError(getApiErrorMessage(err, 'No se pudieron cargar los reportes.'));
+      return null;
     } finally {
       setLoading(false);
     }
-  }, [params.startDate, params.endDate]);
+  }, [startDate, endDate]);
 
   useEffect(() => {
     void fetchReports();
   }, [fetchReports]);
 
-  return { salesByPeriod, salesByProduct, loading, error, fetchReports };
+  return { salesByProduct, loading, error, fetchReports };
 }

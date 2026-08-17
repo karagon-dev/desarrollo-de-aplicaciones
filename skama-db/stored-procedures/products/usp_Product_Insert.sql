@@ -5,6 +5,7 @@
     @Price DECIMAL(10,2),
     @StockQuantity INT,
     @MinimumStock INT,
+    @IsLimitedEdition BIT = 0,
     @NewId UNIQUEIDENTIFIER OUTPUT
 AS
 BEGIN
@@ -21,6 +22,7 @@ BEGIN
         TN_Price,
         TN_StockQuantity,
         TN_MinimumStock,
+        TB_IsLimitedEdition,
         TB_IsActive,
         TD_CreatedAt,
         TD_UpdatedAt
@@ -34,6 +36,7 @@ BEGIN
         @Price,
         @StockQuantity,
         @MinimumStock,
+        @IsLimitedEdition,
         1,
         GETDATE(),
         GETDATE()

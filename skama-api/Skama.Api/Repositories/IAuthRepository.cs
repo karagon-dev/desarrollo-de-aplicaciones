@@ -5,6 +5,7 @@ namespace Skama.Api.Repositories;
 public interface IAuthRepository
 {
     Task<(Guid NewId, int ResultCode)> RegisterAsync(int roleId, string email, string passwordHash);
+    Task<IEnumerable<User>> GetAllAsync(int? roleId, bool includeInactive);
     Task<User?> GetByEmailAsync(string email);
     Task<User?> GetByIdAsync(Guid id);
     Task<int> UpdatePasswordAsync(Guid userId, string passwordHash);

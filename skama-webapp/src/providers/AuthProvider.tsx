@@ -2,6 +2,7 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
   type ReactNode,
@@ -25,30 +26,8 @@ interface IAuthContextValue {
 
 const AuthContext = createContext<IAuthContextValue | null>(null);
 
-function readStoredSession(): IUserSession | null {
-  try {
-    const raw = localStorage.getItem(AUTH_STORAGE_KEY);
-    if (!raw) {
-      return null;
-    }
-
-    const parsed = JSON.parse(raw) as IUserSession;
-    if (!parsed.userId || !parsed.email) {
-      return null;
-    }
-
-    return parsed;
-  } catch {
-    return null;
-  }
-}
-
-function persistSession(user: IUserSession | null): void {
-  if (user) {
-    localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(user));
-  } else {
-    localStorage.removeItem(AUTH_STORAGE_KEY);
-  }
+function clearStoredSession(): void {
+  localStorage.removeItem(AUTH_STORAGE_KEY);
 }
 
 interface IAuthProviderProps {
@@ -56,8 +35,12 @@ interface IAuthProviderProps {
 }
 
 export function AuthProvider({ children }: IAuthProviderProps) {
-  const [user, setUser] = useState<IUserSession | null>(() => readStoredSession());
+  const [user, setUser] = useState<IUserSession | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    clearStoredSession();
+  }, []);
 
   const login = useCallback(async (data: ILoginRequest) => {
     setIsLoading(true);
@@ -71,7 +54,6 @@ export function AuthProvider({ children }: IAuthProviderProps) {
         isActive: response.isActive,
       };
       setUser(session);
-      persistSession(session);
     } catch (error) {
       throw new Error(getApiErrorMessage(error, 'No se pudo iniciar sesión.'));
     } finally {
@@ -92,7 +74,7 @@ export function AuthProvider({ children }: IAuthProviderProps) {
 
   const logout = useCallback(() => {
     setUser(null);
-    persistSession(null);
+    clearStoredSession();
   }, []);
 
   const value = useMemo<IAuthContextValue>(

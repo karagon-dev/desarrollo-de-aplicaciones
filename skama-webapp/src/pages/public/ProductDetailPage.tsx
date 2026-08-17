@@ -1,13 +1,23 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link as RouterLink, useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
 
 import { findSkamaProduct, mapApiProductToSkamaProduct } from '../../data/skamaCatalog';
+import { SkamaPrice } from '../../components/skama/SkamaPrice';
 import { useAuth, useCart, useProduct, useWishlist } from '../../hooks';
 import { ROUTES } from '../../routes/routePaths';
-import { addLocalCartItem, formatPrice, getApiErrorMessage, resolveAssetUrl } from '../../utils';
+import {
+  LOCAL_FAVORITES_UPDATED_EVENT,
+  addLocalCartItem,
+  addLocalFavorite,
+  getApiErrorMessage,
+  hasLocalLimitedEditionCartItem,
+  readLocalFavorites,
+  resolveAssetUrl,
+} from '../../utils';
 
 export function ProductDetailPage() {
   const navigate = useNavigate();
@@ -16,9 +26,10 @@ export function ProductDetailPage() {
   const { product, images, loading } = useProduct(localProduct ? undefined : productId);
   const { isAuthenticated } = useAuth();
   const { addItem } = useCart();
-  const { toggleFavorite } = useWishlist();
+  const { addFavorite, isFavorite } = useWishlist();
   const [isAdding, setIsAdding] = useState(false);
   const [isTogglingFavorite, setIsTogglingFavorite] = useState(false);
+  const [localFavorites, setLocalFavorites] = useState(() => readLocalFavorites());
 
   const apiImage = useMemo(() => {
     const mainImage = images.find((image) => image.isMain) ?? images[0];
@@ -33,6 +44,31 @@ export function ProductDetailPage() {
     return product ? mapApiProductToSkamaProduct(product, apiImage) : undefined;
   }, [apiImage, localProduct, product]);
 
+  const isDetailFavorite = useMemo(() => {
+    if (!displayProduct) {
+      return false;
+    }
+
+    if (displayProduct.backendProductId && isAuthenticated) {
+      return isFavorite(displayProduct.backendProductId);
+    }
+
+    return localFavorites.has(displayProduct.id);
+  }, [displayProduct, isAuthenticated, isFavorite, localFavorites]);
+
+  useEffect(() => {
+    function syncLocalFavorites() {
+      setLocalFavorites(readLocalFavorites());
+    }
+
+    window.addEventListener(LOCAL_FAVORITES_UPDATED_EVENT, syncLocalFavorites);
+    window.addEventListener('storage', syncLocalFavorites);
+    return () => {
+      window.removeEventListener(LOCAL_FAVORITES_UPDATED_EVENT, syncLocalFavorites);
+      window.removeEventListener('storage', syncLocalFavorites);
+    };
+  }, []);
+
   async function handleAddToCart() {
     if (!displayProduct) {
       return;
@@ -41,6 +77,11 @@ export function ProductDetailPage() {
     if (displayProduct.isLimitedEdition && !isAuthenticated) {
       toast.info('Inicia sesión para comprar piezas de edición limitada.');
       navigate(ROUTES.login, { state: { from: ROUTES.productDetail(displayProduct.id) } });
+      return;
+    }
+
+    if (displayProduct.isLimitedEdition && hasLocalLimitedEditionCartItem()) {
+      toast.info('Solo puedes comprar 1 joya de edición limitada por cuenta.');
       return;
     }
 
@@ -60,17 +101,26 @@ export function ProductDetailPage() {
     }
   }
 
-  async function handleToggleFavorite() {
-    if (!displayProduct?.backendProductId || !isAuthenticated) {
-      toast.info('Inicia sesión para sincronizar tus favoritos.');
-      navigate(ROUTES.login, { state: { from: productId ? ROUTES.productDetail(productId) : ROUTES.catalog } });
+  async function handleAddFavorite() {
+    if (!displayProduct) {
       return;
     }
 
     setIsTogglingFavorite(true);
     try {
-      await toggleFavorite(displayProduct.backendProductId);
-      toast.success('Favoritos actualizados.');
+      if (displayProduct.backendProductId && isAuthenticated) {
+        const wasAdded = await addFavorite(displayProduct.backendProductId);
+        toast[wasAdded ? 'success' : 'info'](
+          wasAdded ? 'Joya almacenada en favoritos.' : 'Esta joya ya está en favoritos.',
+        );
+        return;
+      }
+
+      const wasAdded = addLocalFavorite(displayProduct.id);
+      setLocalFavorites(readLocalFavorites());
+      toast[wasAdded ? 'success' : 'info'](
+        wasAdded ? 'Joya almacenada en favoritos.' : 'Esta joya ya está en favoritos.',
+      );
     } catch (error) {
       toast.error(getApiErrorMessage(error, 'No se pudieron actualizar los favoritos.'));
     } finally {
@@ -116,7 +166,11 @@ export function ProductDetailPage() {
             <p className="sk-kicker">{displayProduct.collection}</p>
             <h1 id="product-detail-title">{displayProduct.name}</h1>
           </div>
-          <strong className="sk-price">{formatPrice(displayProduct.price)}</strong>
+          <SkamaPrice
+            price={displayProduct.price}
+            originalPrice={displayProduct.originalPrice}
+            discountPercentage={displayProduct.discountPercentage}
+          />
           <p className="sk-lede">{displayProduct.description}</p>
           <div className="sk-stat-grid">
             <div className="sk-stat">
@@ -159,10 +213,14 @@ export function ProductDetailPage() {
               className="sk-button sk-button--secondary sk-button--lg"
               type="button"
               disabled={isTogglingFavorite}
-              onClick={() => void handleToggleFavorite()}
+              onClick={() => void handleAddFavorite()}
             >
-              <FavoriteBorderIcon fontSize="small" />
-              Favoritos
+              {isDetailFavorite ? <FavoriteIcon fontSize="small" /> : <FavoriteBorderIcon fontSize="small" />}
+              {isTogglingFavorite
+                ? 'Guardando...'
+                : isDetailFavorite
+                  ? 'Ya está en favoritos'
+                  : 'Agregar a favoritos'}
             </button>
           </div>
         </article>

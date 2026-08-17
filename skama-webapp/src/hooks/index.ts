@@ -8,6 +8,7 @@ export { useCart } from './useCart';
 export { useWishlist } from './useWishlist';
 export { useCustomerProfile } from './useCustomerProfile';
 export { useDashboardSummary } from './useDashboardSummary';
+export { useRegisteredCustomers } from './useRegisteredCustomers';
 export { useSalesReports } from './useSalesReports';
 export { useOrder } from './useOrder';
 export { useProductMainImages, useProductImages } from './useProductImages';

@@ -1,4 +1,5 @@
 import type { IProductDto } from '../types';
+import { LOW_STOCK_THRESHOLD } from '../constants/inventory';
 
 export interface ISkamaProduct {
   id: string;
@@ -16,6 +17,9 @@ export interface ISkamaProduct {
   badge?: string;
   badgeTone?: 'accent' | 'exclusive' | 'featured' | 'limited';
   isLimitedEdition?: boolean;
+  originalPrice?: number;
+  discountPercentage?: number;
+  promotionText?: string;
 }
 
 export interface ISkamaSegment {
@@ -28,6 +32,20 @@ export interface ISkamaSegment {
 
 function assetUrl(folder: string, fileName: string): string {
   return `/assets/${folder}/${encodeURIComponent(fileName)}`;
+}
+
+export const SILVER_ANNIVERSARY_DISCOUNT_PERCENTAGE = 25;
+export const SILVER_ANNIVERSARY_PROMO_TEXT =
+  'Aniversario SKAMA: 25% de descuento en joyas de plata';
+
+function applySilverAnniversaryPromotion(product: ISkamaProduct): ISkamaProduct {
+  return {
+    ...product,
+    originalPrice: product.price,
+    price: Math.round(product.price * (1 - SILVER_ANNIVERSARY_DISCOUNT_PERCENTAGE / 100)),
+    discountPercentage: SILVER_ANNIVERSARY_DISCOUNT_PERCENTAGE,
+    promotionText: SILVER_ANNIVERSARY_PROMO_TEXT,
+  };
 }
 
 export const limitedProducts: ISkamaProduct[] = [
@@ -160,7 +178,7 @@ const silverGreenProducts: ISkamaProduct[] = [
   },
 ];
 
-const silverProducts: ISkamaProduct[] = [
+const silverProductsBase: ISkamaProduct[] = [
   {
     id: 'coffee-ring-silver',
     name: 'Anillo Café de mi Tierra',
@@ -222,6 +240,8 @@ const silverProducts: ISkamaProduct[] = [
     badgeTone: 'exclusive',
   },
 ];
+
+const silverProducts: ISkamaProduct[] = silverProductsBase.map(applySilverAnniversaryPromotion);
 
 const goldProducts: ISkamaProduct[] = [
   {
@@ -296,7 +316,7 @@ export const skamaSegments: ISkamaSegment[] = [
   },
   {
     id: 'silver',
-    kicker: 'Plata',
+    kicker: 'Plata - Promoción de aniversario',
     title: 'Joyas de plata',
     description: 'Diseños plateados sobrios, limpios y fáciles de combinar dentro de la experiencia SKAMA.',
     products: silverProducts,
@@ -329,21 +349,24 @@ export function mapApiProductToSkamaProduct(
   imageUrl?: string,
   index = 0,
 ): ISkamaProduct {
+  const isLowStock = product.stockQuantity < LOW_STOCK_THRESHOLD;
+
   return {
     id: product.id,
     backendProductId: product.id,
     name: product.name,
-    collection: product.categoryName || 'Colección SKAMA',
+    collection: product.isLimitedEdition ? 'Edición limitada' : product.categoryName || 'Colección SKAMA',
     categoryName: product.categoryName || 'Joyería',
-    material: product.categoryName || 'Esmeralda',
+    material: product.categoryName || 'Joyería',
     description: product.description || 'Pieza seleccionada del catálogo SKAMA.',
     price: product.price,
     stockQuantity: product.stockQuantity,
     imageUrl: imageUrl || fallbackImages[index % fallbackImages.length],
     imageAlt: product.name,
     ratingLabel: '4.8 de 5',
-    badge: product.stockQuantity <= product.minimumStock ? 'Stock bajo' : undefined,
-    badgeTone: product.stockQuantity <= product.minimumStock ? 'limited' : undefined,
+    badge: product.isLimitedEdition ? 'Limitada' : isLowStock ? 'Stock bajo' : product.categoryName || undefined,
+    badgeTone: product.isLimitedEdition || isLowStock ? 'limited' : undefined,
+    isLimitedEdition: product.isLimitedEdition,
   };
 }
 

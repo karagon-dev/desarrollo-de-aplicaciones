@@ -18,6 +18,7 @@ interface IWishlistContextValue {
   isLoading: boolean;
   error: string | null;
   refreshWishlist: () => Promise<void>;
+  addFavorite: (productId: string) => Promise<boolean>;
   toggleFavorite: (productId: string) => Promise<boolean>;
   isFavorite: (productId: string) => boolean;
 }
@@ -88,6 +89,24 @@ export function WishlistProvider({ children }: IWishlistProviderProps) {
     [user, refreshWishlist],
   );
 
+  const addFavorite = useCallback(
+    async (productId: string) => {
+      if (!user) {
+        throw new Error('Debes iniciar sesión para guardar favoritos.');
+      }
+
+      if (favoriteProductIds.has(productId)) {
+        return false;
+      }
+
+      setError(null);
+      await wishlistService.add(user.userId, { productId });
+      await refreshWishlist();
+      return true;
+    },
+    [favoriteProductIds, user, refreshWishlist],
+  );
+
   const value = useMemo<IWishlistContextValue>(
     () => ({
       items,
@@ -95,10 +114,11 @@ export function WishlistProvider({ children }: IWishlistProviderProps) {
       isLoading,
       error,
       refreshWishlist,
+      addFavorite,
       toggleFavorite,
       isFavorite,
     }),
-    [items, favoriteProductIds, isLoading, error, refreshWishlist, toggleFavorite, isFavorite],
+    [items, favoriteProductIds, isLoading, error, refreshWishlist, addFavorite, toggleFavorite, isFavorite],
   );
 
   return <WishlistContext.Provider value={value}>{children}</WishlistContext.Provider>;

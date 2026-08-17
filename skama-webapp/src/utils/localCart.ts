@@ -24,6 +24,7 @@ export interface ICheckoutItem {
   subtotal: number;
   imageUrl?: string;
   imageAlt?: string;
+  isLimitedEdition?: boolean;
 }
 
 const LOCAL_CART_KEY = 'skama-local-cart';
@@ -45,7 +46,23 @@ function readCartFromStorage(): ILocalCartItem[] {
       return [];
     }
 
-    return parsed.filter((item) => item.productId && item.quantity > 0);
+    const validItems = parsed.filter((item) => item.productId && item.quantity > 0);
+    let hasLimitedEditionItem = false;
+
+    return validItems.reduce<ILocalCartItem[]>((items, item) => {
+      if (!item.isLimitedEdition) {
+        items.push(item);
+        return items;
+      }
+
+      if (hasLimitedEditionItem) {
+        return items;
+      }
+
+      hasLimitedEditionItem = true;
+      items.push({ ...item, quantity: 1 });
+      return items;
+    }, []);
   } catch {
     return [];
   }
@@ -60,14 +77,30 @@ export function readLocalCart(): ILocalCartItem[] {
   return readCartFromStorage();
 }
 
+export function hasLocalLimitedEditionCartItem(): boolean {
+  return readCartFromStorage().some((item) => item.isLimitedEdition);
+}
+
 export function addLocalCartItem(product: ISkamaProduct, quantity: number): ILocalCartItem[] {
   const items = readCartFromStorage();
+  const existingLimitedEditionItem = product.isLimitedEdition
+    ? items.find((item) => item.isLimitedEdition)
+    : undefined;
+
+  if (existingLimitedEditionItem) {
+    existingLimitedEditionItem.quantity = 1;
+    writeCartToStorage(items);
+    return items;
+  }
+
   const existing = items.find((item) => item.productId === product.id);
   const maxQuantity = product.isLimitedEdition ? 1 : Math.max(product.stockQuantity, 1);
   const requestedQuantity = Math.max(1, Math.floor(quantity));
 
   if (existing) {
     existing.quantity = Math.min(existing.quantity + requestedQuantity, maxQuantity);
+    existing.price = product.price;
+    existing.stockQuantity = product.stockQuantity;
     writeCartToStorage(items);
     return items;
   }
@@ -96,7 +129,12 @@ export function updateLocalCartItemQuantity(productId: string, quantity: number)
   const nextItems = items
     .map((item) =>
       item.productId === productId
-        ? { ...item, quantity: Math.max(1, Math.min(Math.floor(quantity), item.stockQuantity || 1)) }
+        ? {
+            ...item,
+            quantity: item.isLimitedEdition
+              ? 1
+              : Math.max(1, Math.min(Math.floor(quantity), item.stockQuantity || 1)),
+          }
         : item,
     )
     .filter((item) => item.quantity > 0);
@@ -135,6 +173,7 @@ export function backendCartToCheckoutItems(cart: ICartDetailDto | null): IChecko
       quantity: item.quantity,
       unitPrice: item.unitPrice,
       subtotal: item.subtotal,
+      isLimitedEdition: false,
     })) ?? []
   );
 }
@@ -149,5 +188,6 @@ export function localCartToCheckoutItems(items: ILocalCartItem[]): ICheckoutItem
     subtotal: item.price * item.quantity,
     imageUrl: item.imageUrl,
     imageAlt: item.imageAlt,
+    isLimitedEdition: item.isLimitedEdition,
   }));
 }
