@@ -50,6 +50,11 @@ export interface IUpdateUserStatusRequest {
   isActive: boolean;
 }
 
+export interface IUserFilters {
+  roleId?: number;
+  includeInactive?: boolean;
+}
+
 export interface IForgotPasswordRequest {
   email: string;
 }
@@ -277,6 +282,7 @@ export interface IProductDto {
   price: number;
   stockQuantity: number;
   minimumStock: number;
+  isLimitedEdition: boolean;
   isActive: boolean;
   createdAt: string;
   updatedAt: string | null;
@@ -289,6 +295,7 @@ export interface ICreateProductRequest {
   price: number;
   stockQuantity: number;
   minimumStock: number;
+  isLimitedEdition: boolean;
 }
 
 export interface IUpdateProductRequest {
@@ -345,7 +352,10 @@ export interface ISalesByPeriodDto {
 export interface ISalesByProductDto {
   productId: string;
   productName: string;
+  buyerName: string;
+  customerEmail: string;
   totalQuantitySold: number;
+  orderCount: number;
   totalSales: number;
 }
 

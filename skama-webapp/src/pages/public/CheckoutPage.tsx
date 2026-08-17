@@ -4,7 +4,8 @@ import { toast } from 'react-toastify';
 
 import { useAuth, useCart } from '../../hooks';
 import { ROUTES } from '../../routes/routePaths';
-import { orderService } from '../../services';
+import { Dialog } from '../../components/dialogs';
+import { cartService, orderService } from '../../services';
 import {
   backendCartToCheckoutItems,
   clearLocalCart,
@@ -17,11 +18,14 @@ import {
 } from '../../utils';
 
 const whatsappPhone = '50672054536';
+const cardPaymentMethod = 'TARJETA';
+const scheduledPickupDeliveryType = 'Retiro programado';
+const locationsPath = `${ROUTES.home}#ubicaciones`;
 
 const paymentOptions = [
   { value: 'SINPE_MOVIL', label: 'SINPE Móvil', helper: 'Pago móvil nacional.' },
   { value: 'TRANSFERENCIA', label: 'Transferencia bancaria', helper: 'Depósito bancario.' },
-  { value: 'TARJETA', label: 'Tarjeta', helper: 'Pago con tarjeta.' },
+  { value: cardPaymentMethod, label: 'Tarjeta', helper: 'Pago físico en sucursal.' },
 ];
 
 const deliveryOptions = ['Retiro programado', 'Envío', 'Entrega coordinada'];
@@ -52,11 +56,12 @@ const initialForm: ICheckoutFormState = {
 
 export function CheckoutPage() {
   const navigate = useNavigate();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
   const { cart, refreshCart } = useCart();
   const [localItems, setLocalItems] = useState(() => readLocalCart());
   const [form, setForm] = useState(initialForm);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [cardPaymentDialogOpen, setCardPaymentDialogOpen] = useState(false);
   const [validation, setValidation] = useState(
     'Por favor, completa todos los datos de entrega y selecciona un método de pago.',
   );
@@ -78,7 +83,6 @@ export function CheckoutPage() {
   const checkoutItems = hasBackendCart
     ? backendCartToCheckoutItems(cart)
     : localCartToCheckoutItems(localItems);
-  const hasLimitedLocalItems = localItems.some((item) => item.isLimitedEdition);
   const totals = hasBackendCart
     ? {
         itemCount: cart!.items.reduce((total, item) => total + item.quantity, 0),
@@ -86,12 +90,14 @@ export function CheckoutPage() {
         total: cart!.total,
       }
     : getLocalCartTotals(localItems);
+  const isCardPaymentSelected = form.paymentMethod === cardPaymentMethod;
 
   const isFormValid = Boolean(
     form.firstName.trim() &&
       form.lastName.trim() &&
       form.phone.trim() &&
       form.email.trim() &&
+      isAuthenticated &&
       form.deliveryType &&
       form.address.trim() &&
       form.paymentMethod &&
@@ -127,15 +133,88 @@ export function CheckoutPage() {
     ].join('\n');
   }, [checkoutItems, form, totals.total]);
 
+  useEffect(() => {
+    setForm((current) => ({
+      ...current,
+      email: user?.email ?? '',
+    }));
+  }, [user?.email]);
+
   function updateField<K extends keyof ICheckoutFormState>(key: K, value: ICheckoutFormState[K]) {
     setForm((current) => ({ ...current, [key]: value }));
+  }
+
+  function handlePaymentMethodChange(paymentMethod: string) {
+    if (paymentMethod === cardPaymentMethod) {
+      setCardPaymentDialogOpen(true);
+      return;
+    }
+
+    updateField('paymentMethod', paymentMethod);
+  }
+
+  function acceptCardPaymentMethod() {
+    setForm((current) => ({
+      ...current,
+      paymentMethod: cardPaymentMethod,
+      deliveryType: scheduledPickupDeliveryType,
+    }));
+    setCardPaymentDialogOpen(false);
+  }
+
+  function chooseAnotherPaymentMethod() {
+    setCardPaymentDialogOpen(false);
+  }
+
+  function buildShippingAddress(): string {
+    return [
+      `Cliente: ${form.firstName} ${form.lastName}`.trim(),
+      `Correo: ${user?.email ?? form.email}`,
+      `Telefono: ${form.phone}`,
+      `Entrega: ${form.deliveryType}`,
+      `Direccion: ${form.address}`,
+      form.isGift ? `Regalo: Si${form.giftMessage ? ` - ${form.giftMessage}` : ''}` : 'Regalo: No',
+    ].join(' | ');
+  }
+
+  async function createOrderFromCheckoutCart(): Promise<void> {
+    if (!user) {
+      throw new Error('Debes iniciar sesion para finalizar la compra.');
+    }
+
+    let cartId = cart?.id;
+
+    if (!hasBackendCart && localItems.length > 0) {
+      const { data: summary } = await cartService.getOrCreate(user.userId);
+      cartId = summary.cartId;
+
+      for (const item of localItems) {
+        await cartService.addItem(cartId, {
+          productId: item.productId,
+          quantity: item.quantity,
+        });
+      }
+    }
+
+    if (!cartId) {
+      throw new Error('No hay un carrito activo para crear la orden.');
+    }
+
+    await orderService.createFromCart(cartId, {
+      paymentMethod: form.paymentMethod,
+      shippingAddress: buildShippingAddress(),
+    });
+
+    clearLocalCart();
+    setLocalItems([]);
+    await refreshCart();
   }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    if (hasLimitedLocalItems && !isAuthenticated) {
-      toast.info('Inicia sesión para comprar piezas de edición limitada.');
+    if (!isAuthenticated) {
+      toast.info('Inicia sesion para finalizar tu compra.');
       navigate(ROUTES.login, { state: { from: ROUTES.checkout } });
       return;
     }
@@ -148,16 +227,7 @@ export function CheckoutPage() {
 
     setIsSubmitting(true);
     try {
-      if (hasBackendCart && cart) {
-        await orderService.createFromCart(cart.id, {
-          paymentMethod: form.paymentMethod,
-          shippingAddress: `${form.deliveryType}: ${form.address}`,
-        });
-        await refreshCart();
-      } else {
-        clearLocalCart();
-        setLocalItems([]);
-      }
+      await createOrderFromCheckoutCart();
 
       setValidation('Orden validada. WhatsApp se abrirá con el mensaje formateado.');
       window.open(`https://wa.me/${whatsappPhone}?text=${encodeURIComponent(whatsappMessage)}`, '_blank', 'noopener');
@@ -184,16 +254,16 @@ export function CheckoutPage() {
     );
   }
 
-  if (hasLimitedLocalItems && !isAuthenticated) {
+  if (!isAuthenticated) {
     return (
       <div className="sk-container sk-section">
         <div className="sk-empty-state">
-          <p className="sk-kicker">Edición limitada</p>
-          <h1>Inicia sesión para comprar estas piezas.</h1>
-          <p>Las joyas de edición limitada requieren una cuenta SKAMA activa antes de finalizar la orden.</p>
+          <p className="sk-kicker">Compra con cuenta</p>
+          <h1>Inicia sesion para finalizar la compra.</h1>
+          <p>Todas las compras requieren una cuenta SKAMA activa para registrar la venta y asociarla a tu correo.</p>
           <div className="sk-actions">
             <RouterLink className="sk-button sk-button--primary" to={ROUTES.login} state={{ from: ROUTES.checkout }}>
-              Iniciar sesión
+              Iniciar sesion
             </RouterLink>
             <RouterLink className="sk-button sk-button--secondary" to={ROUTES.catalog}>
               Ver colecciones
@@ -260,7 +330,7 @@ export function CheckoutPage() {
                   id="checkout-email"
                   type="email"
                   value={form.email}
-                  onChange={(event) => updateField('email', event.target.value)}
+                  readOnly
                   required
                 />
               </label>
@@ -271,6 +341,7 @@ export function CheckoutPage() {
                   id="delivery-type"
                   value={form.deliveryType}
                   onChange={(event) => updateField('deliveryType', event.target.value)}
+                  disabled={isCardPaymentSelected}
                   required
                 >
                   <option value="">Seleccione una opción</option>
@@ -280,6 +351,11 @@ export function CheckoutPage() {
                     </option>
                   ))}
                 </select>
+                {isCardPaymentSelected && (
+                  <span className="sk-field__helper">
+                    Retiro programado es requerido para pagos físicos con tarjeta.
+                  </span>
+                )}
               </label>
               <label className="sk-field span-2" htmlFor="checkout-address">
                 <span className="sk-field__label">Dirección</span>
@@ -307,7 +383,7 @@ export function CheckoutPage() {
                     name="payment"
                     value={option.value}
                     checked={form.paymentMethod === option.value}
-                    onChange={() => updateField('paymentMethod', option.value)}
+                    onChange={() => handlePaymentMethodChange(option.value)}
                     required
                   />
                   <strong>{option.label}</strong>
@@ -392,6 +468,34 @@ export function CheckoutPage() {
           </section>
         </aside>
       </section>
+
+      <Dialog
+        open={cardPaymentDialogOpen}
+        onClose={chooseAnotherPaymentMethod}
+        title="Pago con tarjeta en sucursal"
+        actions={
+          <>
+            <button className="sk-button sk-button--secondary" type="button" onClick={chooseAnotherPaymentMethod}>
+              Otro método de pago
+            </button>
+            <button className="sk-button sk-button--primary" type="button" onClick={acceptCardPaymentMethod}>
+              Aceptar
+            </button>
+          </>
+        }
+      >
+        <p>
+          Para gestionar el pago con tarjeta deberás acercarte a la sucursal SKAMA más cercana y
+          realizar el pago de forma física.
+        </p>
+        <p>
+          Puedes verificar nuestras ubicaciones antes de continuar en{' '}
+          <RouterLink className="sk-link" to={locationsPath} onClick={chooseAnotherPaymentMethod}>
+            el apartado de ubicaciones
+          </RouterLink>
+          .
+        </p>
+      </Dialog>
     </div>
   );
 }

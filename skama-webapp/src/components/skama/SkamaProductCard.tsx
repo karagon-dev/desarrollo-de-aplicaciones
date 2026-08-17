@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -7,27 +7,19 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import type { ISkamaProduct } from '../../data/skamaCatalog';
 import { ROUTES } from '../../routes/routePaths';
 import { useAuth, useCart, useWishlist } from '../../hooks';
-import { addLocalCartItem, formatPrice, getApiErrorMessage } from '../../utils';
+import {
+  LOCAL_FAVORITES_UPDATED_EVENT,
+  addLocalCartItem,
+  getApiErrorMessage,
+  hasLocalLimitedEditionCartItem,
+  readLocalFavorites,
+  toggleLocalFavorite,
+} from '../../utils';
+import { SkamaPrice } from './SkamaPrice';
 
 interface ISkamaProductCardProps {
   product: ISkamaProduct;
   compact?: boolean;
-}
-
-const LOCAL_FAVORITES_KEY = 'skama-local-favorites';
-
-function readLocalFavorites(): Set<string> {
-  try {
-    const raw = localStorage.getItem(LOCAL_FAVORITES_KEY);
-    const parsed = raw ? (JSON.parse(raw) as string[]) : [];
-    return new Set(Array.isArray(parsed) ? parsed : []);
-  } catch {
-    return new Set();
-  }
-}
-
-function writeLocalFavorites(favorites: Set<string>): void {
-  localStorage.setItem(LOCAL_FAVORITES_KEY, JSON.stringify([...favorites]));
 }
 
 export function SkamaProductCard({ product, compact = false }: ISkamaProductCardProps) {
@@ -38,6 +30,19 @@ export function SkamaProductCard({ product, compact = false }: ISkamaProductCard
   const [localFavorites, setLocalFavorites] = useState(() => readLocalFavorites());
   const [isAdding, setIsAdding] = useState(false);
   const [isToggling, setIsToggling] = useState(false);
+
+  useEffect(() => {
+    function syncLocalFavorites() {
+      setLocalFavorites(readLocalFavorites());
+    }
+
+    window.addEventListener(LOCAL_FAVORITES_UPDATED_EVENT, syncLocalFavorites);
+    window.addEventListener('storage', syncLocalFavorites);
+    return () => {
+      window.removeEventListener(LOCAL_FAVORITES_UPDATED_EVENT, syncLocalFavorites);
+      window.removeEventListener('storage', syncLocalFavorites);
+    };
+  }, []);
 
   const canUseBackendProduct = Boolean(product.backendProductId);
   const isFavorited = useMemo(() => {
@@ -52,6 +57,11 @@ export function SkamaProductCard({ product, compact = false }: ISkamaProductCard
     if (product.isLimitedEdition && !isAuthenticated) {
       toast.info('Inicia sesión para comprar piezas de edición limitada.');
       navigate(ROUTES.login, { state: { from: ROUTES.catalog } });
+      return;
+    }
+
+    if (product.isLimitedEdition && hasLocalLimitedEditionCartItem()) {
+      toast.info('Solo puedes comprar 1 joya de edición limitada por cuenta.');
       return;
     }
 
@@ -77,15 +87,8 @@ export function SkamaProductCard({ product, compact = false }: ISkamaProductCard
       if (canUseBackendProduct && isAuthenticated) {
         await toggleFavorite(product.backendProductId!);
       } else {
-        const nextFavorites = new Set(localFavorites);
-        if (nextFavorites.has(product.id)) {
-          nextFavorites.delete(product.id);
-        } else {
-          nextFavorites.add(product.id);
-        }
-
-        writeLocalFavorites(nextFavorites);
-        setLocalFavorites(nextFavorites);
+        toggleLocalFavorite(product.id);
+        setLocalFavorites(readLocalFavorites());
       }
     } catch (error) {
       toast.error(getApiErrorMessage(error, 'No se pudieron actualizar los favoritos.'));
@@ -133,7 +136,11 @@ export function SkamaProductCard({ product, compact = false }: ISkamaProductCard
         <span className="sk-product-card__stock">
           Disponible: {product.stockQuantity} {product.stockQuantity === 1 ? 'unidad' : 'unidades'}
         </span>
-        <strong className="sk-price">{formatPrice(product.price)}</strong>
+        <SkamaPrice
+          price={product.price}
+          originalPrice={product.originalPrice}
+          discountPercentage={product.discountPercentage}
+        />
         <button
           className={`sk-button ${product.isLimitedEdition && !isAuthenticated ? 'sk-button--secondary' : 'sk-button--primary'} sk-button--sm`}
           type="button"

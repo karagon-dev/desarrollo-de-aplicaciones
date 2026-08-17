@@ -25,4 +25,6 @@ public class CreateProductRequest
     [Required]
     [Range(0, int.MaxValue, ErrorMessage = "El stock mínimo no puede ser negativo.")]
     public int MinimumStock { get; set; }
+
+    public bool IsLimitedEdition { get; set; }
 }

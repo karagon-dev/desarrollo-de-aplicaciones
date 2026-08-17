@@ -4,6 +4,7 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import LoginOutlinedIcon from '@mui/icons-material/LoginOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
+import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
 
 import { useAuth, useCart, useThemeMode, useWishlist } from '../../hooks';
@@ -119,7 +120,7 @@ export function Navbar() {
         {isAuthenticated ? (
           <>
             <RouterLink className="sk-auth-button" to={ROUTES.profile}>
-              <LoginOutlinedIcon fontSize="small" />
+              <PersonOutlineOutlinedIcon fontSize="small" />
               <span>{accountLabel}</span>
             </RouterLink>
             <button className="sk-icon-button" type="button" aria-label="Cerrar sesión" onClick={logout}>

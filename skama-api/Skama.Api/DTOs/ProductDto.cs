@@ -10,6 +10,7 @@ public class ProductDto
     public decimal Price { get; set; }
     public int StockQuantity { get; set; }
     public int MinimumStock { get; set; }
+    public bool IsLimitedEdition { get; set; }
     public bool IsActive { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }

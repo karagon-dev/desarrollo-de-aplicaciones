@@ -77,6 +77,16 @@ public class AuthController : ControllerBase
         return Ok(user);
     }
 
+    [HttpGet("users")]
+    [ProducesResponseType(typeof(IEnumerable<UserDto>), StatusCodes.Status200OK)]
+    public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers(
+        [FromQuery] int? roleId,
+        [FromQuery] bool includeInactive = false)
+    {
+        var users = await _authService.GetUsersAsync(roleId, includeInactive);
+        return Ok(users);
+    }
+
     [HttpGet("users/by-email/{email}")]
     [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

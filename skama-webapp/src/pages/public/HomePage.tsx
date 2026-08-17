@@ -181,7 +181,11 @@ export function HomePage() {
         </div>
         <div className="sk-feature-grid">
           {values.map((value) => (
-            <article className="sk-card sk-card-feature" key={value.title}>
+            <article
+              className="sk-card sk-card-feature"
+              id={value.title === 'Ubicaciones' ? 'ubicaciones' : undefined}
+              key={value.title}
+            >
               <span className="sk-card-feature__icon" aria-hidden="true">
                 {value.icon}
               </span>

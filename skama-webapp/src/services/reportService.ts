@@ -2,6 +2,7 @@ import type {
   IDateRangeParams,
   ISalesByPeriodDto,
   ISalesByProductDto,
+  ITopProductSummary,
   ITopProductsParams,
 } from '../types';
 import { apiClient } from './apiClient';
@@ -19,7 +20,7 @@ export const reportService = {
     }),
 
   getTopProducts: (params: ITopProductsParams) =>
-    apiClient.get<ISalesByProductDto[]>(API_PATHS.reports.topProducts, {
+    apiClient.get<ITopProductSummary[]>(API_PATHS.reports.topProducts, {
       params,
     }),
 };

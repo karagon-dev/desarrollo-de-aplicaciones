@@ -34,7 +34,8 @@ public class ProductService : IProductService
             Description = request.Description,
             Price = request.Price,
             StockQuantity = request.StockQuantity,
-            MinimumStock = request.MinimumStock
+            MinimumStock = request.MinimumStock,
+            IsLimitedEdition = request.IsLimitedEdition
         };
 
         return await _productRepository.InsertAsync(product);
@@ -68,11 +69,13 @@ public class ProductService : IProductService
     {
         Id = product.Id,
         CategoryId = product.CategoryId,
+        CategoryName = product.CategoryName,
         Name = product.Name,
         Description = product.Description,
         Price = product.Price,
         StockQuantity = product.StockQuantity,
         MinimumStock = product.MinimumStock,
+        IsLimitedEdition = product.IsLimitedEdition,
         IsActive = product.IsActive,
         CreatedAt = product.CreatedAt,
         UpdatedAt = product.UpdatedAt

@@ -8,6 +8,7 @@ import { Checkbox } from '../forms';
 import { Button } from '../buttons';
 import { useCategories } from '../../hooks';
 import { tokens } from '../../utils';
+import { DEFAULT_MINIMUM_STOCK } from '../../constants/inventory';
 
 export interface ProductFormDialogProps {
   open: boolean;
@@ -23,9 +24,11 @@ interface IFormState {
   description: string;
   price: string;
   stockQuantity: string;
-  minimumStock: string;
+  isLimitedEdition: boolean;
   isActive: boolean;
 }
+
+const jewelryCategoryNames = ['plata', 'plata verde', 'oro'];
 
 const emptyForm: IFormState = {
   categoryId: '',
@@ -33,7 +36,7 @@ const emptyForm: IFormState = {
   description: '',
   price: '',
   stockQuantity: '0',
-  minimumStock: '0',
+  isLimitedEdition: false,
   isActive: true,
 };
 
@@ -44,7 +47,7 @@ function mapProductToForm(product: IProductDto): IFormState {
     description: product.description,
     price: String(product.price),
     stockQuantity: String(product.stockQuantity),
-    minimumStock: String(product.minimumStock),
+    isLimitedEdition: product.isLimitedEdition,
     isActive: product.isActive,
   };
 }
@@ -66,7 +69,11 @@ export function ProductFormDialog({
     }
   }, [open, product]);
 
-  const categoryOptions = categories.map((category) => ({
+  const materialCategories = categories.filter((category) =>
+    jewelryCategoryNames.includes(category.name.trim().toLowerCase()),
+  );
+  const availableCategories = materialCategories.length > 0 ? materialCategories : categories;
+  const categoryOptions = availableCategories.map((category) => ({
     value: category.id,
     label: category.name,
   }));
@@ -80,13 +87,13 @@ export function ProductFormDialog({
       description: form.description.trim(),
       price: Number(form.price),
       stockQuantity: Number(form.stockQuantity),
-      minimumStock: Number(form.minimumStock),
+      minimumStock: DEFAULT_MINIMUM_STOCK,
     };
 
     if (isEditing && product) {
       await onSubmit({ ...payload, isActive: form.isActive } as IUpdateProductRequest);
     } else {
-      await onSubmit(payload as ICreateProductRequest);
+      await onSubmit({ ...payload, isLimitedEdition: form.isLimitedEdition } as ICreateProductRequest);
     }
   }
 
@@ -113,7 +120,7 @@ export function ProductFormDialog({
         sx={{ display: 'flex', flexDirection: 'column', gap: tokens.spacing.md, pt: 1 }}
       >
         <Select
-          label="Categoría"
+          label="Categoría de material"
           options={categoryOptions}
           value={form.categoryId}
           required
@@ -136,7 +143,7 @@ export function ProductFormDialog({
           }
         />
         <Grid container spacing={2}>
-          <Grid size={{ xs: 12, sm: 4 }}>
+          <Grid size={{ xs: 12, sm: 6 }}>
             <Input
               label="Precio"
               type="number"
@@ -145,7 +152,7 @@ export function ProductFormDialog({
               onChange={(event) => setForm((current) => ({ ...current, price: event.target.value }))}
             />
           </Grid>
-          <Grid size={{ xs: 12, sm: 4 }}>
+          <Grid size={{ xs: 12, sm: 6 }}>
             <Input
               label="Inventario"
               type="number"
@@ -156,18 +163,16 @@ export function ProductFormDialog({
               }
             />
           </Grid>
-          <Grid size={{ xs: 12, sm: 4 }}>
-            <Input
-              label="Inventario mínimo"
-              type="number"
-              required
-              value={form.minimumStock}
-              onChange={(event) =>
-                setForm((current) => ({ ...current, minimumStock: event.target.value }))
-              }
-            />
-          </Grid>
         </Grid>
+        {!isEditing && (
+          <Checkbox
+            label="Edición limitada"
+            checked={form.isLimitedEdition}
+            onChange={(event) =>
+              setForm((current) => ({ ...current, isLimitedEdition: event.target.checked }))
+            }
+          />
+        )}
         {isEditing && (
           <Checkbox
             label="Producto activo"

@@ -54,6 +54,12 @@ public class AuthService : IAuthService
         return user is null ? null : MapToUserDto(user);
     }
 
+    public async Task<IEnumerable<UserDto>> GetUsersAsync(int? roleId, bool includeInactive)
+    {
+        var users = await _authRepository.GetAllAsync(roleId, includeInactive);
+        return users.Select(MapToUserDto);
+    }
+
     public async Task<UserDto?> GetUserByEmailAsync(string email)
     {
         var user = await _authRepository.GetByEmailAsync(email);

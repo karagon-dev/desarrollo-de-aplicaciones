@@ -48,6 +48,36 @@ public class AuthRepository : IAuthRepository
             commandType: CommandType.StoredProcedure);
     }
 
+    public async Task<IEnumerable<User>> GetAllAsync(int? roleId, bool includeInactive)
+    {
+        using var connection = CreateConnection();
+
+        const string sql = """
+            SELECT
+                U.TID_Id AS Id,
+                U.TN_RoleId AS RoleId,
+                R.TC_Name AS RoleName,
+                U.TC_Email AS Email,
+                U.TB_IsActive AS IsActive,
+                U.TD_CreatedAt AS CreatedAt,
+                U.TD_UpdatedAt AS UpdatedAt
+            FROM dbo.[User] U
+            INNER JOIN dbo.Role R ON R.TID_Id = U.TN_RoleId
+            WHERE
+                (@IncludeInactive = 1 OR U.TB_IsActive = 1)
+                AND (@RoleId IS NULL OR U.TN_RoleId = @RoleId)
+            ORDER BY U.TD_CreatedAt DESC;
+            """;
+
+        return await connection.QueryAsync<User>(
+            sql,
+            new
+            {
+                RoleId = roleId,
+                IncludeInactive = includeInactive
+            });
+    }
+
     public async Task<User?> GetByIdAsync(Guid id)
     {
         using var connection = CreateConnection();

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import type { IProductDto, IProductFilters } from '../types';
 import { productService } from '../services';
-import { getApiErrorMessage } from '../utils';
+import { getApiErrorMessage, sortByText } from '../utils';
 
 interface IUseProductsResult {
   products: IProductDto[];
@@ -14,21 +14,24 @@ export function useProducts(filters?: IProductFilters): IUseProductsResult {
   const [products, setProducts] = useState<IProductDto[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const search = filters?.search;
+  const categoryId = filters?.categoryId;
+  const includeInactive = filters?.includeInactive;
 
   const refetch = useCallback(async () => {
     setLoading(true);
     setError(null);
 
     try {
-      const { data } = await productService.list(filters);
-      setProducts(data);
+      const { data } = await productService.list({ search, categoryId, includeInactive });
+      setProducts(sortByText(data, (product) => product.name));
     } catch (err) {
       setProducts([]);
       setError(getApiErrorMessage(err, 'No se pudieron cargar los productos.'));
     } finally {
       setLoading(false);
     }
-  }, [filters?.search, filters?.categoryId, filters?.includeInactive]);
+  }, [search, categoryId, includeInactive]);
 
   useEffect(() => {
     void refetch();

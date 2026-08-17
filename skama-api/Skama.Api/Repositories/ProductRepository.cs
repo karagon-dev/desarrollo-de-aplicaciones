@@ -53,6 +53,7 @@ public class ProductRepository : IProductRepository
         parameters.Add("@Price", product.Price, DbType.Decimal);
         parameters.Add("@StockQuantity", product.StockQuantity, DbType.Int32);
         parameters.Add("@MinimumStock", product.MinimumStock, DbType.Int32);
+        parameters.Add("@IsLimitedEdition", product.IsLimitedEdition, DbType.Boolean);
         parameters.Add("@NewId", dbType: DbType.Guid, direction: ParameterDirection.Output);
 
         await connection.ExecuteAsync(

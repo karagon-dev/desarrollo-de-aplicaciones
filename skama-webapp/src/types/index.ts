@@ -6,6 +6,7 @@ export type {
   ILoginRequest,
   ILoginResponse,
   IUserDto,
+  IUserFilters,
   IUpdateUserStatusRequest,
   IForgotPasswordRequest,
   IForgotPasswordResponse,

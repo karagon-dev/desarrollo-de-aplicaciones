@@ -4,6 +4,7 @@ export const API_PATHS = {
   auth: {
     register: '/api/auth/register',
     login: '/api/auth/login',
+    users: '/api/auth/users',
     userById: (id: string) => `/api/auth/users/${id}`,
     userByEmail: (email: string) =>
       `/api/auth/users/by-email/${encodeURIComponent(email)}`,

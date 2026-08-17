@@ -70,7 +70,10 @@ public class ReportService : IReportService
     {
         ProductId = report.ProductId,
         ProductName = report.ProductName,
+        BuyerName = report.BuyerName,
+        CustomerEmail = report.CustomerEmail,
         TotalQuantitySold = report.TotalQuantitySold,
+        OrderCount = report.OrderCount,
         TotalSales = report.TotalSales
     };
 

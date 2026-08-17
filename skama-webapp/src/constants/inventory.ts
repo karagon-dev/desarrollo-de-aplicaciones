@@ -1,0 +1,3 @@
+export const LOW_STOCK_THRESHOLD = 3;
+export const DEFAULT_MINIMUM_STOCK = LOW_STOCK_THRESHOLD - 1;
+

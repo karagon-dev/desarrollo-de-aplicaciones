@@ -14,7 +14,7 @@ import { ROUTES } from '../../routes/routePaths';
 const adminLinks = [
   { label: 'Panel', path: ROUTES.admin.dashboard, icon: DashboardOutlinedIcon },
   { label: 'Productos', path: ROUTES.admin.products, icon: Inventory2OutlinedIcon },
-  { label: 'Reportes', path: ROUTES.admin.reports, icon: AssessmentOutlinedIcon },
+  { label: 'Ventas', path: ROUTES.admin.reports, icon: AssessmentOutlinedIcon },
 ];
 
 export function Sidebar() {

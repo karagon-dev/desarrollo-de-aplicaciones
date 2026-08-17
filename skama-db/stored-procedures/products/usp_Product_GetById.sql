@@ -13,6 +13,7 @@ BEGIN
         P.TN_Price AS Price,
         P.TN_StockQuantity AS StockQuantity,
         P.TN_MinimumStock AS MinimumStock,
+        P.TB_IsLimitedEdition AS IsLimitedEdition,
         P.TB_IsActive AS IsActive,
         P.TD_CreatedAt AS CreatedAt,
         P.TD_UpdatedAt AS UpdatedAt

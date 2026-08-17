@@ -1,4 +1,4 @@
-﻿CREATE OR ALTER PROCEDURE dbo.usp_Report_SalesByPeriod
+CREATE OR ALTER PROCEDURE dbo.usp_Report_SalesByPeriod
     @StartDate DATE,
     @EndDate DATE
 AS

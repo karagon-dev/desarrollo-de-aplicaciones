@@ -72,7 +72,7 @@ BEGIN
             @OrderId,
             @UserId,
             @OrderNumber,
-            'PENDING',
+            'PAID',
             @PaymentMethod,
             @ShippingAddress,
             @Subtotal,

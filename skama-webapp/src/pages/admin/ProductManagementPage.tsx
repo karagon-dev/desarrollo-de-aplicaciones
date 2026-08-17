@@ -20,6 +20,7 @@ import { productService } from '../../services';
 import type { ICreateProductRequest, IProductDto, IUpdateProductRequest } from '../../types';
 import { formatPrice, getApiErrorMessage } from '../../utils';
 import { ROUTES } from '../../routes/routePaths';
+import { LOW_STOCK_THRESHOLD } from '../../constants/inventory';
 
 export function ProductManagementPage() {
   const [search, setSearch] = useState('');
@@ -34,7 +35,7 @@ export function ProductManagementPage() {
   const filters = useMemo(
     () => ({
       search: debouncedSearch.trim() || undefined,
-      includeInactive: true,
+      includeInactive: false,
     }),
     [debouncedSearch],
   );
@@ -44,24 +45,44 @@ export function ProductManagementPage() {
   const columns: TableColumn<IProductDto>[] = useMemo(
     () => [
       { id: 'name', label: 'Producto', accessor: 'name' },
-      { id: 'category', label: 'Categoría', accessor: 'categoryName' },
+      { id: 'category', label: 'Material', accessor: 'categoryName' },
       {
         id: 'price',
         label: 'Precio',
         align: 'right',
         render: (row) => formatPrice(row.price),
       },
-      { id: 'stock', label: 'Stock', accessor: 'stockQuantity', align: 'center' },
+      {
+        id: 'stock',
+        label: 'Stock',
+        align: 'center',
+        render: (row) => (
+          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 1 }}>
+            <span>{row.stockQuantity}</span>
+            {row.isActive && row.stockQuantity < LOW_STOCK_THRESHOLD && (
+              <Chip label="Bajo" chipVariant="warning" size="small" />
+            )}
+          </Box>
+        ),
+      },
       {
         id: 'status',
         label: 'Estado',
-        render: (row) => (
-          <Chip
-            label={row.isActive ? 'Activo' : 'Inactivo'}
-            chipVariant={row.isActive ? 'success' : 'default'}
-            size="small"
-          />
-        ),
+        render: (row) => {
+          const statusLabel = !row.isActive
+            ? 'Inactiva'
+            : row.isLimitedEdition
+              ? 'Limitada'
+              : 'Regular';
+
+          return (
+            <Chip
+              label={statusLabel}
+              chipVariant={!row.isActive ? 'default' : row.isLimitedEdition ? 'warning' : 'success'}
+              size="small"
+            />
+          );
+        },
       },
       {
         id: 'actions',

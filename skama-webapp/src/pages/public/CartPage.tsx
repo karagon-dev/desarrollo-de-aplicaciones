@@ -51,7 +51,18 @@ export function CartPage() {
     return getLocalCartTotals(localItems);
   }, [cart, hasBackendCart, localItems]);
 
-  async function handleQuantityChange(id: string, productId: string, quantity: number) {
+  async function handleQuantityChange(
+    id: string,
+    productId: string,
+    quantity: number,
+    isLimitedEdition?: boolean,
+  ) {
+    if (isLimitedEdition && quantity !== 1) {
+      setLocalItems(updateLocalCartItemQuantity(productId, 1));
+      toast.info('Las joyas de edición limitada tienen límite de 1 por cuenta.');
+      return;
+    }
+
     setIsUpdating(true);
     try {
       if (hasBackendCart) {
@@ -123,13 +134,23 @@ export function CartPage() {
                           id={`quantity-${item.id}`}
                           type="number"
                           min={1}
-                          max={99}
+                          max={item.isLimitedEdition ? 1 : 99}
                           value={item.quantity}
-                          disabled={isUpdating}
+                          disabled={isUpdating || item.isLimitedEdition}
                           onChange={(event) =>
-                            void handleQuantityChange(item.id, item.productId, Number(event.target.value))
+                            void handleQuantityChange(
+                              item.id,
+                              item.productId,
+                              Number(event.target.value),
+                              item.isLimitedEdition,
+                            )
                           }
                         />
+                        {item.isLimitedEdition && (
+                          <span className="sk-cart-line__limit-note">
+                            Límite: 1 joya de edición limitada por cuenta.
+                          </span>
+                        )}
                       </label>
                     </div>
                   </div>
