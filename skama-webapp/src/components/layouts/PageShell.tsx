@@ -23,9 +23,9 @@ export function PageShell({
   return (
     <Box
       sx={{
-        width: 'min(100% - clamp(2rem, 5vw, 4rem), 1200px)',
+        width: '100%',
         mx: 'auto',
-        py: { xs: tokens.spacing.lg, md: tokens.spacing.xl },
+        py: { xs: tokens.spacing.md, md: tokens.spacing.lg },
       }}
     >
       {breadcrumbs && breadcrumbs.length > 0 && <Breadcrumb items={breadcrumbs} />}
