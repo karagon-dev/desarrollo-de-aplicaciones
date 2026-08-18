@@ -1638,8 +1638,111 @@
     width: min(22rem, calc(100vw - 2rem));
 }
 
+.sk-abandoned-cart-reminder {
+    position: fixed;
+    right: max(var(--space-4), env(safe-area-inset-right));
+    bottom: max(var(--space-4), env(safe-area-inset-bottom));
+    z-index: 260;
+    width: min(23rem, calc(100vw - 2rem));
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: var(--space-3);
+    align-items: start;
+    border: 1px solid color-mix(in srgb, var(--color-accent) 34%, var(--color-border-subtle));
+    border-radius: var(--radius-md);
+    background: color-mix(in srgb, var(--color-surface) 94%, transparent);
+    color: var(--color-text-primary);
+    padding: var(--space-4);
+    box-shadow: var(--shadow-lg);
+    backdrop-filter: blur(18px);
+    animation: sk-cart-reminder-in var(--duration-slow) var(--ease-luxury) both;
+}
+
+.sk-abandoned-cart-reminder__icon {
+    width: 2.35rem;
+    height: 2.35rem;
+    display: grid;
+    place-items: center;
+    border-radius: var(--radius-full);
+    background: var(--color-accent-soft);
+    color: var(--color-accent-strong);
+}
+
+.sk-abandoned-cart-reminder__content {
+    min-width: 0;
+    display: grid;
+    gap: var(--space-2);
+}
+
+.sk-abandoned-cart-reminder h2 {
+    margin: 0;
+    color: var(--color-text-primary);
+    font-family: var(--font-family-display);
+    font-size: var(--font-size-heading-4);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--line-height-heading);
+}
+
+.sk-abandoned-cart-reminder p {
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-small);
+    line-height: var(--line-height-body);
+}
+
+.sk-abandoned-cart-reminder__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-top: var(--space-1);
+}
+
+.sk-abandoned-cart-reminder__button {
+    min-height: 2.35rem;
+    border: 1px solid transparent;
+    border-radius: var(--radius-full);
+    padding: 0 var(--space-4);
+    font-size: var(--font-size-caption);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: var(--letter-spacing-label);
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background-color var(--duration-fast) var(--ease-standard), border-color var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard), transform var(--duration-fast) var(--ease-luxury), box-shadow var(--duration-fast) var(--ease-luxury);
+}
+
+.sk-abandoned-cart-reminder__button:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+}
+
+.sk-abandoned-cart-reminder__button--primary {
+    background: var(--color-accent);
+    color: var(--color-accent-contrast);
+}
+
+.sk-abandoned-cart-reminder__button--secondary {
+    border-color: var(--color-border-subtle);
+    background: var(--color-surface-glass);
+    color: var(--color-text-primary);
+}
+
+.sk-abandoned-cart-reminder__button--secondary:hover {
+    border-color: var(--color-border);
+}
+
 @keyframes sk-skeleton {
     to { background-position: -220% 0; }
+}
+
+@keyframes sk-cart-reminder-in {
+    from {
+        opacity: 0;
+        transform: translate3d(0, 0.8rem, 0) scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0) scale(1);
+    }
 }
 
 @keyframes sk-badge-pop {
@@ -1762,5 +1865,20 @@
 
     .sk-cart-promo {
         grid-template-columns: 1fr;
+    }
+
+    .sk-abandoned-cart-reminder {
+        right: var(--space-3);
+        bottom: var(--space-3);
+        width: calc(100vw - var(--space-6));
+    }
+
+    .sk-abandoned-cart-reminder__actions {
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+
+    .sk-abandoned-cart-reminder__button {
+        width: 100%;
     }
 }
