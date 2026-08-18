@@ -4,6 +4,7 @@ import { ThemeProvider } from './theme';
 import { AuthProvider } from './providers/AuthProvider';
 import { CartProvider } from './providers/CartProvider';
 import { WishlistProvider } from './providers/WishlistProvider';
+import { AbandonedCartReminder } from './components/cart/AbandonedCartReminder';
 import { ScrollToTop } from './components/routing/ScrollToTop';
 import { SkamaFieldAnimator } from './components/forms/SkamaFieldAnimator';
 import { AppRouter } from './routes/AppRouter';
@@ -19,6 +20,7 @@ function App() {
               <ScrollToTop />
               <SkamaFieldAnimator />
               <AppRouter />
+              <AbandonedCartReminder />
               <ToastContainer
                 position="top-right"
                 autoClose={4000}

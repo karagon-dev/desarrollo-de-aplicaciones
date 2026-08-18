@@ -5,7 +5,12 @@ import { toast } from 'react-toastify';
 import { useAuth, useCart } from '../../hooks';
 import { ROUTES } from '../../routes/routePaths';
 import { Dialog } from '../../components/dialogs';
+import {
+  CheckoutRatingDialog,
+  type CheckoutRatingValue,
+} from '../../components/reviews/CheckoutRatingDialog';
 import { cartService, orderService } from '../../services';
+import type { ICreateOrderResponse, IOrderProductRatingRequest } from '../../types';
 import {
   backendCartToCheckoutItems,
   clearLocalCart,
@@ -54,6 +59,10 @@ const initialForm: ICheckoutFormState = {
   giftMessage: '',
 };
 
+function isCheckoutRatingValue(rating?: number): rating is CheckoutRatingValue {
+  return typeof rating === 'number' && Number.isInteger(rating) && rating >= 1 && rating <= 5;
+}
+
 export function CheckoutPage() {
   const navigate = useNavigate();
   const { isAuthenticated, user } = useAuth();
@@ -62,6 +71,9 @@ export function CheckoutPage() {
   const [form, setForm] = useState(initialForm);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [cardPaymentDialogOpen, setCardPaymentDialogOpen] = useState(false);
+  const [ratingDialogOpen, setRatingDialogOpen] = useState(false);
+  const [ratingsByItemId, setRatingsByItemId] = useState<Partial<Record<string, CheckoutRatingValue>>>({});
+  const [ratingValidation, setRatingValidation] = useState('');
   const [validation, setValidation] = useState(
     'Por favor, completa todos los datos de entrega y selecciona un método de pago.',
   );
@@ -177,7 +189,30 @@ export function CheckoutPage() {
     ].join(' | ');
   }
 
-  async function createOrderFromCheckoutCart(): Promise<void> {
+  function updateProductRating(itemId: string, rating: CheckoutRatingValue) {
+    setRatingsByItemId((current) => ({ ...current, [itemId]: rating }));
+    setRatingValidation('');
+  }
+
+  function buildProductRatings(): IOrderProductRatingRequest[] | null {
+    const missingRatingItem = checkoutItems.find(
+      (item) => !isCheckoutRatingValue(ratingsByItemId[item.id]),
+    );
+
+    if (missingRatingItem) {
+      setRatingValidation(`Selecciona una calificación para ${missingRatingItem.name}.`);
+      return null;
+    }
+
+    return checkoutItems.map((item) => ({
+      productId: item.productId,
+      rating: ratingsByItemId[item.id]!,
+    }));
+  }
+
+  async function createOrderFromCheckoutCart(
+    productRatings: IOrderProductRatingRequest[],
+  ): Promise<ICreateOrderResponse> {
     if (!user) {
       throw new Error('Debes iniciar sesion para finalizar la compra.');
     }
@@ -200,14 +235,17 @@ export function CheckoutPage() {
       throw new Error('No hay un carrito activo para crear la orden.');
     }
 
-    await orderService.createFromCart(cartId, {
+    const { data: order } = await orderService.createFromCart(cartId, {
       paymentMethod: form.paymentMethod,
       shippingAddress: buildShippingAddress(),
+      productRatings,
     });
 
     clearLocalCart();
     setLocalItems([]);
     await refreshCart();
+
+    return order;
   }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -225,11 +263,24 @@ export function CheckoutPage() {
       return;
     }
 
+    setRatingValidation('');
+    setRatingDialogOpen(true);
+  }
+
+  async function submitRatedOrder() {
+    const productRatings = buildProductRatings();
+
+    if (!productRatings) {
+      toast.error('Debes seleccionar una calificación para cada producto.');
+      return;
+    }
+
     setIsSubmitting(true);
     try {
-      await createOrderFromCheckoutCart();
+      await createOrderFromCheckoutCart(productRatings);
 
       setValidation('Orden validada. WhatsApp se abrirá con el mensaje formateado.');
+      setRatingDialogOpen(false);
       window.open(`https://wa.me/${whatsappPhone}?text=${encodeURIComponent(whatsappMessage)}`, '_blank', 'noopener');
       toast.success('Orden lista para enviar por WhatsApp.');
     } catch (error) {
@@ -468,6 +519,17 @@ export function CheckoutPage() {
           </section>
         </aside>
       </section>
+
+      <CheckoutRatingDialog
+        open={ratingDialogOpen}
+        items={checkoutItems}
+        ratingsByItemId={ratingsByItemId}
+        validationMessage={ratingValidation}
+        isSubmitting={isSubmitting}
+        onClose={() => setRatingDialogOpen(false)}
+        onRatingChange={updateProductRating}
+        onSubmit={() => void submitRatedOrder()}
+      />
 
       <Dialog
         open={cardPaymentDialogOpen}

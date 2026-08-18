@@ -10,5 +10,5 @@ CREATE TABLE Review (
     CONSTRAINT FK_Reviews_Products FOREIGN KEY (TID_ProductId) REFERENCES [Product](TID_Id),
     CONSTRAINT FK_Reviews_Orders FOREIGN KEY (TID_OrderId) REFERENCES [Order](TID_Id),
     CONSTRAINT CK_Reviews_Rating CHECK (TN_Rating BETWEEN 1 AND 5),
-    CONSTRAINT UQ_Reviews_User_Product UNIQUE (TID_UserId, TID_ProductId)
+    CONSTRAINT UQ_Reviews_User_Product_Order UNIQUE (TID_UserId, TID_ProductId, TID_OrderId)
 );

@@ -224,11 +224,17 @@ export interface ICreateNotificationResponse {
 export interface ICreateOrderRequest {
   paymentMethod: string;
   shippingAddress: string;
+  productRatings?: IOrderProductRatingRequest[];
 }
 
 export interface ICreateOrderResponse {
   orderId: string;
   orderNumber: string;
+}
+
+export interface IOrderProductRatingRequest {
+  productId: string;
+  rating: number;
 }
 
 export interface IOrderDto {
@@ -357,6 +363,7 @@ export interface ISalesByProductDto {
   totalQuantitySold: number;
   orderCount: number;
   totalSales: number;
+  averageRating?: number | null;
 }
 
 export interface IReviewDto {
@@ -412,6 +419,7 @@ export interface IProductFilters {
   search?: string;
   categoryId?: string;
   includeInactive?: boolean;
+  includeUnavailable?: boolean;
 }
 
 export interface IDateRangeParams {

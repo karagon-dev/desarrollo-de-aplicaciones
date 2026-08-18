@@ -17,7 +17,8 @@ public class ProductRepository : IProductRepository
     private IDbConnection CreateConnection() =>
         new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
 
-    public async Task<IEnumerable<Product>> GetAllAsync(string? search, Guid? categoryId, bool includeInactive)
+    public async Task<IEnumerable<Product>> GetAllAsync(
+        string? search, Guid? categoryId, bool includeInactive, bool includeUnavailable)
     {
         using var connection = CreateConnection();
 
@@ -27,7 +28,8 @@ public class ProductRepository : IProductRepository
             {
                 Search = search,
                 CategoryId = categoryId,
-                IncludeInactive = includeInactive
+                IncludeInactive = includeInactive,
+                IncludeUnavailable = includeUnavailable
             },
             commandType: CommandType.StoredProcedure);
     }

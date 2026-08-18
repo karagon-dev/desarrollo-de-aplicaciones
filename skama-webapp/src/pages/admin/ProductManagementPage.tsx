@@ -36,6 +36,7 @@ export function ProductManagementPage() {
     () => ({
       search: debouncedSearch.trim() || undefined,
       includeInactive: false,
+      includeUnavailable: true,
     }),
     [debouncedSearch],
   );

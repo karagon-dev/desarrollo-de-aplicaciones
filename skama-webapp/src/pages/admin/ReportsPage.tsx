@@ -1,5 +1,7 @@
 import Box from '@mui/material/Box';
 import { useState } from 'react';
+import StarIcon from '@mui/icons-material/Star';
+import StarBorderIcon from '@mui/icons-material/StarBorder';
 import { PageShell } from '../../components/layouts/PageShell';
 import { Card } from '../../components/cards';
 import { Table, type TableColumn } from '../../components/tables';
@@ -16,6 +18,58 @@ import {
 import type { ISalesByProductDto } from '../../types';
 import { ROUTES } from '../../routes/routePaths';
 
+function formatRating(value?: number | null): string {
+  if (typeof value !== 'number' || !Number.isFinite(value)) {
+    return 'Sin calificación';
+  }
+
+  const rounded = Math.round(value * 10) / 10;
+  return `${Number.isInteger(rounded) ? rounded.toFixed(0) : rounded.toFixed(1)}/5`;
+}
+
+const ratingStars = [1, 2, 3, 4, 5] as const;
+
+function renderRating(value?: number | null) {
+  if (typeof value !== 'number' || !Number.isFinite(value)) {
+    return formatRating(value);
+  }
+
+  const filledStars = Math.max(0, Math.min(5, Math.round(value)));
+  const label = formatRating(value);
+
+  return (
+    <Box
+      aria-label={`Calificacion ${label}`}
+      sx={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 0.5,
+        whiteSpace: 'nowrap',
+      }}
+    >
+      <Box
+        component="span"
+        aria-hidden="true"
+        sx={{
+          display: 'inline-flex',
+          color: tokens.color.warning,
+          lineHeight: 1,
+        }}
+      >
+        {ratingStars.map((star) =>
+          star <= filledStars ? (
+            <StarIcon key={star} sx={{ fontSize: 17 }} />
+          ) : (
+            <StarBorderIcon key={star} sx={{ fontSize: 17 }} />
+          ),
+        )}
+      </Box>
+      <span>{label}</span>
+    </Box>
+  );
+}
+
 const salesColumns: TableColumn<ISalesByProductDto>[] = [
   { id: 'customerEmail', label: 'Correo', accessor: 'customerEmail' },
   { id: 'productName', label: 'Producto', accessor: 'productName' },
@@ -24,6 +78,12 @@ const salesColumns: TableColumn<ISalesByProductDto>[] = [
     label: 'Unidades',
     accessor: 'totalQuantitySold',
     align: 'center',
+  },
+  {
+    id: 'averageRating',
+    label: 'Calificación',
+    align: 'center',
+    render: (row) => renderRating(row.averageRating),
   },
   {
     id: 'totalSales',

@@ -1,6 +1,7 @@
 using Skama.Api.DTOs;
 using Skama.Api.Models;
 using Skama.Api.Repositories;
+using System.Text.Json;
 
 namespace Skama.Api.Services;
 
@@ -26,8 +27,13 @@ public class OrderService : IOrderService
     public async Task<(Guid OrderId, string OrderNumber, bool Success, int ResultCode, string? Error)> CreateFromCartAsync(
         Guid cartId, CreateOrderFromCartRequest request)
     {
+        var productRatings = request.ProductRatings ?? [];
+        var productRatingsJson = productRatings.Count > 0
+            ? JsonSerializer.Serialize(productRatings)
+            : null;
+
         var (orderId, orderNumber, resultCode) = await _orderRepository.CreateFromCartAsync(
-            cartId, request.PaymentMethod, request.ShippingAddress);
+            cartId, request.PaymentMethod, request.ShippingAddress, productRatingsJson);
 
         if (resultCode == 0)
         {
@@ -38,7 +44,7 @@ public class OrderService : IOrderService
         return resultCode switch
         {
             2 => (Guid.Empty, string.Empty, false, resultCode, "El carrito está vacío u ocurrió un error de validación."),
-            22 => (Guid.Empty, string.Empty, false, resultCode, "Not enough stock available."),
+            22 => (Guid.Empty, string.Empty, false, resultCode, "No hay unidades suficientes para completar la orden."),
             31 => (Guid.Empty, string.Empty, false, resultCode, "El carrito no está activo."),
             _ => (Guid.Empty, string.Empty, false, resultCode, "Ocurrió un error inesperado.")
         };

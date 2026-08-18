@@ -74,7 +74,8 @@ public class ReportService : IReportService
         CustomerEmail = report.CustomerEmail,
         TotalQuantitySold = report.TotalQuantitySold,
         OrderCount = report.OrderCount,
-        TotalSales = report.TotalSales
+        TotalSales = report.TotalSales,
+        AverageRating = report.AverageRating
     };
 
     private static TopProductReportDto MapToDto(TopProductReport report) => new()
