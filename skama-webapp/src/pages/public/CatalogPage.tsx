@@ -41,8 +41,9 @@ export function CatalogPage() {
 
   const filters = useMemo(() => ({ includeInactive: false }), []);
 
-  const { products } = useProducts(filters);
+  const { products, error: productsError } = useProducts(filters);
   const imageMap = useProductMainImages(products.map((product) => product.id));
+  const shouldUseApiProducts = !productsError;
 
   const apiProducts = useMemo(
     () => products.map((product, index) => mapApiProductToSkamaProduct(product, imageMap[product.id], index)),
@@ -52,8 +53,11 @@ export function CatalogPage() {
     () => apiProducts.filter((product) => product.isLimitedEdition),
     [apiProducts],
   );
-  const limitedDisplayProducts = apiLimitedProducts.length > 0 ? apiLimitedProducts : limitedProducts;
-  const activeLimitedProduct = limitedDisplayProducts[activeLimitedIndex % limitedDisplayProducts.length];
+  const limitedDisplayProducts = shouldUseApiProducts ? apiLimitedProducts : limitedProducts;
+  const activeLimitedProduct =
+    limitedDisplayProducts.length > 0
+      ? limitedDisplayProducts[activeLimitedIndex % limitedDisplayProducts.length]
+      : undefined;
 
   const staticProducts = useMemo(() => {
     const normalizedSearch = debouncedSearch.trim().toLowerCase();
@@ -72,7 +76,7 @@ export function CatalogPage() {
     });
   }, [collection, debouncedSearch]);
 
-  const visibleApiProducts = products.length > 0 ? apiProducts : [];
+  const visibleApiProducts = shouldUseApiProducts ? apiProducts : [];
   const apiCollectionSegments = useMemo(
     () =>
       skamaSegments
@@ -91,7 +95,6 @@ export function CatalogPage() {
         .filter((segment) => segment.products.length > 0),
     [apiProducts],
   );
-  const shouldUseApiProducts = apiCollectionSegments.length > 0;
   const collectionSegments = shouldUseApiProducts ? apiCollectionSegments : skamaSegments;
   const isStaticCollectionFilter =
     collection === '' || collectionSegments.some((segment) => segment.id === collection);
@@ -126,6 +129,10 @@ export function CatalogPage() {
 
   useEffect(() => {
     if (collection !== '' || selectedLimitedProduct) {
+      return undefined;
+    }
+
+    if (limitedDisplayProducts.length <= 1) {
       return undefined;
     }
 
@@ -214,7 +221,7 @@ export function CatalogPage() {
         </div>
       </section>
 
-      {collection === '' && (
+      {collection === '' && activeLimitedProduct && (
         <section className="sk-section sk-limited-section" aria-labelledby="limited-title">
           <div className="sk-container">
             <div className="sk-section-heading sk-limited-section__heading">

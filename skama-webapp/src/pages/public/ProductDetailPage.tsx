@@ -41,7 +41,11 @@ export function ProductDetailPage() {
       return localProduct;
     }
 
-    return product ? mapApiProductToSkamaProduct(product, apiImage) : undefined;
+    if (!product || !product.isActive || product.stockQuantity <= 0) {
+      return undefined;
+    }
+
+    return mapApiProductToSkamaProduct(product, apiImage);
   }, [apiImage, localProduct, product]);
 
   const isDetailFavorite = useMemo(() => {

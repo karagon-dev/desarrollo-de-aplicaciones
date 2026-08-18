@@ -18,7 +18,7 @@ public class OrderRepository : IOrderRepository
         new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
 
     public async Task<(Guid OrderId, string OrderNumber, int ResultCode)> CreateFromCartAsync(
-        Guid cartId, string paymentMethod, string shippingAddress)
+        Guid cartId, string paymentMethod, string shippingAddress, string? productRatingsJson)
     {
         using var connection = CreateConnection();
 
@@ -26,6 +26,7 @@ public class OrderRepository : IOrderRepository
         parameters.Add("@CartId", cartId, DbType.Guid);
         parameters.Add("@PaymentMethod", paymentMethod, DbType.String);
         parameters.Add("@ShippingAddress", shippingAddress, DbType.String);
+        parameters.Add("@ProductRatings", productRatingsJson, DbType.String);
         parameters.Add("@OrderId", dbType: DbType.Guid, direction: ParameterDirection.Output);
         parameters.Add("@OrderNumber", dbType: DbType.String, size: 50, direction: ParameterDirection.Output);
         parameters.Add("@ResultCode", dbType: DbType.Int32, direction: ParameterDirection.Output);
@@ -36,7 +37,7 @@ public class OrderRepository : IOrderRepository
             commandType: CommandType.StoredProcedure);
 
         return (
-            parameters.Get<Guid>("@OrderId"),
+            parameters.Get<Guid?>("@OrderId") ?? Guid.Empty,
             parameters.Get<string>("@OrderNumber") ?? string.Empty,
             parameters.Get<int>("@ResultCode"));
     }

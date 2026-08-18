@@ -17,13 +17,19 @@ export function useProducts(filters?: IProductFilters): IUseProductsResult {
   const search = filters?.search;
   const categoryId = filters?.categoryId;
   const includeInactive = filters?.includeInactive;
+  const includeUnavailable = filters?.includeUnavailable;
 
   const refetch = useCallback(async () => {
     setLoading(true);
     setError(null);
 
     try {
-      const { data } = await productService.list({ search, categoryId, includeInactive });
+      const { data } = await productService.list({
+        search,
+        categoryId,
+        includeInactive,
+        includeUnavailable,
+      });
       setProducts(sortByText(data, (product) => product.name));
     } catch (err) {
       setProducts([]);
@@ -31,7 +37,7 @@ export function useProducts(filters?: IProductFilters): IUseProductsResult {
     } finally {
       setLoading(false);
     }
-  }, [search, categoryId, includeInactive]);
+  }, [search, categoryId, includeInactive, includeUnavailable]);
 
   useEffect(() => {
     void refetch();
