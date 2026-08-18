@@ -32,7 +32,7 @@ public class NotificationRepository : INotificationRepository
 
         var parameters = new DynamicParameters();
         parameters.Add("@UserId", notification.UserId, DbType.Guid);
-        parameters.Add("@OrderId", notification.OrderId, DbType.Guid);
+        parameters.Add("@OrderId", (object?)notification.OrderId ?? DBNull.Value, DbType.Guid);
         parameters.Add("@Type", notification.Type, DbType.String);
         parameters.Add("@RecipientEmail", notification.RecipientEmail, DbType.String);
         parameters.Add("@Subject", notification.Subject, DbType.String);

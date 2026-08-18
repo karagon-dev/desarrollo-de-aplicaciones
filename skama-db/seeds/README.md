@@ -95,4 +95,4 @@ POST /api/auth/forgot-password
 { "email": "customer@example.com" }
 ```
 
-En desarrollo, la respuesta incluye `resetToken` para usarlo en `POST /api/auth/reset-password`.
+La API envía un correo con el enlace de restablecimiento. En desarrollo, si SMTP no está configurado, la respuesta incluye `resetToken` para usarlo en `POST /api/auth/reset-password`.

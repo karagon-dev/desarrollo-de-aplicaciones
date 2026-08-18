@@ -1,7 +1,9 @@
 using System.Security.Cryptography;
 using System.Text;
+using Microsoft.Extensions.Options;
 using Skama.Api.DTOs;
 using Skama.Api.Models;
+using Skama.Api.Options;
 using Skama.Api.Repositories;
 
 namespace Skama.Api.Services;
@@ -10,12 +12,27 @@ public class AuthService : IAuthService
 {
     private const int CustomerRoleId = 2;
     private const int PasswordResetTokenExpirationHours = 1;
+    private const string ForgotPasswordMessage =
+        "Si el correo está registrado, te enviaremos un enlace para restablecer tu contraseña.";
 
     private readonly IAuthRepository _authRepository;
+    private readonly INotificationService _notificationService;
+    private readonly IHostEnvironment _environment;
+    private readonly EmailOptions _emailOptions;
+    private readonly ILogger<AuthService> _logger;
 
-    public AuthService(IAuthRepository authRepository)
+    public AuthService(
+        IAuthRepository authRepository,
+        INotificationService notificationService,
+        IHostEnvironment environment,
+        IOptions<EmailOptions> emailOptions,
+        ILogger<AuthService> logger)
     {
         _authRepository = authRepository;
+        _notificationService = notificationService;
+        _environment = environment;
+        _emailOptions = emailOptions.Value;
+        _logger = logger;
     }
 
     public async Task<(Guid UserId, bool Success, int ResultCode, string? Error)> RegisterAsync(RegisterRequest request)
@@ -82,12 +99,9 @@ public class AuthService : IAuthService
     {
         var user = await _authRepository.GetByEmailAsync(request.Email);
 
-        if (user is null)
+        if (user is null || !user.IsActive)
         {
-            return (new ForgotPasswordResponse
-            {
-            Message = "Si el correo está registrado, se generó un token de restablecimiento."
-            }, true, 0, null);
+            return (new ForgotPasswordResponse { Message = ForgotPasswordMessage }, true, 0, null);
         }
 
         var resetToken = Guid.NewGuid().ToString("N");
@@ -96,10 +110,23 @@ public class AuthService : IAuthService
 
         await _authRepository.InsertPasswordResetTokenAsync(user.Id, tokenHash, expiresAt);
 
+        var resetUrl = BuildPasswordResetUrl(resetToken);
+        var emailSent = false;
+
+        try
+        {
+            emailSent = await _notificationService.NotifyPasswordResetAsync(user.Id, user.Email, resetUrl);
+        }
+        catch (Exception exception)
+        {
+            _logger.LogError(exception, "No se pudo enviar el correo de recuperación a {Email}.", user.Email);
+            emailSent = false;
+        }
+
         return (new ForgotPasswordResponse
         {
-            Message = "Si el correo está registrado, se generó un token de restablecimiento.",
-            ResetToken = resetToken
+            Message = ForgotPasswordMessage,
+            ResetToken = ShouldExposeResetToken(emailSent) ? resetToken : null
         }, true, 0, null);
     }
 
@@ -124,6 +151,18 @@ public class AuthService : IAuthService
         await _authRepository.MarkResetTokenAsUsedAsync(resetToken.Id);
 
         return (true, 0, null);
+    }
+
+    private bool ShouldExposeResetToken(bool emailSent) =>
+        !emailSent && _environment.IsDevelopment();
+
+    private string BuildPasswordResetUrl(string token)
+    {
+        var baseUrl = string.IsNullOrWhiteSpace(_emailOptions.FrontendBaseUrl)
+            ? "http://localhost:5173"
+            : _emailOptions.FrontendBaseUrl.TrimEnd('/');
+
+        return $"{baseUrl}/auth/reset-password?token={Uri.EscapeDataString(token)}";
     }
 
     private static string HashToken(string token)

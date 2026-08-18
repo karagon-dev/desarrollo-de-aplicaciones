@@ -166,10 +166,11 @@ Solicita recuperación de contraseña.
 
 ```json
 {
-  "message": "Si el correo existe, se enviará un enlace de recuperación.",
-  "resetToken": "token-opcional-en-desarrollo"
+  "message": "Si el correo está registrado, te enviaremos un enlace para restablecer tu contraseña."
 }
 ```
+
+La API envía un correo con el enlace `/auth/reset-password?token=...`. En desarrollo, si SMTP no está configurado, la respuesta puede incluir `resetToken` para continuar el flujo local.
 
 ---
 
@@ -595,6 +596,8 @@ Productos activos con stock ≤ mínimo.
 ### GET `/api/notifications/pending`
 
 Lista correos pendientes de envío.
+
+Las notificaciones de **confirmación de compra**, **cambio de estado del pedido** y **recuperación de contraseña** se registran y se envían automáticamente. Este endpoint sirve para revisar las que quedaron pendientes si SMTP no estaba configurado o el envío falló.
 
 **Response `200 OK`**
 

@@ -7,10 +7,20 @@ namespace Skama.Api.Services;
 public class OrderService : IOrderService
 {
     private readonly IOrderRepository _orderRepository;
+    private readonly IAuthRepository _authRepository;
+    private readonly INotificationService _notificationService;
+    private readonly ILogger<OrderService> _logger;
 
-    public OrderService(IOrderRepository orderRepository)
+    public OrderService(
+        IOrderRepository orderRepository,
+        IAuthRepository authRepository,
+        INotificationService notificationService,
+        ILogger<OrderService> logger)
     {
         _orderRepository = orderRepository;
+        _authRepository = authRepository;
+        _notificationService = notificationService;
+        _logger = logger;
     }
 
     public async Task<(Guid OrderId, string OrderNumber, bool Success, int ResultCode, string? Error)> CreateFromCartAsync(
@@ -19,9 +29,14 @@ public class OrderService : IOrderService
         var (orderId, orderNumber, resultCode) = await _orderRepository.CreateFromCartAsync(
             cartId, request.PaymentMethod, request.ShippingAddress);
 
+        if (resultCode == 0)
+        {
+            await NotifyOrderAsync(orderId, isConfirmation: true);
+            return (orderId, orderNumber, true, resultCode, null);
+        }
+
         return resultCode switch
         {
-            0 => (orderId, orderNumber, true, resultCode, null),
             2 => (Guid.Empty, string.Empty, false, resultCode, "El carrito está vacío u ocurrió un error de validación."),
             22 => (Guid.Empty, string.Empty, false, resultCode, "Not enough stock available."),
             31 => (Guid.Empty, string.Empty, false, resultCode, "El carrito no está activo."),
@@ -52,9 +67,14 @@ public class OrderService : IOrderService
     {
         var (_, resultCode) = await _orderRepository.UpdateStatusAsync(orderId, request.Status);
 
+        if (resultCode == 0)
+        {
+            await NotifyOrderAsync(orderId, isConfirmation: false);
+            return (true, resultCode, null);
+        }
+
         return resultCode switch
         {
-            0 => (true, resultCode, null),
             2 => (false, resultCode, "Estado de orden inválido."),
             40 => (false, resultCode, "Orden no encontrada."),
             _ => (false, resultCode, "Ocurrió un error inesperado.")
@@ -65,13 +85,50 @@ public class OrderService : IOrderService
     {
         var (_, resultCode) = await _orderRepository.CancelAsync(orderId);
 
+        if (resultCode == 0)
+        {
+            await NotifyOrderAsync(orderId, isConfirmation: false);
+            return (true, resultCode, null);
+        }
+
         return resultCode switch
         {
-            0 => (true, resultCode, null),
             40 => (false, resultCode, "Orden no encontrada."),
             41 => (false, resultCode, "La orden ya fue procesada."),
             _ => (false, resultCode, "Ocurrió un error inesperado.")
         };
+    }
+
+    private async Task NotifyOrderAsync(Guid orderId, bool isConfirmation)
+    {
+        try
+        {
+            var order = await GetDetailAsync(orderId);
+            if (order is null)
+            {
+                _logger.LogWarning("No se encontró el pedido {OrderId} para notificar por correo.", orderId);
+                return;
+            }
+
+            var user = await _authRepository.GetByIdAsync(order.UserId);
+            if (user is null || string.IsNullOrWhiteSpace(user.Email))
+            {
+                _logger.LogWarning("No se encontró el correo del usuario {UserId} para el pedido {OrderId}.", order.UserId, orderId);
+                return;
+            }
+
+            if (isConfirmation)
+            {
+                await _notificationService.NotifyOrderConfirmationAsync(order, user.Email);
+                return;
+            }
+
+            await _notificationService.NotifyOrderStatusUpdateAsync(order, user.Email);
+        }
+        catch (Exception exception)
+        {
+            _logger.LogError(exception, "No se pudo enviar la notificación de correo del pedido {OrderId}.", orderId);
+        }
     }
 
     private static OrderDto MapToDto(Order order) => new()

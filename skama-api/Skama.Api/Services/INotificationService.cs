@@ -9,4 +9,7 @@ public interface INotificationService
         CreateEmailNotificationRequest request);
     Task<(bool Success, string? Error)> MarkAsSentAsync(Guid id);
     Task<(bool Success, string? Error)> MarkAsFailedAsync(Guid id);
+    Task<bool> NotifyOrderConfirmationAsync(OrderDetailDto order, string recipientEmail);
+    Task<bool> NotifyOrderStatusUpdateAsync(OrderDetailDto order, string recipientEmail);
+    Task<bool> NotifyPasswordResetAsync(Guid userId, string recipientEmail, string resetUrl);
 }

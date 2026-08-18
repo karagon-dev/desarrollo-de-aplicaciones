@@ -34,6 +34,33 @@ dotnet run --project skama-api\Skama.Api\Skama.Api.csproj --launch-profile https
 
 Swagger: `https://localhost:7157/swagger`
 
+Los correos de pedido y recuperación de contraseña (**RF-006** / **RF-007**) usan SMTP. Con Gmail **no** se usa la contraseña de la cuenta: hay que crear una [contraseña de aplicación](https://support.google.com/accounts/answer/185833) (requiere verificación en 2 pasos). Esa clave y el usuario SMTP **no van en el código**; se leen desde Azure Key Vault.
+
+Secretos en el Key Vault (los `--` se mapean a `:` en la configuración de .NET):
+
+| Secreto en Key Vault | Configuración |
+|---|---|
+| `Email--Smtp--User` | correo que envía (Gmail) |
+| `Email--Smtp--Password` | contraseña de aplicación |
+| `Email--FromAddress` | remitente (normalmente el mismo Gmail) |
+
+En Azure App Service (`skama-api`):
+
+1. Activá **Identity** (system-assigned) en la Web App.
+2. En el Key Vault, dales permiso **Key Vault Secrets User** a esa identidad.
+3. Creá los tres secretos de la tabla.
+4. En Application settings de la Web App, agregá `KeyVault__VaultUri` = `https://<tu-vault>.vault.azure.net/`.
+
+En local, sin pegar secretos en `appsettings`:
+
+```powershell
+dotnet user-secrets set "Email:Smtp:User" "tu-correo@gmail.com" --project skama-api\Skama.Api
+dotnet user-secrets set "Email:Smtp:Password" "xxxx xxxx xxxx xxxx" --project skama-api\Skama.Api
+dotnet user-secrets set "Email:FromAddress" "tu-correo@gmail.com" --project skama-api\Skama.Api
+```
+
+Si SMTP no está configurado, en desarrollo el flujo de recuperación sigue funcionando con un enlace de respaldo.
+
 La cadena de conexión está en `skama-api/Skama.Api/appsettings.json` (o `appsettings.Development.json`):
 
 ```text

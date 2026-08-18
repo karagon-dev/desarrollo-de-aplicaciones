@@ -9,11 +9,13 @@ import { getApiErrorMessage } from '../../utils';
 export function ResetPasswordPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const [token, setToken] = useState(searchParams.get('token') ?? '');
+  const tokenFromLink = searchParams.get('token') ?? '';
+  const [token, setToken] = useState(tokenFromLink);
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [formError, setFormError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const hasTokenFromLink = tokenFromLink.length > 0;
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -44,7 +46,9 @@ export function ResetPasswordPage() {
         <p className="sk-kicker">Nuevo acceso</p>
         <h1 id="reset-title">Define una nueva contraseña.</h1>
         <p className="sk-lede">
-          Usa el token enviado por el sistema para completar el restablecimiento.
+          {hasTokenFromLink
+            ? 'Usa el enlace que enviamos a tu correo para completar el restablecimiento.'
+            : 'Ingresa el token recibido por correo para completar el restablecimiento.'}
         </p>
       </div>
       <article className="sk-auth-panel">
@@ -53,23 +57,26 @@ export function ResetPasswordPage() {
           <h1>Restablecer contraseña</h1>
         </div>
         <form className="sk-auth-form" onSubmit={handleSubmit}>
-          <label className="sk-field" htmlFor="reset-token">
-            <span className="sk-field__label">Token</span>
-            <input
-              className="sk-input"
-              id="reset-token"
-              type="text"
-              value={token}
-              onChange={(event) => setToken(event.target.value)}
-              required
-            />
-          </label>
+          {!hasTokenFromLink && (
+            <label className="sk-field" htmlFor="reset-token">
+              <span className="sk-field__label">Token</span>
+              <input
+                className="sk-input"
+                id="reset-token"
+                type="text"
+                value={token}
+                onChange={(event) => setToken(event.target.value)}
+                required
+              />
+            </label>
+          )}
           <label className="sk-field" htmlFor="reset-password">
             <span className="sk-field__label">Nueva contraseña</span>
             <input
               className="sk-input"
               id="reset-password"
               type="password"
+              autoComplete="new-password"
               value={newPassword}
               onChange={(event) => setNewPassword(event.target.value)}
               required
@@ -81,6 +88,7 @@ export function ResetPasswordPage() {
               className="sk-input"
               id="reset-confirm-password"
               type="password"
+              autoComplete="new-password"
               value={confirmPassword}
               onChange={(event) => setConfirmPassword(event.target.value)}
               required
