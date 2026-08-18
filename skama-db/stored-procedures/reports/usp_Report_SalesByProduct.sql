@@ -16,11 +16,16 @@ BEGIN
         U.TC_Email AS CustomerEmail,
         SUM(OI.TN_Quantity) AS TotalQuantitySold,
         COUNT(DISTINCT O.TID_Id) AS OrderCount,
-        SUM(OI.TN_LineTotal) AS TotalSales
+        SUM(OI.TN_LineTotal) AS TotalSales,
+        AVG(CAST(R.TN_Rating AS DECIMAL(4,2))) AS AverageRating
     FROM dbo.OrderItem OI
     INNER JOIN dbo.[Order] O ON O.TID_Id = OI.TID_OrderId
     INNER JOIN dbo.[User] U ON U.TID_Id = O.TID_UserId
     LEFT JOIN dbo.CustomerProfile CP ON CP.TID_UserId = U.TID_Id
+    LEFT JOIN dbo.Review R
+        ON R.TID_OrderId = O.TID_Id
+        AND R.TID_ProductId = OI.TID_ProductId
+        AND R.TID_UserId = O.TID_UserId
     OUTER APPLY
     (
         SELECT BuyerSegment =

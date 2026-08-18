@@ -13,9 +13,11 @@ public class ProductService : IProductService
         _productRepository = productRepository;
     }
 
-    public async Task<IEnumerable<ProductDto>> GetAllAsync(string? search, Guid? categoryId, bool includeInactive)
+    public async Task<IEnumerable<ProductDto>> GetAllAsync(
+        string? search, Guid? categoryId, bool includeInactive, bool includeUnavailable)
     {
-        var products = await _productRepository.GetAllAsync(search, categoryId, includeInactive);
+        var products = await _productRepository.GetAllAsync(
+            search, categoryId, includeInactive, includeUnavailable);
         return products.Select(MapToDto);
     }
 

@@ -9,4 +9,5 @@ public class SalesByProductReportDto
     public int TotalQuantitySold { get; set; }
     public int OrderCount { get; set; }
     public decimal TotalSales { get; set; }
+    public decimal? AverageRating { get; set; }
 }

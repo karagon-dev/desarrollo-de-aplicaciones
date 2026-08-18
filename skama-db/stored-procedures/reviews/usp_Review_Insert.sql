@@ -18,7 +18,7 @@ BEGIN
 
     IF EXISTS (
         SELECT 1 FROM dbo.Review
-        WHERE TID_UserId = @UserId AND TID_ProductId = @ProductId
+        WHERE TID_UserId = @UserId AND TID_ProductId = @ProductId AND TID_OrderId = @OrderId
     )
     BEGIN
         SET @ResultCode = 3;

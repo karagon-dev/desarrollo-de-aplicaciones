@@ -1,7 +1,8 @@
 ﻿CREATE OR ALTER PROCEDURE dbo.usp_Product_GetAll
     @Search NVARCHAR(150) = NULL,
     @CategoryId UNIQUEIDENTIFIER = NULL,
-    @IncludeInactive BIT = 0
+    @IncludeInactive BIT = 0,
+    @IncludeUnavailable BIT = 0
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -23,6 +24,7 @@ BEGIN
     INNER JOIN dbo.Category C ON C.TID_Id = P.TID_CategoryId
     WHERE
         (@IncludeInactive = 1 OR P.TB_IsActive = 1)
+        AND (@IncludeUnavailable = 1 OR P.TN_StockQuantity > 0)
         AND (@CategoryId IS NULL OR P.TID_CategoryId = @CategoryId)
         AND (
             @Search IS NULL

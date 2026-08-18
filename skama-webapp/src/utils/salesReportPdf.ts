@@ -15,9 +15,10 @@ interface IPdfText {
 }
 
 const columns = [
-  { label: 'Correo', width: 230, value: (row: ISalesByProductDto) => row.customerEmail },
-  { label: 'Producto', width: 280, value: (row: ISalesByProductDto) => row.productName },
-  { label: 'Unidades', width: 80, value: (row: ISalesByProductDto) => String(row.totalQuantitySold) },
+  { label: 'Correo', width: 210, value: (row: ISalesByProductDto) => row.customerEmail },
+  { label: 'Producto', width: 240, value: (row: ISalesByProductDto) => row.productName },
+  { label: 'Unidades', width: 75, value: (row: ISalesByProductDto) => String(row.totalQuantitySold) },
+  { label: 'Calificacion', width: 95, value: (row: ISalesByProductDto) => formatPdfRating(row.averageRating) },
   { label: 'Ventas', width: 120, value: (row: ISalesByProductDto) => formatPdfCurrency(row.totalSales) },
 ] as const;
 
@@ -42,6 +43,15 @@ function truncate(value: string, maxCharacters: number): string {
 
 function formatPdfCurrency(value: number): string {
   return `CRC ${new Intl.NumberFormat('es-CR', { maximumFractionDigits: 0 }).format(value)}`;
+}
+
+function formatPdfRating(value?: number | null): string {
+  if (typeof value !== 'number' || !Number.isFinite(value)) {
+    return 'Sin calificacion';
+  }
+
+  const rounded = Math.round(value * 10) / 10;
+  return `${Number.isInteger(rounded) ? rounded.toFixed(0) : rounded.toFixed(1)}/5 estrellas`;
 }
 
 function addText(page: IPdfText[], x: number, y: number, text: string, size = 9, font: 'F1' | 'F2' = 'F1') {

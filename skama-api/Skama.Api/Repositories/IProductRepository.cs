@@ -4,7 +4,8 @@ namespace Skama.Api.Repositories;
 
 public interface IProductRepository
 {
-    Task<IEnumerable<Product>> GetAllAsync(string? search, Guid? categoryId, bool includeInactive);
+    Task<IEnumerable<Product>> GetAllAsync(
+        string? search, Guid? categoryId, bool includeInactive, bool includeUnavailable);
     Task<Product?> GetByIdAsync(Guid id);
     Task<Guid> InsertAsync(Product product);
     Task<int> UpdateAsync(Product product);

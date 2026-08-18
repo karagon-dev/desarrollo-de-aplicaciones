@@ -34,6 +34,7 @@ export type {
   ICreateNotificationResponse,
   ICreateOrderRequest,
   ICreateOrderResponse,
+  IOrderProductRatingRequest,
   IOrderDto,
   IOrderItemDto,
   IOrderDetailDto,

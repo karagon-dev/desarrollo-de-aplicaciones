@@ -21,9 +21,10 @@ public class ProductsController : ControllerBase
     public async Task<ActionResult<IEnumerable<ProductDto>>> GetAll(
         [FromQuery] string? search,
         [FromQuery] Guid? categoryId,
-        [FromQuery] bool includeInactive = false)
+        [FromQuery] bool includeInactive = false,
+        [FromQuery] bool includeUnavailable = false)
     {
-        var products = await _productService.GetAllAsync(search, categoryId, includeInactive);
+        var products = await _productService.GetAllAsync(search, categoryId, includeInactive, includeUnavailable);
         return Ok(products);
     }
 
