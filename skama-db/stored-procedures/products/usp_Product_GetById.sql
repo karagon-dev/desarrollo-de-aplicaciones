@@ -13,6 +13,7 @@ BEGIN
         P.TN_Price AS Price,
         ISNULL(Promo.DiscountPercentage, 0) AS DiscountPercentage,
         Promo.PromotionName,
+        Img.MainImageUrl,
         P.TN_StockQuantity AS StockQuantity,
         P.TN_MinimumStock AS MinimumStock,
         P.TB_IsLimitedEdition AS IsLimitedEdition,
@@ -33,6 +34,18 @@ BEGIN
           AND CAST(SYSDATETIME() AS DATE) BETWEEN PR.TD_StartDate AND PR.TD_EndDate
         ORDER BY PR.TN_DiscountPercentage DESC
     ) Promo
+    OUTER APPLY
+    (
+        SELECT TOP 1
+            CASE
+                WHEN PI.TC_ImageUrl LIKE 'http%' THEN PI.TC_ImageUrl
+                WHEN PI.TC_ImageUrl LIKE '/%' THEN PI.TC_ImageUrl
+                ELSE '/images/products/' + PI.TC_ImageUrl
+            END AS MainImageUrl
+        FROM dbo.ProductImage PI
+        WHERE PI.TID_ProductId = P.TID_Id
+        ORDER BY PI.TB_IsMain DESC, PI.TN_SortOrder ASC
+    ) Img
     WHERE P.TID_Id = @Id;
 END;
 GO

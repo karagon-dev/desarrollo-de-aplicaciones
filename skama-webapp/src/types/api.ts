@@ -290,6 +290,7 @@ export interface IProductDto {
   price: number;
   discountPercentage?: number;
   promotionName?: string | null;
+  mainImageUrl?: string | null;
   stockQuantity: number;
   minimumStock: number;
   isLimitedEdition: boolean;

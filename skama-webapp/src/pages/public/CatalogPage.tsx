@@ -16,7 +16,7 @@ import {
 } from '../../data/skamaCatalog';
 import { useAuth, useCart, useProductMainImages, useProducts } from '../../hooks';
 import { ROUTES } from '../../routes/routePaths';
-import { addLocalCartItem, formatPrice, getApiErrorMessage, hasLocalLimitedEditionCartItem } from '../../utils';
+import { addLocalCartItem, fallbackLocalProductImage, formatPrice, getApiErrorMessage, hasLocalLimitedEditionCartItem, resolveAssetUrl } from '../../utils';
 
 const segmentMaterialNames: Record<string, string> = {
   'green-silver': 'plata verde',
@@ -42,11 +42,22 @@ export function CatalogPage() {
   const filters = useMemo(() => ({ includeInactive: false }), []);
 
   const { products, error: productsError } = useProducts(filters);
-  const imageMap = useProductMainImages(products.map((product) => product.id));
+  const productsMissingMainImage = useMemo(
+    () => products.filter((product) => !product.mainImageUrl).map((product) => product.id),
+    [products],
+  );
+  const imageMap = useProductMainImages(productsMissingMainImage);
   const shouldUseApiProducts = !productsError;
 
   const apiProducts = useMemo(
-    () => products.map((product, index) => mapApiProductToSkamaProduct(product, imageMap[product.id], index)),
+    () =>
+      products.map((product, index) =>
+        mapApiProductToSkamaProduct(
+          product,
+          resolveAssetUrl(product.mainImageUrl) ?? imageMap[product.id],
+          index,
+        ),
+      ),
     [imageMap, products],
   );
   const apiLimitedProducts = useMemo(
@@ -252,6 +263,10 @@ export function CatalogPage() {
                     key={activeLimitedProduct.id}
                     src={activeLimitedProduct.imageUrl}
                     alt={activeLimitedProduct.imageAlt}
+                    onError={(event) => {
+                      event.currentTarget.onerror = null;
+                      event.currentTarget.src = fallbackLocalProductImage(event.currentTarget.src);
+                    }}
                   />
                 </button>
                 <div className="sk-limited-carousel__dots" aria-label="Seleccionar joya de edición limitada">
@@ -312,6 +327,10 @@ export function CatalogPage() {
                             key={activeSilverPromoProduct.id}
                             src={activeSilverPromoProduct.imageUrl}
                             alt={activeSilverPromoProduct.imageAlt}
+                            onError={(event) => {
+                              event.currentTarget.onerror = null;
+                              event.currentTarget.src = fallbackLocalProductImage(event.currentTarget.src);
+                            }}
                           />
                           <span className="sk-anniversary-carousel__overlay">
                             <span>Promoción</span>
@@ -430,7 +449,14 @@ export function CatalogPage() {
             </button>
 
             <figure className="sk-limited-modal__media">
-              <img src={selectedLimitedProduct.imageUrl} alt={selectedLimitedProduct.imageAlt} />
+              <img
+                src={selectedLimitedProduct.imageUrl}
+                alt={selectedLimitedProduct.imageAlt}
+                onError={(event) => {
+                  event.currentTarget.onerror = null;
+                  event.currentTarget.src = fallbackLocalProductImage(event.currentTarget.src);
+                }}
+              />
             </figure>
 
             <div className="sk-limited-modal__copy">

@@ -14,3 +14,20 @@ export function resolveAssetUrl(path?: string | null): string | undefined {
 
   return base ? `${base}${normalizedPath}` : normalizedPath;
 }
+
+export function fallbackLocalProductImage(failedUrl?: string): string {
+  const fileName = decodeURIComponent(failedUrl?.split('/').pop() ?? '');
+  if (!fileName) {
+    return '/assets/images/hero/skama-hero-jewelry-detail.png';
+  }
+
+  if (fileName.startsWith('limited-')) {
+    return `/assets/limited/${fileName}`;
+  }
+
+  if (fileName.includes('hero') || fileName.startsWith('skama-')) {
+    return '/assets/images/hero/skama-hero-jewelry-detail.png';
+  }
+
+  return `/assets/regular/${fileName}`;
+}

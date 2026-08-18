@@ -77,6 +77,7 @@ public class ProductService : IProductService
         Price = product.Price,
         DiscountPercentage = product.DiscountPercentage,
         PromotionName = product.PromotionName,
+        MainImageUrl = product.MainImageUrl,
         StockQuantity = product.StockQuantity,
         MinimumStock = product.MinimumStock,
         IsLimitedEdition = product.IsLimitedEdition,

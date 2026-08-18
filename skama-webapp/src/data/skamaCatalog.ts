@@ -1,5 +1,6 @@
 import type { IProductDto } from '../types';
 import { LOW_STOCK_THRESHOLD } from '../constants/inventory';
+import { resolveAssetUrl } from '../utils/assetUrl';
 
 export interface ISkamaProduct {
   id: string;
@@ -356,6 +357,8 @@ export function mapApiProductToSkamaProduct(
     ? Math.round(product.price * (1 - discountPercentage / 100) * 100) / 100
     : product.price;
 
+  const resolvedImageUrl = resolveAssetUrl(imageUrl) ?? resolveAssetUrl(product.mainImageUrl);
+
   return {
     id: product.id,
     backendProductId: product.id,
@@ -366,7 +369,7 @@ export function mapApiProductToSkamaProduct(
     description: product.description || 'Pieza seleccionada del catálogo SKAMA.',
     price: salePrice,
     stockQuantity: product.stockQuantity,
-    imageUrl: imageUrl || fallbackImages[index % fallbackImages.length],
+    imageUrl: resolvedImageUrl || fallbackImages[index % fallbackImages.length],
     imageAlt: product.name,
     ratingLabel: '4.8 de 5',
     badge: product.isLimitedEdition ? 'Limitada' : isLowStock ? 'Stock bajo' : product.categoryName || undefined,

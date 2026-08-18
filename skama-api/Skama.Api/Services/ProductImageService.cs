@@ -18,15 +18,18 @@ public class ProductImageService : IProductImageService
     private readonly IProductImageRepository _productImageRepository;
     private readonly IProductRepository _productRepository;
     private readonly IWebHostEnvironment _environment;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
     public ProductImageService(
         IProductImageRepository productImageRepository,
         IProductRepository productRepository,
-        IWebHostEnvironment environment)
+        IWebHostEnvironment environment,
+        IHttpContextAccessor httpContextAccessor)
     {
         _productImageRepository = productImageRepository;
         _productRepository = productRepository;
         _environment = environment;
+        _httpContextAccessor = httpContextAccessor;
     }
 
     public async Task<IEnumerable<ProductImageDto>> GetByProductIdAsync(Guid productId)
@@ -166,8 +169,17 @@ public class ProductImageService : IProductImageService
         CreatedAt = null
     };
 
-    private static string BuildImageUrl(string imageName) =>
-        $"{PublicImagePathPrefix}/{imageName}";
+    private string BuildImageUrl(string imageName)
+    {
+        var path = $"{PublicImagePathPrefix}/{imageName}";
+        var request = _httpContextAccessor.HttpContext?.Request;
+        if (request is null || string.IsNullOrWhiteSpace(request.Host.Value))
+        {
+            return path;
+        }
+
+        return $"{request.Scheme}://{request.Host}{path}";
+    }
 
     private static (bool IsValid, string? Error) ValidateImageFile(IFormFile? file)
     {

@@ -10,6 +10,7 @@ public class ProductDto
     public decimal Price { get; set; }
     public decimal DiscountPercentage { get; set; }
     public string? PromotionName { get; set; }
+    public string? MainImageUrl { get; set; }
     public int StockQuantity { get; set; }
     public int MinimumStock { get; set; }
     public bool IsLimitedEdition { get; set; }

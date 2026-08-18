@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import type { IProductImageDto } from '../types';
 import { productImageService } from '../services';
+import { resolveAssetUrl } from '../utils';
 
 export function useProductMainImages(productIds: string[]): Record<string, string | undefined> {
   const [imageMap, setImageMap] = useState<Record<string, string | undefined>>({});
@@ -19,7 +20,7 @@ export function useProductMainImages(productIds: string[]): Record<string, strin
           try {
             const { data } = await productImageService.list(productId);
             const mainImage = data.find((image) => image.isMain) ?? data[0];
-            return [productId, mainImage?.imageUrl] as const;
+            return [productId, resolveAssetUrl(mainImage?.imageUrl)] as const;
           } catch {
             return [productId, undefined] as const;
           }

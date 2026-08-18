@@ -14,6 +14,7 @@ import {
   hasLocalLimitedEditionCartItem,
   readLocalFavorites,
   toggleLocalFavorite,
+  fallbackLocalProductImage,
 } from '../../utils';
 import { SkamaPrice } from './SkamaPrice';
 
@@ -104,7 +105,15 @@ export function SkamaProductCard({ product, compact = false }: ISkamaProductCard
         to={ROUTES.productDetail(product.id)}
         aria-label={`Ver detalles de ${product.name}`}
       >
-        <img src={product.imageUrl} alt={product.imageAlt} loading="lazy" />
+        <img
+          src={product.imageUrl}
+          alt={product.imageAlt}
+          loading="lazy"
+          onError={(event) => {
+            event.currentTarget.onerror = null;
+            event.currentTarget.src = fallbackLocalProductImage(event.currentTarget.src);
+          }}
+        />
         {product.badge && (
           <span className={`sk-badge sk-badge--${product.badgeTone ?? 'accent'}`}>
             {product.badge}
