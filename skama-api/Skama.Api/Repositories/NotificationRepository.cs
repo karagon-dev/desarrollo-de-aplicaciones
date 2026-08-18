@@ -32,7 +32,10 @@ public class NotificationRepository : INotificationRepository
 
         var parameters = new DynamicParameters();
         parameters.Add("@UserId", notification.UserId, DbType.Guid);
-        parameters.Add("@OrderId", (object?)notification.OrderId ?? DBNull.Value, DbType.Guid);
+        if (notification.OrderId.HasValue)
+            parameters.Add("@OrderId", notification.OrderId.Value, DbType.Guid);
+        else
+            parameters.Add("@OrderId", null, DbType.Guid);
         parameters.Add("@Type", notification.Type, DbType.String);
         parameters.Add("@RecipientEmail", notification.RecipientEmail, DbType.String);
         parameters.Add("@Subject", notification.Subject, DbType.String);
@@ -44,7 +47,9 @@ public class NotificationRepository : INotificationRepository
             parameters,
             commandType: CommandType.StoredProcedure);
 
-        return (parameters.Get<Guid>("@NewId"), parameters.Get<int>("@ResultCode"));
+        return (
+            parameters.Get<Guid?>("@NewId") ?? Guid.Empty,
+            parameters.Get<int?>("@ResultCode") ?? -1);
     }
 
     public async Task<int> MarkAsSentAsync(Guid id)

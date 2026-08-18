@@ -110,38 +110,56 @@ public class NotificationService : INotificationService
         string subject,
         string htmlBody)
     {
-        var (notificationId, resultCode) = await _notificationRepository.InsertAsync(new EmailNotification
-        {
-            UserId = userId,
-            OrderId = orderId,
-            Type = type,
-            RecipientEmail = recipientEmail,
-            Subject = subject
-        });
+        Guid notificationId = Guid.Empty;
 
-        if (resultCode != 0)
+        try
         {
-            _logger.LogWarning(
-                "No se pudo registrar la notificación {Type} para {Recipient}. Código {ResultCode}.",
+            var (newId, resultCode) = await _notificationRepository.InsertAsync(new EmailNotification
+            {
+                UserId = userId,
+                OrderId = orderId,
+                Type = type,
+                RecipientEmail = recipientEmail,
+                Subject = subject
+            });
+
+            notificationId = newId;
+
+            if (resultCode != 0)
+            {
+                _logger.LogWarning(
+                    "No se pudo registrar la notificación {Type} para {Recipient}. Código {ResultCode}. Se intentará enviar el correo de todas formas.",
+                    type,
+                    recipientEmail,
+                    resultCode);
+            }
+        }
+        catch (Exception exception)
+        {
+            _logger.LogError(
+                exception,
+                "No se pudo registrar la notificación {Type} para {Recipient}. Se intentará enviar el correo de todas formas.",
                 type,
-                recipientEmail,
-                resultCode);
-            return false;
+                recipientEmail);
         }
 
         if (!_emailSender.IsConfigured)
         {
             _logger.LogWarning(
-                "SMTP no configurado. La notificación {NotificationId} ({Type}) quedó pendiente.",
+                "SMTP no configurado. La notificación {NotificationId} ({Type}) para {Recipient} no se envió.",
                 notificationId,
-                type);
+                type,
+                recipientEmail);
             return false;
         }
 
         try
         {
             await _emailSender.SendAsync(recipientEmail, subject, htmlBody);
-            await _notificationRepository.MarkAsSentAsync(notificationId);
+
+            if (notificationId != Guid.Empty)
+                await _notificationRepository.MarkAsSentAsync(notificationId);
+
             return true;
         }
         catch (Exception exception)
@@ -152,7 +170,10 @@ public class NotificationService : INotificationService
                 notificationId,
                 type,
                 recipientEmail);
-            await _notificationRepository.MarkAsFailedAsync(notificationId);
+
+            if (notificationId != Guid.Empty)
+                await _notificationRepository.MarkAsFailedAsync(notificationId);
+
             return false;
         }
     }

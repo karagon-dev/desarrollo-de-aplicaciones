@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Options;
 using Dapper;
 using Skama.Api;
 using Skama.Api.Middleware;
@@ -62,6 +63,8 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
+LogEmailConfiguration(app);
+
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 if (app.Environment.IsDevelopment())
@@ -76,3 +79,18 @@ app.UseStaticFiles();
 app.MapControllers();
 
 app.Run();
+
+static void LogEmailConfiguration(WebApplication app)
+{
+    var options = app.Services.GetRequiredService<IOptions<EmailOptions>>().Value;
+    var sender = app.Services.GetRequiredService<IEmailSender>();
+    var passwordLength = (options.Smtp.Password ?? string.Empty).Replace(" ", string.Empty).Length;
+
+    app.Logger.LogInformation(
+        "Correo SMTP: configured={Configured}, enabled={Enabled}, host={Host}, userConfigured={UserConfigured}, passwordLength={PasswordLength}",
+        sender.IsConfigured,
+        options.Enabled,
+        options.Smtp.Host,
+        !string.IsNullOrWhiteSpace(options.Smtp.User),
+        passwordLength);
+}
