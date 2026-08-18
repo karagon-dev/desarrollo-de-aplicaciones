@@ -350,6 +350,11 @@ export function mapApiProductToSkamaProduct(
   index = 0,
 ): ISkamaProduct {
   const isLowStock = product.stockQuantity < LOW_STOCK_THRESHOLD;
+  const discountPercentage = product.discountPercentage ?? 0;
+  const hasDiscount = discountPercentage > 0;
+  const salePrice = hasDiscount
+    ? Math.round(product.price * (1 - discountPercentage / 100) * 100) / 100
+    : product.price;
 
   return {
     id: product.id,
@@ -359,7 +364,7 @@ export function mapApiProductToSkamaProduct(
     categoryName: product.categoryName || 'Joyería',
     material: product.categoryName || 'Joyería',
     description: product.description || 'Pieza seleccionada del catálogo SKAMA.',
-    price: product.price,
+    price: salePrice,
     stockQuantity: product.stockQuantity,
     imageUrl: imageUrl || fallbackImages[index % fallbackImages.length],
     imageAlt: product.name,
@@ -367,6 +372,9 @@ export function mapApiProductToSkamaProduct(
     badge: product.isLimitedEdition ? 'Limitada' : isLowStock ? 'Stock bajo' : product.categoryName || undefined,
     badgeTone: product.isLimitedEdition || isLowStock ? 'limited' : undefined,
     isLimitedEdition: product.isLimitedEdition,
+    originalPrice: hasDiscount ? product.price : undefined,
+    discountPercentage: hasDiscount ? discountPercentage : undefined,
+    promotionText: hasDiscount ? product.promotionName || undefined : undefined,
   };
 }
 

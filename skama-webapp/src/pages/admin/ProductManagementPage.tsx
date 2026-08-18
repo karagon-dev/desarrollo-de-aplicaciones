@@ -51,7 +51,18 @@ export function ProductManagementPage() {
         id: 'price',
         label: 'Precio',
         align: 'right',
-        render: (row) => formatPrice(row.price),
+        render: (row) => (
+          <Box sx={{ textAlign: 'right' }}>
+            <div>{formatPrice(row.price)}</div>
+            {(row.discountPercentage ?? 0) > 0 && (
+              <Chip
+                label={`-${row.discountPercentage}% ${row.promotionName ?? ''}`.trim()}
+                chipVariant="success"
+                size="small"
+              />
+            )}
+          </Box>
+        ),
       },
       {
         id: 'stock',

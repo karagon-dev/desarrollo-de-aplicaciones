@@ -7,6 +7,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
 import Inventory2OutlinedIcon from '@mui/icons-material/Inventory2Outlined';
+import LocalOfferOutlinedIcon from '@mui/icons-material/LocalOfferOutlined';
 import AssessmentOutlinedIcon from '@mui/icons-material/AssessmentOutlined';
 import { tokens } from '../../utils';
 import { ROUTES } from '../../routes/routePaths';
@@ -14,6 +15,7 @@ import { ROUTES } from '../../routes/routePaths';
 const adminLinks = [
   { label: 'Panel', path: ROUTES.admin.dashboard, icon: DashboardOutlinedIcon },
   { label: 'Productos', path: ROUTES.admin.products, icon: Inventory2OutlinedIcon },
+  { label: 'Promociones', path: ROUTES.admin.promotions, icon: LocalOfferOutlinedIcon },
   { label: 'Ventas', path: ROUTES.admin.reports, icon: AssessmentOutlinedIcon },
 ];
 

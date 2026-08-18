@@ -27,11 +27,15 @@ export function OrderHistoryPage() {
 
   const columns: TableColumn<IOrderDto>[] = useMemo(
     () => [
-      { id: 'orderNumber', label: 'Orden', accessor: 'orderNumber' },
+      { id: 'orderNumber', label: 'Pedido', accessor: 'orderNumber' },
       {
         id: 'createdAt',
         label: 'Fecha',
-        render: (row) => new Date(row.createdAt).toLocaleDateString('es-CO'),
+        render: (row) =>
+          new Date(row.createdAt).toLocaleString('es-CR', {
+            dateStyle: 'medium',
+            timeStyle: 'short',
+          }),
       },
       {
         id: 'status',
@@ -45,6 +49,12 @@ export function OrderHistoryPage() {
         label: 'Total',
         align: 'right',
         render: (row) => formatPrice(row.total),
+      },
+      {
+        id: 'discount',
+        label: 'Descuento',
+        align: 'right',
+        render: (row) => (row.discountTotal > 0 ? `-${formatPrice(row.discountTotal)}` : '—'),
       },
       {
         id: 'actions',
@@ -98,18 +108,18 @@ export function OrderHistoryPage() {
 
   return (
     <PageShell
-      title="Historial de órdenes"
-      subtitle="Consulta el estado de tus compras"
+      title="Historial de pedidos"
+      subtitle="Consulta cada compra, su estado y el detalle de lo que pagaste"
       breadcrumbs={[
         { label: 'Inicio', path: ROUTES.home },
-        { label: 'Órdenes' },
+        { label: 'Pedidos' },
       ]}
     >
       <Card padding={false}>
         {orders.length === 0 ? (
           <EmptyState
-            title="Sin órdenes"
-            description="Cuando completes una compra, aparecerá aquí."
+            title="Sin pedidos"
+            description="Cuando completes una compra, aparecerá aquí con el detalle de productos, totales y estado."
           />
         ) : (
           <Table columns={columns} rows={orders} getRowId={(row) => row.id} />

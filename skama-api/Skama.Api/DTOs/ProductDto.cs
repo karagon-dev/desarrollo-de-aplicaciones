@@ -8,6 +8,8 @@ public class ProductDto
     public string Name { get; set; } = string.Empty;
     public string? Description { get; set; }
     public decimal Price { get; set; }
+    public decimal DiscountPercentage { get; set; }
+    public string? PromotionName { get; set; }
     public int StockQuantity { get; set; }
     public int MinimumStock { get; set; }
     public bool IsLimitedEdition { get; set; }

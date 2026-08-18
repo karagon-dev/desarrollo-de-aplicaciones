@@ -40,7 +40,9 @@ export function CartItemList({
               {item.productName}
             </Typography>
             <Typography variant="body2" sx={{ color: tokens.color.textSecondary }}>
-              {formatPrice(item.unitPrice)} c/u
+              {item.originalUnitPrice && item.originalUnitPrice > item.unitPrice
+                ? `${formatPrice(item.unitPrice)} c/u (antes ${formatPrice(item.originalUnitPrice)})`
+                : `${formatPrice(item.unitPrice)} c/u`}
             </Typography>
             {!item.isActive && (
               <Typography variant="caption" sx={{ color: tokens.color.warning }}>

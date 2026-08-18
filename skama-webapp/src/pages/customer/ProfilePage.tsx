@@ -1,4 +1,5 @@
 import { useEffect, useState, type FormEvent } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -161,6 +162,9 @@ export function ProfilePage() {
 
           <Button type="submit" disabled={saving} sx={{ alignSelf: 'flex-start' }}>
             {saving ? 'Guardando...' : isNewProfile ? 'Crear perfil' : 'Guardar cambios'}
+          </Button>
+          <Button component={RouterLink} to={ROUTES.orderHistory} variant="outline" sx={{ alignSelf: 'flex-start' }}>
+            Ver historial de pedidos
           </Button>
         </Box>
       </Card>

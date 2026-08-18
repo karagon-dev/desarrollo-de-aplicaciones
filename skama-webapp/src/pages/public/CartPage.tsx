@@ -5,6 +5,7 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutlined';
 
 import { useCart } from '../../hooks';
 import { ROUTES } from '../../routes/routePaths';
+import { SkamaPrice } from '../../components/skama/SkamaPrice';
 import {
   backendCartToCheckoutItems,
   formatPrice,
@@ -125,7 +126,12 @@ export function CartPage() {
                   />
                   <div className="sk-cart-line__content">
                     <h3>{item.name}</h3>
-                    <span>{formatPrice(item.unitPrice)} por unidad</span>
+                    <SkamaPrice
+                      price={item.unitPrice}
+                      originalPrice={item.originalUnitPrice}
+                      discountPercentage={item.discountPercentage}
+                    />
+                    <span>por unidad</span>
                     <div className="sk-cart-line__controls">
                       <label className="sk-field" htmlFor={`quantity-${item.id}`}>
                         <span className="sk-field__label">Cantidad</span>

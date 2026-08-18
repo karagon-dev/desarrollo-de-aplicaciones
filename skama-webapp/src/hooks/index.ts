@@ -14,6 +14,7 @@ export { useSalesReports } from './useSalesReports';
 export { useOrder } from './useOrder';
 export { useProductMainImages, useProductImages } from './useProductImages';
 export { useActivePromotions } from './useActivePromotions';
+export { usePromotions } from './usePromotions';
 export { useProductReviews } from './useProductReviews';
 export { useEligibleReviewOrders } from './useEligibleReviewOrders';
 export type { IEligibleReviewOrder } from './useEligibleReviewOrders';

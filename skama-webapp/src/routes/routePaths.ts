@@ -19,6 +19,7 @@ export const ROUTES = {
     root: '/admin',
     dashboard: '/admin',
     products: '/admin/products',
+    promotions: '/admin/promotions',
     reports: '/admin/reports',
   },
 } as const;

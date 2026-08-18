@@ -12,6 +12,7 @@ BEGIN
 
     DECLARE @UserId UNIQUEIDENTIFIER;
     DECLARE @Subtotal DECIMAL(10,2);
+    DECLARE @DiscountTotal DECIMAL(10,2);
     DECLARE @HasProductRatings BIT =
         CASE WHEN NULLIF(LTRIM(RTRIM(ISNULL(@ProductRatings, N''))), N'') IS NULL THEN 0 ELSE 1 END;
     DECLARE @CartItems TABLE
@@ -20,6 +21,8 @@ BEGIN
         ProductName NVARCHAR(150) NOT NULL,
         Quantity INT NOT NULL,
         UnitPrice DECIMAL(10,2) NOT NULL,
+        DiscountAmount DECIMAL(10,2) NOT NULL,
+        LineTotal DECIMAL(10,2) NOT NULL,
         PreviousStock INT NOT NULL,
         NewStock INT NOT NULL,
         IsActive BIT NOT NULL
@@ -56,6 +59,8 @@ BEGIN
             ProductName,
             Quantity,
             UnitPrice,
+            DiscountAmount,
+            LineTotal,
             PreviousStock,
             NewStock,
             IsActive
@@ -64,12 +69,25 @@ BEGIN
             CI.TID_ProductId,
             P.TC_Name,
             CI.TN_Quantity,
-            CI.TN_UnitPrice,
+            P.TN_Price,
+            ROUND(P.TN_Price * CI.TN_Quantity * ISNULL(Promo.DiscountPercentage, 0) / 100.0, 2),
+            ROUND(P.TN_Price * CI.TN_Quantity, 2)
+                - ROUND(P.TN_Price * CI.TN_Quantity * ISNULL(Promo.DiscountPercentage, 0) / 100.0, 2),
             P.TN_StockQuantity,
             P.TN_StockQuantity - CI.TN_Quantity,
             P.TB_IsActive
         FROM dbo.CartItem CI
         INNER JOIN dbo.Product P WITH (UPDLOCK, HOLDLOCK) ON P.TID_Id = CI.TID_ProductId
+        OUTER APPLY
+        (
+            SELECT TOP 1 PR.TN_DiscountPercentage AS DiscountPercentage
+            FROM dbo.PromotionProduct PP
+            INNER JOIN dbo.Promotion PR ON PR.TID_Id = PP.TID_PromotionId
+            WHERE PP.TID_ProductId = P.TID_Id
+              AND PR.TB_IsActive = 1
+              AND CAST(SYSDATETIME() AS DATE) BETWEEN PR.TD_StartDate AND PR.TD_EndDate
+            ORDER BY PR.TN_DiscountPercentage DESC
+        ) Promo
         WHERE CI.TID_CartId = @CartId;
 
         IF NOT EXISTS (SELECT 1 FROM @CartItems)
@@ -169,7 +187,9 @@ BEGIN
             END;
         END;
 
-        SELECT @Subtotal = SUM(Quantity * UnitPrice)
+        SELECT
+            @Subtotal = SUM(Quantity * UnitPrice),
+            @DiscountTotal = SUM(DiscountAmount)
         FROM @CartItems;
 
         SET @OrderId = NEWID();
@@ -196,8 +216,8 @@ BEGIN
             @PaymentMethod,
             @ShippingAddress,
             @Subtotal,
-            0,
-            @Subtotal
+            ISNULL(@DiscountTotal, 0),
+            @Subtotal - ISNULL(@DiscountTotal, 0)
         );
 
         INSERT INTO dbo.OrderItem
@@ -218,8 +238,8 @@ BEGIN
             CI.ProductName,
             CI.Quantity,
             CI.UnitPrice,
-            0,
-            CI.Quantity * CI.UnitPrice
+            CI.DiscountAmount,
+            CI.LineTotal
         FROM @CartItems CI;
 
         IF @HasProductRatings = 1

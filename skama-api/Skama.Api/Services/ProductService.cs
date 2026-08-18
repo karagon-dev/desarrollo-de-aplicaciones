@@ -75,6 +75,8 @@ public class ProductService : IProductService
         Name = product.Name,
         Description = product.Description,
         Price = product.Price,
+        DiscountPercentage = product.DiscountPercentage,
+        PromotionName = product.PromotionName,
         StockQuantity = product.StockQuantity,
         MinimumStock = product.MinimumStock,
         IsLimitedEdition = product.IsLimitedEdition,

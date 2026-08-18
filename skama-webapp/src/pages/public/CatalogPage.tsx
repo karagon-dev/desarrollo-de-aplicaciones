@@ -77,6 +77,10 @@ export function CatalogPage() {
   }, [collection, debouncedSearch]);
 
   const visibleApiProducts = shouldUseApiProducts ? apiProducts : [];
+  const apiPromoProducts = useMemo(
+    () => visibleApiProducts.filter((product) => (product.discountPercentage ?? 0) > 0),
+    [visibleApiProducts],
+  );
   const apiCollectionSegments = useMemo(
     () =>
       skamaSegments
@@ -118,7 +122,10 @@ export function CatalogPage() {
       .filter((segment) => segment.products.length > 0);
   }, [collection, collectionSegments, debouncedSearch]);
   const silverPromoProducts = useMemo(
-    () => visibleStaticSegments.find((segment) => segment.id === 'silver')?.products ?? [],
+    () =>
+      (visibleStaticSegments.find((segment) => segment.id === 'silver')?.products ?? []).filter(
+        (product) => (product.discountPercentage ?? 0) > 0,
+      ),
     [visibleStaticSegments],
   );
   const activeSilverPromoProduct =
@@ -307,8 +314,10 @@ export function CatalogPage() {
                             alt={activeSilverPromoProduct.imageAlt}
                           />
                           <span className="sk-anniversary-carousel__overlay">
-                            <span>Promoción de aniversario</span>
-                            <strong>{SILVER_ANNIVERSARY_PROMO_TEXT}</strong>
+                            <span>Promoción</span>
+                            <strong>
+                              {activeSilverPromoProduct.promotionText || SILVER_ANNIVERSARY_PROMO_TEXT}
+                            </strong>
                           </span>
                         </button>
                         <div className="sk-anniversary-carousel__dots" aria-label="Seleccionar joya de plata en promoción">
@@ -326,7 +335,9 @@ export function CatalogPage() {
                       </div>
 
                       <div className="sk-anniversary-carousel__meta">
-                        <p className="sk-kicker">Aniversario SKAMA</p>
+                        <p className="sk-kicker">
+                          {activeSilverPromoProduct.promotionText ? 'Promoción' : 'Aniversario SKAMA'}
+                        </p>
                         <h3>{activeSilverPromoProduct.name}</h3>
                         <p>{activeSilverPromoProduct.description}</p>
                         <SkamaPrice
@@ -361,6 +372,16 @@ export function CatalogPage() {
       ) : (
         <section className="sk-section" aria-labelledby="catalog-results-title">
           <div className="sk-container">
+            {shouldUseApiProducts && apiPromoProducts.length > 0 && (
+              <div className="sk-section-heading" style={{ marginBottom: '1.5rem' }}>
+                <p className="sk-kicker">Promociones activas</p>
+                <h2>Precios rebajados</h2>
+                <p className="sk-lede">
+                  Los descuentos vigentes se muestran automáticamente en el catálogo y se aplican en el
+                  carrito al finalizar la compra.
+                </p>
+              </div>
+            )}
             <div className="sk-section-heading">
               <p className="sk-kicker">{shouldUseApiProducts ? 'Productos de la API' : 'Colección visual'}</p>
               <h2 id="catalog-results-title">

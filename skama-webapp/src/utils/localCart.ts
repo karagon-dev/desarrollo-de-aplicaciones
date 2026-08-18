@@ -10,6 +10,8 @@ export interface ILocalCartItem {
   imageUrl: string;
   imageAlt: string;
   price: number;
+  originalPrice?: number;
+  discountPercentage?: number;
   quantity: number;
   stockQuantity: number;
   isLimitedEdition: boolean;
@@ -21,6 +23,8 @@ export interface ICheckoutItem {
   name: string;
   quantity: number;
   unitPrice: number;
+  originalUnitPrice?: number;
+  discountPercentage?: number;
   subtotal: number;
   imageUrl?: string;
   imageAlt?: string;
@@ -100,6 +104,8 @@ export function addLocalCartItem(product: ISkamaProduct, quantity: number): ILoc
   if (existing) {
     existing.quantity = Math.min(existing.quantity + requestedQuantity, maxQuantity);
     existing.price = product.price;
+    existing.originalPrice = product.originalPrice;
+    existing.discountPercentage = product.discountPercentage;
     existing.stockQuantity = product.stockQuantity;
     writeCartToStorage(items);
     return items;
@@ -114,6 +120,8 @@ export function addLocalCartItem(product: ISkamaProduct, quantity: number): ILoc
     imageUrl: product.imageUrl,
     imageAlt: product.imageAlt,
     price: product.price,
+    originalPrice: product.originalPrice,
+    discountPercentage: product.discountPercentage,
     quantity: Math.min(requestedQuantity, maxQuantity),
     stockQuantity: product.stockQuantity,
     isLimitedEdition: Boolean(product.isLimitedEdition),
@@ -172,6 +180,8 @@ export function backendCartToCheckoutItems(cart: ICartDetailDto | null): IChecko
       name: item.productName,
       quantity: item.quantity,
       unitPrice: item.unitPrice,
+      originalUnitPrice: item.originalUnitPrice,
+      discountPercentage: item.discountPercentage,
       subtotal: item.subtotal,
       isLimitedEdition: false,
     })) ?? []
@@ -185,6 +195,8 @@ export function localCartToCheckoutItems(items: ILocalCartItem[]): ICheckoutItem
     name: item.name,
     quantity: item.quantity,
     unitPrice: item.price,
+    originalUnitPrice: item.originalPrice,
+    discountPercentage: item.discountPercentage,
     subtotal: item.price * item.quantity,
     imageUrl: item.imageUrl,
     imageAlt: item.imageAlt,

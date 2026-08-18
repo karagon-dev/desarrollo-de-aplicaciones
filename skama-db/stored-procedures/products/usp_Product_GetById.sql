@@ -11,6 +11,8 @@ BEGIN
         P.TC_Name AS Name,
         P.TC_Description AS Description,
         P.TN_Price AS Price,
+        ISNULL(Promo.DiscountPercentage, 0) AS DiscountPercentage,
+        Promo.PromotionName,
         P.TN_StockQuantity AS StockQuantity,
         P.TN_MinimumStock AS MinimumStock,
         P.TB_IsLimitedEdition AS IsLimitedEdition,
@@ -19,6 +21,18 @@ BEGIN
         P.TD_UpdatedAt AS UpdatedAt
     FROM dbo.Product P
     INNER JOIN dbo.Category C ON C.TID_Id = P.TID_CategoryId
+    OUTER APPLY
+    (
+        SELECT TOP 1
+            PR.TN_DiscountPercentage AS DiscountPercentage,
+            PR.TC_Name AS PromotionName
+        FROM dbo.PromotionProduct PP
+        INNER JOIN dbo.Promotion PR ON PR.TID_Id = PP.TID_PromotionId
+        WHERE PP.TID_ProductId = P.TID_Id
+          AND PR.TB_IsActive = 1
+          AND CAST(SYSDATETIME() AS DATE) BETWEEN PR.TD_StartDate AND PR.TD_EndDate
+        ORDER BY PR.TN_DiscountPercentage DESC
+    ) Promo
     WHERE P.TID_Id = @Id;
 END;
 GO

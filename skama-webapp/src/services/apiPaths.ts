@@ -68,6 +68,8 @@ export const API_PATHS = {
     delete: (id: string) => `/api/products/${id}`,
   },
   promotions: {
+    list: '/api/promotions',
+    byId: (id: string) => `/api/promotions/${id}`,
     active: '/api/promotions/active',
     create: '/api/promotions',
     update: (id: string) => `/api/promotions/${id}`,

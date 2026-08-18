@@ -4,6 +4,7 @@ import { ROUTES } from '../../routes/routePaths';
 const navigationLinks = [
   { label: 'Inicio', path: ROUTES.home },
   { label: 'Colecciones', path: ROUTES.catalog },
+  { label: 'Mis pedidos', path: ROUTES.orderHistory },
   { label: 'Nosotros', path: `${ROUTES.home}#brand-story` },
   { label: 'Contacto', path: ROUTES.contact },
   { label: 'Pol\u00edtica de Privacidad', path: ROUTES.privacyPolicy },

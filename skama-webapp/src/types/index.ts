@@ -46,6 +46,7 @@ export type {
   ICreateProductResponse,
   IPromotionDto,
   ICreatePromotionRequest,
+  ICreatePromotionResponse,
   IUpdatePromotionRequest,
   ISalesByPeriodDto,
   ISalesByProductDto,

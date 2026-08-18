@@ -175,6 +175,7 @@ export function ProductDetailPage() {
             originalPrice={displayProduct.originalPrice}
             discountPercentage={displayProduct.discountPercentage}
           />
+          {displayProduct.promotionText ? <p className="sk-kicker">{displayProduct.promotionText}</p> : null}
           <p className="sk-lede">{displayProduct.description}</p>
           <div className="sk-stat-grid">
             <div className="sk-stat">

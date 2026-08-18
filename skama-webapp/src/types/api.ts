@@ -88,6 +88,8 @@ export interface ICartItemDto {
   productName: string;
   quantity: number;
   unitPrice: number;
+  originalUnitPrice?: number;
+  discountPercentage?: number;
   subtotal: number;
   stockQuantity: number;
   isActive: boolean;
@@ -286,6 +288,8 @@ export interface IProductDto {
   name: string;
   description: string;
   price: number;
+  discountPercentage?: number;
+  promotionName?: string | null;
   stockQuantity: number;
   minimumStock: number;
   isLimitedEdition: boolean;
@@ -326,6 +330,7 @@ export interface IPromotionDto {
   startDate: string;
   endDate: string;
   isActive: boolean;
+  productIds?: string[];
   createdAt: string;
   updatedAt: string | null;
 }
@@ -345,6 +350,10 @@ export interface IUpdatePromotionRequest {
   startDate: string;
   endDate: string;
   isActive: boolean;
+}
+
+export interface ICreatePromotionResponse {
+  id: string;
 }
 
 export interface ISalesByPeriodDto {

@@ -8,6 +8,8 @@ namespace Skama.Api.Models
         public string ProductName { get; set; } = string.Empty;
         public int Quantity { get; set; }
         public decimal UnitPrice { get; set; }
+        public decimal OriginalUnitPrice { get; set; }
+        public decimal DiscountPercentage { get; set; }
         public decimal Subtotal { get; set; }
         public int StockQuantity { get; set; }
         public bool IsActive { get; set; }

@@ -5,6 +5,7 @@ import { GuestRoute } from '../components/routing/GuestRoute';
 import { ProtectedRoute } from '../components/routing/ProtectedRoute';
 import { DashboardPage } from '../pages/admin/DashboardPage';
 import { ProductManagementPage } from '../pages/admin/ProductManagementPage';
+import { PromotionsPage } from '../pages/admin/PromotionsPage';
 import { ReportsPage } from '../pages/admin/ReportsPage';
 import { OrderDetailPage } from '../pages/customer/OrderDetailPage';
 import { OrderHistoryPage } from '../pages/customer/OrderHistoryPage';
@@ -222,6 +223,17 @@ export function AppRouter() {
           <ProtectedRoute requireAdmin>
             <AdminLayout>
               <ReportsPage />
+            </AdminLayout>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path={ROUTES.admin.promotions}
+        element={
+          <ProtectedRoute requireAdmin>
+            <AdminLayout>
+              <PromotionsPage />
             </AdminLayout>
           </ProtectedRoute>
         }

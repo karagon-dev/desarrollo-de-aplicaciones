@@ -56,6 +56,8 @@ public class CartService : ICartService
                 ProductName = item.ProductName,
                 Quantity = item.Quantity,
                 UnitPrice = item.UnitPrice,
+                OriginalUnitPrice = item.OriginalUnitPrice,
+                DiscountPercentage = item.DiscountPercentage,
                 Subtotal = item.Subtotal,
                 StockQuantity = item.StockQuantity,
                 IsActive = item.IsActive

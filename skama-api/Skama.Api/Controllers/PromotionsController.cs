@@ -16,6 +16,34 @@ public class PromotionsController : ControllerBase
         _promotionService = promotionService;
     }
 
+    [HttpGet]
+    [ProducesResponseType(typeof(IEnumerable<PromotionDto>), StatusCodes.Status200OK)]
+    public async Task<ActionResult<IEnumerable<PromotionDto>>> GetAll()
+    {
+        var promotions = await _promotionService.GetAllAsync();
+        return Ok(promotions);
+    }
+
+    [HttpGet("{id:guid}")]
+    [ProducesResponseType(typeof(PromotionDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<PromotionDto>> GetById(Guid id)
+    {
+        var promotion = await _promotionService.GetByIdAsync(id);
+
+        if (promotion is null)
+        {
+            return NotFound(new ProblemDetails
+            {
+                Title = "Promoción no encontrada",
+                Detail = $"No se encontró la promoción con Id {id}.",
+                Status = StatusCodes.Status404NotFound
+            });
+        }
+
+        return Ok(promotion);
+    }
+
     [HttpGet("active")]
     [ProducesResponseType(typeof(IEnumerable<PromotionDto>), StatusCodes.Status200OK)]
     public async Task<ActionResult<IEnumerable<PromotionDto>>> GetActive()
@@ -25,9 +53,9 @@ public class PromotionsController : ControllerBase
     }
 
     [HttpPost]
-    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(CreatePromotionResponse), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<object>> Create([FromBody] CreatePromotionRequest request)
+    public async Task<ActionResult<CreatePromotionResponse>> Create([FromBody] CreatePromotionRequest request)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
@@ -44,7 +72,7 @@ public class PromotionsController : ControllerBase
             });
         }
 
-        return CreatedAtAction(nameof(GetActive), new { promotionId });
+        return CreatedAtAction(nameof(GetById), new { id = promotionId }, new CreatePromotionResponse { Id = promotionId });
     }
 
     [HttpPut("{id:guid}")]
@@ -63,7 +91,7 @@ public class PromotionsController : ControllerBase
             if (resultCode == 1)
                 return NotFound(new ProblemDetails
                 {
-                Title = "Promocion no encontrada",
+                    Title = "Promoción no encontrada",
                     Detail = error,
                     Status = StatusCodes.Status404NotFound
                 });
@@ -96,7 +124,7 @@ public class PromotionsController : ControllerBase
             });
         }
 
-        return CreatedAtAction(nameof(GetActive), new { assignId });
+        return CreatedAtAction(nameof(GetById), new { id = promotionId }, new { assignId });
     }
 
     [HttpDelete("{promotionId:guid}/products/{productId:guid}")]
@@ -110,7 +138,7 @@ public class PromotionsController : ControllerBase
         {
             return NotFound(new ProblemDetails
             {
-                Title = "Asignacion no encontrada",
+                Title = "Asignación no encontrada",
                 Detail = "No se encontró la asignación de producto a la promoción.",
                 Status = StatusCodes.Status404NotFound
             });

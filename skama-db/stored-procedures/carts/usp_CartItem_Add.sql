@@ -9,6 +9,8 @@ BEGIN
     SET NOCOUNT ON;
 
     DECLARE @UnitPrice DECIMAL(10,2);
+    DECLARE @ListPrice DECIMAL(10,2);
+    DECLARE @DiscountPercentage DECIMAL(5,2) = 0;
     DECLARE @StockQuantity INT;
     DECLARE @ExistingQuantity INT = 0;
     DECLARE @RequestedTotalQuantity INT;
@@ -32,17 +34,28 @@ BEGIN
     END;
 
     SELECT
-        @UnitPrice = TN_Price,
+        @ListPrice = TN_Price,
         @StockQuantity = TN_StockQuantity
     FROM dbo.Product
     WHERE TID_Id = @ProductId
       AND TB_IsActive = 1;
 
-    IF @UnitPrice IS NULL
+    IF @ListPrice IS NULL
     BEGIN
         SET @ResultCode = 20; -- PRODUCT_NOT_FOUND
         RETURN;
     END;
+
+    SELECT TOP 1
+        @DiscountPercentage = PR.TN_DiscountPercentage
+    FROM dbo.PromotionProduct PP
+    INNER JOIN dbo.Promotion PR ON PR.TID_Id = PP.TID_PromotionId
+    WHERE PP.TID_ProductId = @ProductId
+      AND PR.TB_IsActive = 1
+      AND CAST(SYSDATETIME() AS DATE) BETWEEN PR.TD_StartDate AND PR.TD_EndDate
+    ORDER BY PR.TN_DiscountPercentage DESC;
+
+    SET @UnitPrice = ROUND(@ListPrice * (1 - ISNULL(@DiscountPercentage, 0) / 100.0), 2);
 
     SELECT
         @ExistingQuantity = TN_Quantity

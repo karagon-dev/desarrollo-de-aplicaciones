@@ -26,6 +26,12 @@ const itemColumns: TableColumn<IOrderItemDto>[] = [
     render: (row) => formatPrice(row.unitPrice),
   },
   {
+    id: 'discountAmount',
+    label: 'Descuento',
+    align: 'right',
+    render: (row) => (row.discountAmount > 0 ? `-${formatPrice(row.discountAmount)}` : formatPrice(0)),
+  },
+  {
     id: 'lineTotal',
     label: 'Total',
     align: 'right',
@@ -115,11 +121,14 @@ export function OrderDetailPage() {
   return (
     <PageShell
       title={`Orden ${order.orderNumber}`}
-      subtitle={`Creada el ${new Date(order.createdAt).toLocaleString('es-CO')}`}
+      subtitle={`Creada el ${new Date(order.createdAt).toLocaleString('es-CR', {
+        dateStyle: 'medium',
+        timeStyle: 'short',
+      })}`}
       badge={getOrderStatusLabel(order.status)}
       breadcrumbs={[
         { label: 'Inicio', path: ROUTES.home },
-        { label: 'Órdenes', path: ROUTES.orderHistory },
+        { label: 'Pedidos', path: ROUTES.orderHistory },
         { label: order.orderNumber },
       ]}
     >
@@ -177,7 +186,7 @@ export function OrderDetailPage() {
                   </Button>
                 )}
                 <Button component={RouterLink} to={ROUTES.orderHistory} variant="ghost">
-                  Volver a órdenes
+                  Volver al historial
                 </Button>
               </Box>
             </Box>

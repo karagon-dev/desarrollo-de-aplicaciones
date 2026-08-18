@@ -17,6 +17,44 @@ public class PromotionRepository : IPromotionRepository
     private IDbConnection CreateConnection() =>
         new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
 
+    public async Task<IEnumerable<Promotion>> GetAllAsync()
+    {
+        using var connection = CreateConnection();
+
+        return await connection.QueryAsync<Promotion>(
+            "usp_Promotion_GetAll",
+            commandType: CommandType.StoredProcedure);
+    }
+
+    public async Task<Promotion?> GetByIdAsync(Guid id)
+    {
+        using var connection = CreateConnection();
+
+        return await connection.QuerySingleOrDefaultAsync<Promotion>(
+            "usp_Promotion_GetById",
+            new { Id = id },
+            commandType: CommandType.StoredProcedure);
+    }
+
+    public async Task<IEnumerable<PromotionProduct>> GetAllAssignmentsAsync()
+    {
+        using var connection = CreateConnection();
+
+        return await connection.QueryAsync<PromotionProduct>(
+            "usp_PromotionProduct_GetAll",
+            commandType: CommandType.StoredProcedure);
+    }
+
+    public async Task<IEnumerable<PromotionProduct>> GetAssignmentsByPromotionIdAsync(Guid promotionId)
+    {
+        using var connection = CreateConnection();
+
+        return await connection.QueryAsync<PromotionProduct>(
+            "usp_PromotionProduct_GetByPromotionId",
+            new { PromotionId = promotionId },
+            commandType: CommandType.StoredProcedure);
+    }
+
     public async Task<IEnumerable<Promotion>> GetActiveAsync()
     {
         using var connection = CreateConnection();

@@ -4,6 +4,10 @@ namespace Skama.Api.Repositories;
 
 public interface IPromotionRepository
 {
+    Task<IEnumerable<Promotion>> GetAllAsync();
+    Task<Promotion?> GetByIdAsync(Guid id);
+    Task<IEnumerable<PromotionProduct>> GetAllAssignmentsAsync();
+    Task<IEnumerable<PromotionProduct>> GetAssignmentsByPromotionIdAsync(Guid promotionId);
     Task<IEnumerable<Promotion>> GetActiveAsync();
     Task<(Guid NewId, int ResultCode)> InsertAsync(Promotion promotion);
     Task<(int RowsAffected, int ResultCode)> UpdateAsync(Promotion promotion);

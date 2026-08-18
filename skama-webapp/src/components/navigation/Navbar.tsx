@@ -5,6 +5,7 @@ import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import LoginOutlinedIcon from '@mui/icons-material/LoginOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
+import ReceiptLongOutlinedIcon from '@mui/icons-material/ReceiptLongOutlined';
 import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
 
 import { useAuth, useCart, useThemeMode, useWishlist } from '../../hooks';
@@ -119,6 +120,14 @@ export function Navbar() {
 
         {isAuthenticated ? (
           <>
+            <RouterLink
+              className="sk-icon-button"
+              to={ROUTES.orderHistory}
+              aria-label="Historial de pedidos"
+              aria-current={isActive([ROUTES.orderHistory, '/orders']) ? 'page' : undefined}
+            >
+              <ReceiptLongOutlinedIcon fontSize="small" />
+            </RouterLink>
             <RouterLink className="sk-auth-button" to={ROUTES.profile}>
               <PersonOutlineOutlinedIcon fontSize="small" />
               <span>{accountLabel}</span>

@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import { useAuth, useCart } from '../../hooks';
 import { ROUTES } from '../../routes/routePaths';
 import { Dialog } from '../../components/dialogs';
+import { SkamaPrice } from '../../components/skama/SkamaPrice';
 import {
   CheckoutRatingDialog,
   type CheckoutRatingValue,
@@ -277,12 +278,13 @@ export function CheckoutPage() {
 
     setIsSubmitting(true);
     try {
-      await createOrderFromCheckoutCart(productRatings);
+      const order = await createOrderFromCheckoutCart(productRatings);
 
-      setValidation('Orden validada. WhatsApp se abrirá con el mensaje formateado.');
+      setValidation('Pedido registrado. WhatsApp se abrirá con el mensaje formateado.');
       setRatingDialogOpen(false);
       window.open(`https://wa.me/${whatsappPhone}?text=${encodeURIComponent(whatsappMessage)}`, '_blank', 'noopener');
-      toast.success('Orden lista para enviar por WhatsApp.');
+      toast.success(`Pedido ${order.orderNumber} registrado.`);
+      navigate(ROUTES.orderDetail(order.orderId));
     } catch (error) {
       toast.error(getApiErrorMessage(error, 'No se pudo completar la orden.'));
     } finally {
@@ -489,8 +491,19 @@ export function CheckoutPage() {
                   <div>
                     <p>{item.name}</p>
                     <span>Cantidad {item.quantity}</span>
+                    {item.discountPercentage ? (
+                      <span>-{item.discountPercentage}% de descuento</span>
+                    ) : null}
                   </div>
-                  <strong className="sk-price">{formatPrice(item.subtotal)}</strong>
+                  <SkamaPrice
+                    price={item.subtotal}
+                    originalPrice={
+                      item.originalUnitPrice && item.originalUnitPrice > item.unitPrice
+                        ? item.originalUnitPrice * item.quantity
+                        : undefined
+                    }
+                    discountPercentage={item.discountPercentage}
+                  />
                 </article>
               ))}
             </div>

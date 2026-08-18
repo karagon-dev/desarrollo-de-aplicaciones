@@ -141,6 +141,9 @@ export function SkamaProductCard({ product, compact = false }: ISkamaProductCard
           originalPrice={product.originalPrice}
           discountPercentage={product.discountPercentage}
         />
+        {product.promotionText ? (
+          <span className="sk-product-card__description">{product.promotionText}</span>
+        ) : null}
         <button
           className={`sk-button ${product.isLimitedEdition && !isAuthenticated ? 'sk-button--secondary' : 'sk-button--primary'} sk-button--sm`}
           type="button"

@@ -13,10 +13,33 @@ public class PromotionService : IPromotionService
         _promotionRepository = promotionRepository;
     }
 
+    public async Task<IEnumerable<PromotionDto>> GetAllAsync()
+    {
+        var promotions = await _promotionRepository.GetAllAsync();
+        var assignments = await _promotionRepository.GetAllAssignmentsAsync();
+        var productsByPromotion = assignments
+            .GroupBy(assignment => assignment.PromotionId)
+            .ToDictionary(group => group.Key, group => group.Select(item => item.ProductId).ToList());
+
+        return promotions.Select(promotion =>
+            MapToDto(promotion, productsByPromotion.GetValueOrDefault(promotion.Id, [])));
+    }
+
+    public async Task<PromotionDto?> GetByIdAsync(Guid id)
+    {
+        var promotion = await _promotionRepository.GetByIdAsync(id);
+
+        if (promotion is null)
+            return null;
+
+        var assignments = await _promotionRepository.GetAssignmentsByPromotionIdAsync(id);
+        return MapToDto(promotion, assignments.Select(assignment => assignment.ProductId).ToList());
+    }
+
     public async Task<IEnumerable<PromotionDto>> GetActiveAsync()
     {
         var promotions = await _promotionRepository.GetActiveAsync();
-        return promotions.Select(MapToDto);
+        return promotions.Select(promotion => MapToDto(promotion, []));
     }
 
     public async Task<(Guid PromotionId, bool Success, int ResultCode, string? Error)> CreateAsync(CreatePromotionRequest request)
@@ -82,7 +105,7 @@ public class PromotionService : IPromotionService
         return rowsAffected > 0;
     }
 
-    private static PromotionDto MapToDto(Promotion promotion) => new()
+    private static PromotionDto MapToDto(Promotion promotion, IReadOnlyList<Guid> productIds) => new()
     {
         Id = promotion.Id,
         Name = promotion.Name,
@@ -91,6 +114,7 @@ public class PromotionService : IPromotionService
         StartDate = promotion.StartDate,
         EndDate = promotion.EndDate,
         IsActive = promotion.IsActive,
+        ProductIds = productIds.ToList(),
         CreatedAt = promotion.CreatedAt,
         UpdatedAt = promotion.UpdatedAt
     };
