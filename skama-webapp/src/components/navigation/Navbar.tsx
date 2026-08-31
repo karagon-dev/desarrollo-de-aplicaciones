@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
+import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import LoginOutlinedIcon from '@mui/icons-material/LoginOutlined';
@@ -34,7 +35,7 @@ function useLocalCartCount() {
 export function Navbar() {
   const location = useLocation();
   const { mode, toggleMode } = useThemeMode();
-  const { isAuthenticated, user, logout } = useAuth();
+  const { isAuthenticated, isAdmin, user, logout } = useAuth();
   const { itemCount } = useCart();
   const { items: wishlistItems } = useWishlist();
   const localCartCount = useLocalCartCount();
@@ -120,6 +121,17 @@ export function Navbar() {
 
         {isAuthenticated ? (
           <>
+            {isAdmin && (
+              <RouterLink
+                className="sk-auth-button"
+                to={ROUTES.admin.dashboard}
+                aria-label="Panel administrativo"
+                aria-current={isActive([ROUTES.admin.root]) ? 'page' : undefined}
+              >
+                <AdminPanelSettingsOutlinedIcon fontSize="small" />
+                <span>Admin</span>
+              </RouterLink>
+            )}
             <RouterLink
               className="sk-icon-button"
               to={ROUTES.orderHistory}

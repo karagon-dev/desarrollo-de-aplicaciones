@@ -1,4 +1,5 @@
 import { Link as RouterLink, useLocation } from 'react-router-dom';
+import { useAuth } from '../../hooks';
 import { ROUTES } from '../../routes/routePaths';
 
 const navigationLinks = [
@@ -12,6 +13,10 @@ const navigationLinks = [
 
 export function Footer() {
   const location = useLocation();
+  const { isAdmin } = useAuth();
+  const links = isAdmin
+    ? [...navigationLinks, { label: 'Panel administrativo', path: ROUTES.admin.dashboard }]
+    : navigationLinks;
 
   return (
     <footer id="footer" className="sk-footer">
@@ -27,7 +32,7 @@ export function Footer() {
           <nav className="sk-footer__nav" aria-label="Navegación">
             <h2>{'NAVEGACI\u00d3N'}</h2>
             <ul>
-              {navigationLinks.map((link) => (
+              {links.map((link) => (
                 <li key={link.path}>
                   <RouterLink to={link.path} aria-current={location.pathname === link.path ? 'page' : undefined}>
                     {link.label}
